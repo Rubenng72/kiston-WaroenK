@@ -41,7 +41,7 @@ const InputBarang: React.FC = () => {
       });
 
       barangctx.addItem(fileName, base64, enteredTitle.toString(), enteredPrice.toString(),chosenSatuan);
-      history.length > 0 ? history.goBack() : history.replace('/');
+      history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
     const takePhotoHandler = async () => {
