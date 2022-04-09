@@ -1,0 +1,7 @@
+{
+  "name": "kiston-waroenk",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
