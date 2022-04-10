@@ -20,6 +20,18 @@ const BarangContextProvider: React.FC = props => {
     });
   };
 
+  const updateItem = (id: number, path: string, base64Data: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') =>
+  {
+    const item = [...items];
+    items[id] = {
+      ...items[id],
+      title,
+      price,
+      type,
+      imagePath: path,
+      base64url: base64Data,
+    }
+  }
   const deleteItem = (id: string) => {
     for(let i = 0; i < items.length; i++)
     {
@@ -62,7 +74,7 @@ const BarangContextProvider: React.FC = props => {
   }, []);
 
   return(
-    <BarangContext.Provider value={{items, addItem, deleteItem, initContext }}>
+    <BarangContext.Provider value={{items, addItem, deleteItem, updateItem, initContext }}>
       {props.children}
     </BarangContext.Provider>
   );
