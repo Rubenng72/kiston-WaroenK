@@ -2,7 +2,7 @@ import React from "react";
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton, IonLabel, IonSearchbar} from "@ionic/react";
 import { isPlatform} from '@ionic/react';
 import {addOutline} from "ionicons/icons";
-
+import ItemListCard from '../components/ItemList/ItemListCard';
 
 const ItemList: React.FC = () => {
     return (
@@ -51,7 +51,7 @@ const ItemList: React.FC = () => {
                 </IonFabButton>
               </IonFab>
             )}
-
+            <ItemListCard />
           </IonContent>
         </IonPage>
     );
