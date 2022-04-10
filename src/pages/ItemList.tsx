@@ -45,7 +45,7 @@ const ItemList: React.FC = () => {
                 </IonButtons>
               </IonToolbar>
             </IonHeader>
-            {isPlatform('android') && (
+            {(
               <IonFab vertical="bottom" horizontal="end" slot="fixed">
                 <IonFabButton routerLink="/TambahBarang">
                     <IonIcon size="large"  md={addOutline} ios={addOutline}/>
