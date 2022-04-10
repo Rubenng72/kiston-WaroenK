@@ -37,9 +37,15 @@ const GoodMemories: React.FC = () => {
     :
       <IonButtons className="ion-padding ion-margin">
         <IonText className="ion-text-center">
+<<<<<<< HEAD
           <h5></h5>
           <IonButton color="light" routerLink="">
 
+=======
+          <h5>Anda Masih Solo Player?</h5>
+          <IonButton color="light" routerLink="/DaftarCalonPasangan">
+            Find Partner
+>>>>>>> 9da178cfd6b0466c5d1ae0de19310d8717c6bc09
           </IonButton>
         </IonText>
       </IonButtons>
