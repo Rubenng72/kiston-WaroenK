@@ -4,7 +4,7 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import BarangContextProvider from './data/BarangContextProvider';
-// import { defineCustomElements } from "@ionic/pwa-elements/loader";
+import { defineCustomElements } from "@ionic/pwa-elements/loader";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +14,7 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-// defineCustomElements(window);
+defineCustomElements(window);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
