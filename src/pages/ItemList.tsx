@@ -1,7 +1,8 @@
 import React from "react";
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton, IonLabel, IonSearchbar} from "@ionic/react";
 import { isPlatform} from '@ionic/react';
 import {addOutline} from "ionicons/icons";
+
 
 const ItemList: React.FC = () => {
     return (
@@ -9,18 +10,16 @@ const ItemList: React.FC = () => {
           <IonHeader class="ion-no-border">
             <IonToolbar>
               <IonButtons slot="start" >
+              <IonSearchbar placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"10px"}} />
+              </IonButtons>
+              {/* <IonButtons slot="end" >
                 <IonButton routerLink="#">
                   <IonIcon size="large"  md={addOutline} ios={addOutline}/>
                 </IonButton>
-              </IonButtons>
+              </IonButtons> */}
               <IonButtons slot="end" >
-                <IonButton routerLink="#">
-                  <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-                </IonButton>
-              </IonButtons>
-              <IonButtons slot="end" >
-                <IonButton routerLink="#">
-                  <IonIcon size="large"  md={addOutline} ios={addOutline}/>
+                <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" routerLink="#">
+                  Hapus Semua
                 </IonButton>
               </IonButtons>
             </IonToolbar>
