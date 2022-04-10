@@ -5,6 +5,7 @@ import { Storage } from "@capacitor/storage";
 
 const BarangContextProvider: React.FC = props => {
   const [items, setItems] = useState<Barang[]>([]);
+
   const addItem = (path: string, base64Data: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
     const newItem: Barang = {
       id: Math.random().toString(),
@@ -19,6 +20,16 @@ const BarangContextProvider: React.FC = props => {
     });
   };
 
+  const deleteItem = (id: string) => {
+    for(let i = 0; i < items.length; i++)
+    {
+      if(items[i].id == id)
+      {
+        items.splice(i, 1);
+        break;
+      }
+    }
+  }
   useEffect(() => {
     const storableItems = items.map((item) => {
       return { id: item.id, title: item.title, price: item.price, imagePath: item.imagePath, type: item.type};
@@ -51,7 +62,7 @@ const BarangContextProvider: React.FC = props => {
   }, []);
 
   return(
-    <BarangContext.Provider value={{items, addItem, initContext }}>
+    <BarangContext.Provider value={{items, addItem, deleteItem, initContext }}>
       {props.children}
     </BarangContext.Provider>
   );
