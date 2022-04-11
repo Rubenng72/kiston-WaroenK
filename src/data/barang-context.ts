@@ -14,12 +14,14 @@ const BarangContext = React.createContext<{
   addItem: (path: string, base64url: string, title: string, price:string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => void;
   updateItem: (id: number, path: string, base64url: string, title: string, price:string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => void;
   deleteItem: (id: string) => void;
+  deleteAllItems: () => void;
   initContext: () => void;
 }>({
   items: [],
   addItem: () => {},
   updateItem: () => {},
   deleteItem: () => {},
+  deleteAllItems: () => {},
   initContext: () => {},
 });
 

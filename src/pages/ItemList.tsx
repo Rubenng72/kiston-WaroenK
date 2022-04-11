@@ -3,6 +3,7 @@ import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonConte
 import { isPlatform} from '@ionic/react';
 import {addOutline} from "ionicons/icons";
 import ItemListCard from '../components/ItemList/ItemListCard';
+import HapusSemuabtn from '../components/ItemList/HapusSemua';
 
 const ItemList: React.FC = () => {
     return (
@@ -17,11 +18,7 @@ const ItemList: React.FC = () => {
                   <IonIcon size="large"  md={addOutline} ios={addOutline}/>
                 </IonButton>
               </IonButtons> */}
-              <IonButtons slot="end" >
-                <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" routerLink="#">
-                  Hapus Semua
-                </IonButton>
-              </IonButtons>
+              <HapusSemuabtn />
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>

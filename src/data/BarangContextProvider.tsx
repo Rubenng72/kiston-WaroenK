@@ -20,8 +20,7 @@ const BarangContextProvider: React.FC = props => {
     });
   };
 
-  const updateItem = (id: number, path: string, base64Data: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') =>
-  {
+  const updateItem = (id: number, path: string, base64Data: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
     const item = [...items];
     items[id] = {
       ...items[id],
@@ -31,7 +30,8 @@ const BarangContextProvider: React.FC = props => {
       imagePath: path,
       base64url: base64Data,
     }
-  }
+  };
+
   const deleteItem = (id: string) => {
     for(let i = 0; i < items.length; i++)
     {
@@ -42,6 +42,11 @@ const BarangContextProvider: React.FC = props => {
       }
     }
   }
+
+  const deleteAllItems = () => {
+    items.splice(0, items.length);
+  };
+
   useEffect(() => {
     const storableItems = items.map((item) => {
       return { id: item.id, title: item.title, price: item.price, imagePath: item.imagePath, type: item.type};
@@ -74,7 +79,7 @@ const BarangContextProvider: React.FC = props => {
   }, []);
 
   return(
-    <BarangContext.Provider value={{items, addItem, deleteItem, updateItem, initContext }}>
+    <BarangContext.Provider value={{items, addItem, updateItem, deleteItem, deleteAllItems, initContext }}>
       {props.children}
     </BarangContext.Provider>
   );
