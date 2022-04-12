@@ -1,5 +1,6 @@
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar} from "@ionic/react";
-import {addOutline} from "ionicons/icons";
+import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem} from "@ionic/react";
+import {addOutline, createOutline, trashOutline} from "ionicons/icons";
+import './Home.css'
 
 const Home: React.FC = () => {
     return (
@@ -25,10 +26,10 @@ const Home: React.FC = () => {
           <IonContent fullscreen>
             <IonHeader collapse="condense">
               <IonToolbar>
-
+                
               </IonToolbar>
             </IonHeader>
-
+            
           </IonContent>
         </IonPage>
     );
