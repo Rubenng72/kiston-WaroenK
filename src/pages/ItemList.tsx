@@ -11,7 +11,7 @@ const ItemList: React.FC = () => {
           <IonHeader class="ion-no-border">
             <IonToolbar>
               <IonButtons slot="start" >
-              <IonSearchbar placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"10px"}} />
+              <IonSearchbar id="caribarang" placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"10px"}} />
               </IonButtons>
               {/* <IonButtons slot="end" >
                 <IonButton routerLink="#">

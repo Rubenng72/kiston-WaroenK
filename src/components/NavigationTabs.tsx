@@ -13,7 +13,7 @@ const NavigationTabs: React.FC = () => {
         <Route exact path="/tabs/Home" component={Home} />
         <Route exact path="/tabs/ItemList" component={ItemList} />
       </IonRouterOutlet>
-      <IonTabBar slot="bottom">
+      <IonTabBar color="primary" slot="bottom">
         <IonTabButton tab="Home" href="/tabs/Home">
           <IonIcon icon={homeOutline}/>
           {/*<IonLabel>Home</IonLabel>*/}

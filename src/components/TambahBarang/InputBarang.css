@@ -1,0 +1,38 @@
+/*card box*/
+.card-box {
+  background-color: #DBF8FF;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/*nama barang dan harga barang*/
+.inputtext {
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin: auto;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.inputselection{
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin: 0 0 0 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/*hasil foto*/
+.image-preview{
+    height: 50vw;
+    width: 80vw;
+    margin: 15px auto 5px auto;
+    border-radius: 5%;
+    object-fit: cover;
+    /* object-position: 60% 100%; */
+}
+
+/*tombol kamera*/
+.camera-btn{
+    width: 100%;
+    color: dark;
+}
