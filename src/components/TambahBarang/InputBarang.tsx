@@ -79,7 +79,7 @@ const InputBarang: React.FC = () => {
             </IonRow>
 
             <IonRow className="ion-text-center">
-              <IonButton className="camera-btn" fill = "clear" onClick={takePhotoHandler}>
+              <IonButton color="success" className="camera-btn" fill = "clear" onClick={takePhotoHandler}>
                 <IonIcon slot="start" icon={camera}></IonIcon>
                 <IonLabel>Take Photo</IonLabel>
               </IonButton>

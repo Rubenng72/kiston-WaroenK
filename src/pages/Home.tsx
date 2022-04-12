@@ -8,7 +8,7 @@ const Home: React.FC = () => {
           <IonHeader class="ion-no-border">
             <IonToolbar>
               <IonButtons slot="start" >
-              <IonSearchbar placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"5px"}} />
+              <IonSearchbar id="caribarang" placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"5px"}} />
                 <IonButton routerLink="/tabs/TambahBarang"/>
               </IonButtons>
               {/* <IonButtons slot="end" >

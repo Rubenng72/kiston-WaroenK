@@ -6,12 +6,14 @@ http://ionicframework.com/docs/theming/ */
   --ion-background-color: #6C8BA1;
   --ion-toolbar-background: #B5D0E4;
   --ion-item-background: #ffffff;
+  --ion-tab-bar-color: #000000;
+  --ion-tab-bar-color-selected: #000000;
 
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: #B5D0E4;
   --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
   --ion-color-primary-shade: #3171e0;
   --ion-color-primary-tint: #4c8dff;
 
