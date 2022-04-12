@@ -7,6 +7,7 @@ import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {Directory, Filesystem} from '@capacitor/filesystem';
 import {base64FromPath} from '@ionic/react-hooks/filesystem';
 import BarangContext from '../../data/barang-context';
+import './InputBarang.css';
 
 const InputBarang: React.FC = () => {
     const [takenPhoto, setTakenPhoto] = useState<{
@@ -66,49 +67,47 @@ const InputBarang: React.FC = () => {
     };
 
     return (
-          <IonGrid>
-          <IonRow className="ion-text-center">
-            <IonCol>
-              <div className="image-preview">
-                {!takenPhoto && <h3>Belum Ada Photo</h3>}
-                {takenPhoto && <img src={takenPhoto.preview} alt="Preview"/>}
-              </div>
-              <IonButton fill = "clear" onClick={takePhotoHandler}>
+          <IonGrid className="card-box">
+
+            <IonRow className="ion-text-center">
+              <IonCol>
+                <div >
+                  {!takenPhoto && <h3>Belum Ada Photo</h3>}
+                  {takenPhoto && <img className="image-preview" src={takenPhoto.preview} alt="Preview"/>}
+                </div>
+              </IonCol>
+            </IonRow>
+
+            <IonRow className="ion-text-center">
+              <IonButton className="camera-btn" fill = "clear" onClick={takePhotoHandler}>
                 <IonIcon slot="start" icon={camera}></IonIcon>
                 <IonLabel>Take Photo</IonLabel>
               </IonButton>
-            </IonCol>
-          </IonRow>
-
-            <IonRow className="ion-padding">
-              <IonCol>
-                  <IonLabel>Nama Barang</IonLabel>
-                  <IonInput type="text" ref={titleRef}></IonInput>
-              </IonCol>
-            </IonRow>
-            <IonRow className="ion-padding">
-              <IonCol>
-                  <IonLabel>Harga Barang</IonLabel>
-                  <IonInput type="text" ref={priceRef}></IonInput>
-              </IonCol>
             </IonRow>
 
-            <IonRow>
-              <IonCol>
-                <IonSelect interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
+            <IonRow className="ion-padding">
+                {/* <IonLabel>Nama Barang</IonLabel> */}
+                <IonInput className="inputtext" placeholder="Nama Barang" type="text" ref={titleRef}></IonInput>
+            </IonRow>
+
+            <IonRow className="ion-padding">
+              {/* <IonLabel>Harga Barang</IonLabel> */}
+              <IonInput className="inputtext" placeholder="Harga Barang" type="text" ref={priceRef}></IonInput>
+              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
                   <IonSelectOption value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
                   <IonSelectOption value="kodi">Kodi</IonSelectOption>
                   <IonSelectOption value="gross">Gross</IonSelectOption>
                   <IonSelectOption value="rim">Rim</IonSelectOption>
-                </IonSelect>
-              </IonCol>
+              </IonSelect>
             </IonRow>
+
             <IonRow className="ion-margin-top">
               <IonCol className="ion-text-center">
-                <IonButton onClick={addBarangHandler}>Tambah Barang</IonButton>
+                <IonButton color="success" onClick={addBarangHandler}>Tambah Barang</IonButton>
               </IonCol>
             </IonRow>
+
           </IonGrid>
     );
 };
