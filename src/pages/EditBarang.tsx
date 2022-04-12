@@ -1,6 +1,7 @@
 import React from "react";
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonContent, IonBackButton } from "@ionic/react";
 import {addOutline} from "ionicons/icons";
+import UpdateBarang from '../components/EditBarang/UpdateBarang';
 
 const EditBarang: React.FC = () => {
     return (
@@ -10,7 +11,7 @@ const EditBarang: React.FC = () => {
               <IonButtons slot="start" >
                 <IonBackButton defaultHref="/tabs/ItemList"></IonBackButton>
               </IonButtons>
-              <IonTitle>Tambah Barang</IonTitle>
+              <IonTitle>Edit Barang</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>
@@ -33,7 +34,7 @@ const EditBarang: React.FC = () => {
                 </IonButtons>
               </IonToolbar>
             </IonHeader>
-
+            <UpdateBarang />
           </IonContent>
         </IonPage>
     );

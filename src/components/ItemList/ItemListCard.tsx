@@ -39,7 +39,7 @@ const ItemListCard: React.FC = () => {
               </IonCol>
               <IonCol size="2">
                 <IonButtons >
-                  <IonButton color="warning" routerLink="#" fill ="solid" style={{height:"40px"}}>
+                  <IonButton color="warning" routerLink="/EditBarang" fill ="solid" style={{height:"40px"}}>
                     <IonIcon icon={pencilOutline} slot="icon-only" />
                   </IonButton>
                 </IonButtons>
