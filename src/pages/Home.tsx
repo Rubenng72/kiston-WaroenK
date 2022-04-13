@@ -1,5 +1,5 @@
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput} from "@ionic/react";
-import {createOutline, trashOutline} from "ionicons/icons";
+import {createOutline, text, trashOutline} from "ionicons/icons";
 import './Home.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -47,20 +47,20 @@ const Home: React.FC = () => {
         modules={[Grid, Pagination]}
       >
         {/* {shuffledata.map((data)=>( */}
-          <SwiperSlide>Slide 1
-          {/* <IonItem lines="full" button color='light' style={{marginTop:'10px',marginLeft:'10px',marginRight:'10px'}}>
-            <div style={{display:"flex", height:'120px'}}>
-            <img style={{borderRadius:'100%',marginTop:'10px',marginBottom:'10px', marginRight:'auto',marginLeft:'auto',display:'block'}} src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
+          <SwiperSlide >
+          <IonItem lines="full" button color='primary' style={{marginTop:'10px',marginLeft:'10px',marginRight:'10px',marginBottom:"10px", minWidth:"95%"}}>
+            <div style={{display:"flex"}}>
+            <img style={{borderRadius:'100%',marginTop:'10px',marginBottom:'10px', marginRight:'auto',marginLeft:'auto',display:'block', height:"120px", width:"120px"}} src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
             <div >
             <h6 style={{marginTop:'10px',marginLeft:'10px', fontSize:"12px",fontWeight:'bold', width:'100px'}}>nama item</h6>
             <p style={{marginTop:'5px',marginLeft:'10px' , fontSize:"12px",fontWeight:'bold'}}>jumlah item</p>
-            <p style={{marginTop:'0px',marginLeft:'10px', fontSize:"9px",fontWeight:"lighter"}}>harga item</p>
-            <IonItem>
-            <IonInput></IonInput>
+            <p className="hargacolor" style={{marginTop:'0px',marginLeft:'10px', fontSize:"10px",fontWeight:"bold"}}>harga item</p>
+            <IonItem style={{marginBottom:"5px", marginLeft:"10px",width:"50px"}}>
+            <IonInput maxlength={2} value={0}></IonInput>
             </IonItem>
             </div>
             </div>
-            </IonItem> */}
+            </IonItem>
           </SwiperSlide>
           <SwiperSlide>Slide 2</SwiperSlide>
           <SwiperSlide>Slide 3</SwiperSlide>
@@ -72,28 +72,19 @@ const Home: React.FC = () => {
           <SwiperSlide>Slide 9</SwiperSlide>
 
         {/* ))} */}
+      
+      </Swiper> 
 
-        {/* <SwiperSlide  >
-        </SwiperSlide> */}
-
-        {/* <IonItem lines="full" button color='light' style={{marginTop:'10px',marginLeft:'10px',marginRight:'10px'}}>
-            <div style={{display:"flex", height:'120px'}}>
-            <img style={{borderRadius:'100%',marginTop:'10px',marginBottom:'10px', marginRight:'auto',marginLeft:'auto',display:'block'}} src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
-            <div >
-            <h6 style={{marginTop:'10px',marginLeft:'10px', fontSize:"12px",fontWeight:'bold', width:'100px'}}>nama item</h6>
-            <p style={{marginTop:'5px',marginLeft:'10px' , fontSize:"12px",fontWeight:'bold'}}>jumlah item</p>
-            <p style={{marginTop:'0px',marginLeft:'10px', fontSize:"9px",fontWeight:"lighter"}}>harga item</p>
-            <IonItem>
-            <IonInput></IonInput>
-            </IonItem>
-            </div>
-            </div>
-            </IonItem> */}
-          
-          {/* style={{width:'40px', height:'40px'}} */}
-
-        
-      </Swiper>          
+      <IonCard color="primary">
+      <div style={{display:'flex', height:'50px', marginLeft:"auto", marginRight:'auto', textAlign:'center', marginBottom:"auto",marginTop:"auto"}}>
+      <h6 style={{marginLeft:'10px',marginRight:"5px",marginTop:'10px',paddingTop:"5px", fontSize:"15px", width:"50%",backgroundColor:"black",color:"white",borderRadius:"5px"}}>Total Harga</h6>
+      <h6 style={{marginLeft:'5px',marginRight:"10px",marginTop:'10px',paddingTop:"5px", fontSize:"15px",color:'white', width:"50%",backgroundColor:"green", borderRadius:"5px"}}>Dummy Harga</h6>
+      </div>
+      <div style={{marginLeft:"auto", marginRight:'auto', textAlign:'center', marginBottom:'5px'}}>
+      <IonButton color="light">Lihat Daftar Struk</IonButton>
+      </div>
+      </IonCard>
+               
           </IonContent>
         </IonPage>
     );

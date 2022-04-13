@@ -48,3 +48,11 @@ body {
     --border-radius: 5px;
     padding-bottom: 10px;
 }
+
+.hargacolor{
+  color:var(--ion-color-medium);
+  
+}
+.center{
+  text-align: center;
+}

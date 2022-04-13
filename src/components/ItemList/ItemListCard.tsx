@@ -24,7 +24,7 @@ const ItemListCard: React.FC = () => {
       <IonGrid>
         {barangctx.items.length != 0 ? barangctx.items.map((item) => (
           <IonRow key={item.id}>
-            <IonItem id="item-list" className="ion-no-padding imgbackground" lines="none">
+            <IonItem id="item-list" className="ion-no-padding" lines="none">
               <IonCol size="3">
                   <img src={item.base64url} className="Item" alt={item.title} />
               </IonCol>
