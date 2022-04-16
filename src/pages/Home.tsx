@@ -1,4 +1,4 @@
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow} from "@ionic/react";
 import {createOutline, text, trashOutline} from "ionicons/icons";
 import './Home.css'
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,9 +6,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid} from "swiper";
 import "swiper/css/grid";
+import { useState } from "react";
 
 
 const Home: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
+  
     return (
         <IonPage>
           <IonHeader class="ion-no-border">
@@ -55,8 +58,8 @@ const Home: React.FC = () => {
             <h6 style={{marginTop:'10px',marginLeft:'10px', fontSize:"12px",fontWeight:'bold', width:'100px'}}>nama item</h6>
             <p style={{marginTop:'5px',marginLeft:'10px' , fontSize:"12px",fontWeight:'bold'}}>jumlah item</p>
             <p className="hargacolor" style={{marginTop:'0px',marginLeft:'10px', fontSize:"10px",fontWeight:"bold"}}>harga item</p>
-            <IonItem style={{marginBottom:"5px", marginLeft:"10px",width:"50px"}}>
-            <IonInput maxlength={2} value={0}></IonInput>
+            <IonItem className='input' style={{marginBottom:"5px", marginLeft:"10px",width:"50px", paddingRight:"0"}}>
+            <IonInput maxlength={2} value={0} ></IonInput>
             </IonItem>
             </div>
             </div>
@@ -81,10 +84,18 @@ const Home: React.FC = () => {
       <h6 style={{marginLeft:'5px',marginRight:"10px",marginTop:'10px',paddingTop:"5px", fontSize:"15px",color:'white', width:"50%",backgroundColor:"green", borderRadius:"5px"}}>Dummy Harga</h6>
       </div>
       <div style={{marginLeft:"auto", marginRight:'auto', textAlign:'center', marginBottom:'5px'}}>
-      <IonButton color="light">Lihat Daftar Struk</IonButton>
+      <IonButton onClick={()=>setShowModal(true)} color="light">Lihat Daftar Struk</IonButton>
       </div>
       </IonCard>
                
+      <IonModal
+          isOpen={showModal}
+          initialBreakpoint={0.25}
+          breakpoints={[0, 0.5, 1]}
+          onDidDismiss={() => setShowModal(false)}>
+          <h6 style={{textAlign:"center"}}>Struk Belanja</h6>
+          
+        </IonModal>
           </IonContent>
         </IonPage>
     );
