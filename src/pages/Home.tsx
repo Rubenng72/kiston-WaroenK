@@ -3,7 +3,7 @@ import './Home.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination ,Grid} from "swiper";
+import { Pagination ,Grid, EffectCube} from "swiper";
 import "swiper/css/grid";
 import { useState } from "react";
 import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/icons";
@@ -40,18 +40,20 @@ const Home: React.FC = () => {
             </IonHeader>
             
             <Swiper
-        slidesPerView={1}
-        grid={{
-          rows: 3,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Grid, Pagination]}
+            spaceBetween={1}
+            slidesPerView={1}
+            grid={{
+              rows: 3,
+            }}
+            pagination={{
+              // clickable: true, 
+              dynamicBullets:true
+            }}
+            modules={[ Grid,Pagination]}
       >
         {/* {shuffledata.map((data)=>( */}
-          <SwiperSlide >
-          <IonItem lines="full" button color='primary' style={{marginTop:'10px',marginLeft:'10px',marginRight:'10px',marginBottom:"10px", minWidth:"95%"}}>
+          <SwiperSlide style={{padding:'0', margin:'0'}} >
+          <IonItem lines="none" button color='light' style={{marginLeft:'10px',marginRight:'10px', minWidth:"92%", borderRadius:"10px"}}>
             <div style={{display:"flex"}}>
             <img style={{borderRadius:'100%',marginTop:'10px',marginBottom:'10px', marginRight:'auto',marginLeft:'auto',display:'block', height:"120px", width:"120px"}} src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
             <div >
@@ -65,7 +67,7 @@ const Home: React.FC = () => {
             </div>
             </IonItem>
           </SwiperSlide>
-          <SwiperSlide>Slide 2</SwiperSlide>
+          <SwiperSlide>Slide2</SwiperSlide>
           <SwiperSlide>Slide 3</SwiperSlide>
           <SwiperSlide>Slide 4</SwiperSlide>
           <SwiperSlide>Slide 5</SwiperSlide>
@@ -73,6 +75,8 @@ const Home: React.FC = () => {
           <SwiperSlide>Slide 7</SwiperSlide>
           <SwiperSlide>Slide 8</SwiperSlide>
           <SwiperSlide>Slide 9</SwiperSlide>
+          <SwiperSlide>Slide 10</SwiperSlide>
+          <SwiperSlide>Slide 11</SwiperSlide>
 
         {/* ))} */}
       
@@ -114,24 +118,35 @@ const Home: React.FC = () => {
             <IonCol size="3">
             <img style={{borderRadius:'100%',margin:'auto',display:'block', height:"70px", width:"70px"}} src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
             </IonCol>
-            <IonCol size="6">
-            <h6 style={{marginTop:'10px',marginLeft:'20px', fontSize:"12px",fontWeight:'bold', width:'100px'}}>nama item</h6>
-            <p className="hargacolor" style={{marginTop:'5px',marginLeft:'20px' , fontSize:"12px",fontWeight:'bold'}}>harga satuan item</p>
-            <p className="hargacolor" style={{marginTop:'0px',marginLeft:'20px', fontSize:"10px",fontWeight:"bold"}}>harga item</p>
-            </IonCol>
-            <IonCol size="3">
-              <IonRow className="rightIcon ion-no-padding ion-no-margin">
-                <IonButtons >
-                <IonButton>
-                  <IonIcon color="danger" icon={closeCircleOutline}/>
-                </IonButton>
-              </IonButtons>
+            <IonCol size="9">
+              <IonRow>
+                <IonCol className="rowpadding" size="10">
+                <h6 style={{position:'absolute',margin:"0",top:"10px",bottom:"0" ,fontSize:"12px",fontWeight:'bold', width:'100px'}}>nama item</h6>
+                </IonCol>
+                <IonCol  size="2">
+                  <IonButtons style={{margin:"0"}} className="rightIcon ion-no-padding ion-no-margin">
+                  <IonButton >
+                    <IonIcon color="danger" icon={closeCircleOutline}/>
+                  </IonButton>
+                </IonButtons>
+                </IonCol>
               </IonRow>
               <IonRow>
-              <p style={{width:"100px", fontSize:"10px",fontWeight:"bold"}}>... pcs/lusin</p>
+                <IonCol size="9"  className="rowpadding">
+                <p className="hargacolor" style={{position:'absolute',margin:"0",fontSize:"12px",fontWeight:'bold',bottom:"10px",}}>harga satuan item</p>
+                </IonCol>
+                <IonCol size="3" className="rowpadding">
+                <p style={{width:"100px", fontSize:"12px",fontWeight:"bold", margin:'0'}}>... pcs/lusin</p>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size="9" className="rowpadding">
+                <p className="hargacolor" style={{margin:"0", fontSize:"12px",fontWeight:"bold", bottom:"0", position:"absolute"}}>harga item</p>
+                </IonCol>
+                <IonCol size="3" >
+                </IonCol>
               </IonRow>
             </IonCol>
-            
             </IonItem>
             
           </IonContent>
