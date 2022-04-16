@@ -60,3 +60,40 @@ body {
 .input{
   --inner-padding-end:0;
 }
+
+.left {
+  float: left;
+  text-align: center;
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+} 
+
+ .right {
+  float: right;
+  right: 0;
+  text-align: center;
+  padding: 5px;
+  padding-bottom: 10px;
+}
+
+.rightIcon{
+  right: 0;
+
+  top: 0;
+}
+
+.bottomCard{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-radius: 30px 30px 0px 0px;
+}
+
+.modalContent::part(scroll){
+  padding-bottom: 110px;
+}
+
+/* .ion-justify-content-around{
+  justify-content: space-around;
+} */
