@@ -1,4 +1,4 @@
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonFooter, IonInfiniteScroll, IonInfiniteScrollContent, IonText, IonTitle, IonLabel, IonCardSubtitle, IonAvatar, IonCardTitle} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonFooter, IonInfiniteScroll, IonInfiniteScrollContent, IonText, IonTitle, IonLabel, IonCardSubtitle, IonAvatar, IonCardTitle, IonImg} from "@ionic/react";
 import './Home.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -63,7 +63,8 @@ const Home: React.FC = () => {
                 <SwiperSlide style={{padding:'0', margin:'0'}} >
                   <IonRow className="card-slider center">
                     <IonCol size="5">
-                      <img className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
+                      <IonImg className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
+                        
                     </IonCol>
                     <IonCol size="7">
                       <IonCardTitle style={{textAlign:"left"}}>Indomie Goreng</IonCardTitle>
