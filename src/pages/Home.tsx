@@ -3,7 +3,7 @@ import './Home.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination ,Grid, EffectCube} from "swiper";
+import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useState } from "react";
 import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/icons";
@@ -40,16 +40,24 @@ const Home: React.FC = () => {
             </IonHeader>
             
             <Swiper
+            effect={"coverflow"}
             spaceBetween={1}
             slidesPerView={1}
             grid={{
               rows: 3,
             }}
+            coverflowEffect={{
+              rotate: 50,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }}
             pagination={{
               // clickable: true, 
               dynamicBullets:true
             }}
-            modules={[ Grid,Pagination]}
+            modules={[ Grid,Pagination,EffectCoverflow]}
       >
         {/* {shuffledata.map((data)=>( */}
           <SwiperSlide style={{padding:'0', margin:'0'}} >
