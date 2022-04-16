@@ -64,7 +64,6 @@ const Home: React.FC = () => {
                   <IonRow className="card-slider center">
                     <IonCol size="5">
                       <IonImg className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
-                        
                     </IonCol>
                     <IonCol size="7">
                       <IonCardTitle style={{textAlign:"left"}}>Indomie Goreng</IonCardTitle>
