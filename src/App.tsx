@@ -51,7 +51,7 @@ const App: React.FC = () => {
             <Route path="/Home" component={Home}/>
             <Route path="/ItemList" component={ItemList}/>
             <Route path="/TambahBarang" component={TambahBarang}/>
-            <Route path="/EditBarang" component={EditBarang}/>
+            <Route path="/EditBarang/:itemId" component={EditBarang}/>
             <Redirect exact from="/" to="/tabs" />
             </IonRouterOutlet>
           </BarangContextProvider>

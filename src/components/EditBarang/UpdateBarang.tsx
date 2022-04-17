@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useRef, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput} from "@ionic/react";
 import {camera} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -14,18 +14,20 @@ const UpdateBarang: React.FC = () => {
       path: string | undefined;
       preview: string;
     }>();
+    const [selectedItem, setSelectedItem] = useState<{id: string, imagePath: string, base64url: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'}>();
     const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
     const titleRef = useRef<HTMLIonInputElement>(null);
     const priceRef = useRef<HTMLIonInputElement>(null);
     const barangctx = useContext(BarangContext);
     const history = useHistory();
+   
 
     const selectSatuanhandler = (event: CustomEvent) => {
       const selectedSatuan = event.detail.value;
       setChosenSatuan(selectedSatuan);
     }
 
-    const addBarangHandler = async () =>{
+    const editBarangHandler = async () =>{
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
       if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || enteredPrice.toString().trim().length === 0 || !takenPhoto || !chosenSatuan){
@@ -66,6 +68,14 @@ const UpdateBarang: React.FC = () => {
         });
     };
 
+    const itemId = useParams<{itemId: string}>().itemId;
+    
+    useEffect(() => {
+      const item = barangctx.items.find(i => i.id === itemId);
+      
+      setSelectedItem(item);
+    }, [itemId]);
+
     return (
           <IonGrid className="card-box">
 
@@ -87,12 +97,12 @@ const UpdateBarang: React.FC = () => {
 
             <IonRow className="ion-padding">
                 {/* <IonLabel>Nama Barang</IonLabel> */}
-                <IonInput className="inputtext" placeholder="Nama Barang" type="text" ref={titleRef}></IonInput>
+                <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={selectedItem?.title} ref={titleRef}></IonInput>
             </IonRow>
 
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
-              <IonInput className="inputtext" placeholder="Harga Barang" type="text" ref={priceRef}></IonInput>
+              <IonInput className="inputtext" placeholder="Harga Barang" type="text" value={selectedItem?.price} ref={priceRef}></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
                   <IonSelectOption value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
@@ -104,7 +114,7 @@ const UpdateBarang: React.FC = () => {
 
             <IonRow className="ion-margin-top">
               <IonCol className="ion-text-center">
-                <IonButton color="success" onClick={addBarangHandler}>Edit Barang</IonButton>
+                <IonButton color="success" onClick={editBarangHandler}>Edit Barang</IonButton>
               </IonCol>
             </IonRow>
 

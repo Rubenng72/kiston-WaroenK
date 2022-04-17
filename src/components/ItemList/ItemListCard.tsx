@@ -19,6 +19,10 @@ const ItemListCard: React.FC = () => {
       setId(id);
     }
 
+    const editHandler = (id: string, imagePath: string, base64url: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
+      barangctx.updateItem(id, imagePath, base64url, title, price, type);
+    }
+
 
     return (
       <IonGrid>
@@ -39,7 +43,7 @@ const ItemListCard: React.FC = () => {
               </IonCol>
               <IonCol size="2">
                 <IonButtons >
-                  <IonButton color="warning" routerLink="/EditBarang" fill ="solid" style={{height:"40px"}}>
+                  <IonButton color="warning" routerLink={`/EditBarang/${item.id}`} style={{height:"40px"}}>
                     <IonIcon icon={pencilOutline} slot="icon-only" />
                   </IonButton>
                 </IonButtons>

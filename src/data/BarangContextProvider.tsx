@@ -20,17 +20,30 @@ const BarangContextProvider: React.FC = props => {
     });
   };
 
-  const updateItem = (id: number, path: string, base64Data: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
-    const item = [...items];
-    items[id] = {
-      ...items[id],
-      title,
-      price,
-      type,
-      imagePath: path,
-      base64url: base64Data,
-    }
-  };
+  // const updateItem = (id: number, path: string, base64Data: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
+  //   const item = [...items];
+  //   items[id] = {
+  //     ...items[id],
+  //     title,
+  //     price,
+  //     type,
+  //     imagePath: path,
+  //     base64url: base64Data,
+  //   }
+  // };
+
+  const updateItem = (id: string, imagePath: string, base64url: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
+    const update: Barang = {id, imagePath, base64url, title, price, type}
+    const updateIndex = items.findIndex(i => i.id === id)
+
+    setItems(curItems => {
+      curItems[updateIndex] = update
+
+      return curItems
+    })
+
+  }
+
 
   const deleteItem = (id: string) => {
     for(let i = 0; i < items.length; i++)
