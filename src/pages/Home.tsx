@@ -139,20 +139,21 @@ const Home: React.FC = () => {
               onDidDismiss={() => setShowModal(false)}
               className="modal-box"
               >
-                <h1 className="center text-bold">Struk Belanja</h1>
+                <IonItem className="handle-bar"></IonItem>
+                <h3 className="center text-bold">Struk Belanja</h3>
                 <IonGrid className="ion-no-padding ion-no-margin" style={{maxHeight:"35px"}}>
                   <IonRow>
                     <IonCol size="8">
                       <IonTitle className="total-barang text-bold">Total Barang: 07</IonTitle>
                     </IonCol>
                     <IonCol size="4">
-                      <IonButton fill="clear" color="dark">Hapus Semua</IonButton>
+                      <IonButton fill="clear" color="medium" className="text-bold">Hapus Semua</IonButton>
                     </IonCol>
                   </IonRow>
                 </IonGrid>
                 <IonContent scrollEvents={true} className="modalContent">
 
-                  <IonItem lines="none" color='primary' className="card-modal">
+                  <IonItem lines="none" className="card-modal">
                     <IonCol size="3">
                       <img className="img-modal center" src="assets/foto/beefTesting.jpg" />
                     </IonCol>
@@ -175,7 +176,7 @@ const Home: React.FC = () => {
                     </IonCol>
                   </IonItem>
 
-                  <IonItem lines="none" color='primary' className="card-modal">
+                  <IonItem lines="none" className="card-modal">
                     <IonCol size="3">
                       <img className="img-modal center" src="assets/foto/beefTesting.jpg" />
                     </IonCol>
@@ -198,7 +199,7 @@ const Home: React.FC = () => {
                     </IonCol>
                   </IonItem>
 
-                  <IonItem lines="none" color='primary' className="card-modal">
+                  <IonItem lines="none" className="card-modal">
                     <IonCol size="3">
                       <img className="img-modal center" src="assets/foto/beefTesting.jpg" />
                     </IonCol>
