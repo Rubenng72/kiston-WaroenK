@@ -59,33 +59,6 @@ body {
   padding-bottom: 10px;
 }
 
-.center{
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-}
-
-.left {
-  float: left;
-  text-align: center;
-  width: 150px;
-  padding: 10px;
-  font-weight: bold;
-} 
-
- .right {
-  float: right;
-  right: 0;
-  text-align: center;
-  padding: 5px;
-  padding-bottom: 10px;
-}
-
-.rightIcon{
-  right: 0;
-  top: 0;
-}
-
 .bottomCard{
   position: absolute;
   bottom: 0;
@@ -97,11 +70,16 @@ body {
   padding-bottom: 110px;
 }
 
-.rowpadding{
-  padding: 0;
+/* Serba serbi center (tengah) */
+.center{
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
-
-
+/* Cuma bold text doang */
+.text-bold{
+  font-weight: bold;
+}
 
 
 
@@ -179,4 +157,42 @@ body {
   /* atas(kiri kanan) bawah(kanan kiri) */
   --border-radius: 25px 25px 0 0;
   --height: calc(100% - (var(--ion-safe-area-top) + 100px));
+}
+
+/* Total Barang di Modal Box */
+.total-barang{
+  right: 0;
+  padding: 10px;
+  font-size: medium;
+}
+
+/* Card Barang di Modal Box */
+.card-modal{
+  margin: 10px;
+  border-radius: 5px;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+/* Image di Modal Box */
+.img-modal{
+  width: 70px;
+  height: 70px;
+  border-radius: 100% !important;
+  object-fit: cover;
+  margin: auto;
+  display: block;
+}
+
+/* Button tong sampah */
+.trash-can{
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+
+/* Satuan Jumlah Barang (pcs/lusin) */
+.satuan-jumlah{
+  font-size: 14px;
+  font-weight: bold;
 }

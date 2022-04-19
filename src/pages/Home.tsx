@@ -79,7 +79,7 @@ const Home: React.FC = () => {
                 <SwiperSlide>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
-                      <img className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
+                      <img className="img-slider" src="assets/foto/beefTesting.jpg"/>
                     </IonCol>
                     <IonCol size="7">
                       <IonCardTitle style={{textAlign:"left"}}>Indomie Goreng</IonCardTitle>
@@ -138,59 +138,42 @@ const Home: React.FC = () => {
               onDidDismiss={() => setShowModal(false)}
               className="modal-box"
               >
-                <h1 className="ion-no-padding" style={{textAlign:"center", fontWeight:"bold"}}>Struk Belanja</h1>
+                <h1 className="center text-bold">Struk Belanja</h1>
                 <IonGrid className="ion-no-padding ion-no-margin" style={{maxHeight:"35px"}}>
                   <IonRow>
-                    <IonCol>
-                      <div className="left">Total Barang : .....</div>
+                    <IonCol size="8">
+                      <IonTitle className="total-barang text-bold">Total Barang: 07</IonTitle>
                     </IonCol>
-                    <IonCol>
-                      <IonButtons className="right">
-                        <IonButton color="dark">
-                        Hapus Semua
-                        </IonButton>
-                      </IonButtons>
+                    <IonCol size="4">
+                      <IonButton fill="clear" color="dark">Hapus Semua</IonButton>
                     </IonCol>
                   </IonRow>
                 </IonGrid>
                 <IonContent scrollEvents={true} className="modalContent">
-                  <IonItem lines="full" button color='primary' style={{marginTop:'10px',marginLeft:'10px',marginRight:'10px',marginBottom:"10px", borderRadius:'5px', paddingRight:"0"}}>
-                    
+
+                  <IonItem lines="none" button color='primary' className="card-modal">
                     <IonCol size="3">
-                    <img style={{borderRadius:'100%',margin:'auto',display:'block', height:"70px", width:"70px"}} src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
+                      <img className="img-modal center" src="assets/foto/beefTesting.jpg" />
                     </IonCol>
                     <IonCol size="9">
                       <IonRow>
-                        <IonCol className="rowpadding" size="10">
-                        <h6 style={{position:'absolute',margin:"0",top:"10px",bottom:"0" ,fontSize:"12px",fontWeight:'bold', width:'100px'}}>nama item</h6>
+                        <IonCol size="8">
+                          <IonText>Indomie Goleng</IonText>
+                          <IonCardSubtitle>Rp. 94.500,00</IonCardSubtitle>
+                          <IonCardSubtitle>Rp. 189.000,00</IonCardSubtitle>
                         </IonCol>
-                        <IonCol  size="2">
-                          <IonButtons style={{margin:"0"}} className="rightIcon ion-no-padding ion-no-margin">
-                          <IonButton >
-                            <IonIcon color="danger" icon={closeCircleOutline}/>
+                        <IonCol size="4">
+                          <IonCol>
+                            <IonTitle class="satuan-jumlah">2 Lusin</IonTitle>
+                          </IonCol>
+                          <IonButton className="trash-can" fill="clear">
+                            <IonIcon color="danger" icon={trashOutline}/>
                           </IonButton>
-                        </IonButtons>
-                        </IonCol>
-                      </IonRow>
-
-                      <IonRow>
-                        <IonCol size="9"  className="rowpadding">
-                        <p className="hargacolor" style={{position:'absolute',margin:"0",fontSize:"12px",fontWeight:'bold',bottom:"10px",}}>harga satuan item</p>
-                        </IonCol>
-                        <IonCol size="3" className="rowpadding">
-                        <p style={{width:"100px", fontSize:"12px",fontWeight:"bold", margin:'0'}}>... pcs/lusin</p>
-                        </IonCol>
-                      </IonRow>
-
-                      <IonRow>
-                        <IonCol size="9" className="rowpadding">
-                        <p className="hargacolor" style={{margin:"0", fontSize:"12px",fontWeight:"bold", bottom:"0", position:"absolute"}}>harga item</p>
-                        </IonCol>
-                        <IonCol size="3" >
                         </IonCol>
                       </IonRow>
                     </IonCol>
                   </IonItem>
+
                 </IonContent>
 
                 <IonCard color="primary" className="bottomCard ion-no-margin">
