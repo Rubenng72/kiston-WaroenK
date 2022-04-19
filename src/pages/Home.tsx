@@ -1,5 +1,6 @@
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonFooter, IonInfiniteScroll, IonInfiniteScrollContent, IonText, IonTitle, IonLabel, IonCardSubtitle, IonAvatar, IonCardTitle, IonImg} from "@ionic/react";
 import './Home.css'
+import './HomeModal.css'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -60,7 +61,7 @@ const Home: React.FC = () => {
               modules={[ Grid,Pagination,EffectCoverflow]}>
 
               {/* {shuffledata.map((data)=>( */}
-                <SwiperSlide style={{padding:'0', margin:'0'}} >
+                <SwiperSlide>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
                       <IonImg className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
@@ -92,7 +93,7 @@ const Home: React.FC = () => {
                   </IonRow>
                 </SwiperSlide>
 
-                <SwiperSlide>
+                <SwiperSlide> 
                   <IonRow className="card-slider center">
                     <IonCol size="5">
                       <img className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
@@ -119,7 +120,7 @@ const Home: React.FC = () => {
               {/* ))} */}
             </Swiper>
 
-            <IonCard className="card-default" color="primary">
+            <IonCard className="card-th-dh-lds" color="primary">
               <IonRow className="center">
                 <IonCol size="5.5" className="label-TH">Total Harga</IonCol>
                 <IonCol size="5.5" className="label-DH">Dummy Harga</IonCol>
@@ -151,7 +152,7 @@ const Home: React.FC = () => {
                 </IonGrid>
                 <IonContent scrollEvents={true} className="modalContent">
 
-                  <IonItem lines="none" button color='primary' className="card-modal">
+                  <IonItem lines="none" color='primary' className="card-modal">
                     <IonCol size="3">
                       <img className="img-modal center" src="assets/foto/beefTesting.jpg" />
                     </IonCol>
@@ -174,16 +175,64 @@ const Home: React.FC = () => {
                     </IonCol>
                   </IonItem>
 
+                  <IonItem lines="none" color='primary' className="card-modal">
+                    <IonCol size="3">
+                      <img className="img-modal center" src="assets/foto/beefTesting.jpg" />
+                    </IonCol>
+                    <IonCol size="9">
+                      <IonRow>
+                        <IonCol size="8">
+                          <IonText>Indomie Goleng</IonText>
+                          <IonCardSubtitle>Rp. 500.000,00</IonCardSubtitle>
+                          <IonCardSubtitle>Rp.100.000.000,00</IonCardSubtitle>
+                        </IonCol>
+                        <IonCol size="4">
+                          <IonCol>
+                            <IonTitle class="satuan-jumlah">15 Rim</IonTitle>
+                          </IonCol>
+                          <IonButton className="trash-can" fill="clear">
+                            <IonIcon color="danger" icon={trashOutline}/>
+                          </IonButton>
+                        </IonCol>
+                      </IonRow>
+                    </IonCol>
+                  </IonItem>
+
+                  <IonItem lines="none" color='primary' className="card-modal">
+                    <IonCol size="3">
+                      <img className="img-modal center" src="assets/foto/beefTesting.jpg" />
+                    </IonCol>
+                    <IonCol size="9">
+                      <IonRow>
+                        <IonCol size="8">
+                          <IonText>Indomie Goleng</IonText>
+                          <IonCardSubtitle>Rp. 2.500,00</IonCardSubtitle>
+                          <IonCardSubtitle>Rp. 10.000,00</IonCardSubtitle>
+                        </IonCol>
+                        <IonCol size="4">
+                          <IonCol>
+                            <IonTitle class="satuan-jumlah">4 Pcs</IonTitle>
+                          </IonCol>
+                          <IonButton className="trash-can" fill="clear">
+                            <IonIcon color="danger" icon={trashOutline}/>
+                          </IonButton>
+                        </IonCol>
+                      </IonRow>
+                    </IonCol>
+                  </IonItem>
+
                 </IonContent>
 
-                <IonCard color="primary" className="bottomCard ion-no-margin">
-                  <div style={{display:'flex', height:'50px', marginLeft:"auto", marginRight:'auto', textAlign:'center', marginBottom:"auto",marginTop:"auto"}}>
-                    <h6 style={{marginLeft:'10px',marginRight:"5px",marginTop:'10px',paddingTop:"5px", fontSize:"15px", width:"50%",backgroundColor:"black",color:"white",borderRadius:"5px"}}>Total Harga</h6>
-                    <h6 style={{marginLeft:'5px',marginRight:"10px",marginTop:'10px',paddingTop:"5px", fontSize:"15px",color:'white', width:"50%",backgroundColor:"green", borderRadius:"5px"}}>Dummy Harga</h6>
-                  </div>
-                  <div style={{marginLeft:"auto", marginRight:'auto', textAlign:'center', marginBottom:'5px'}}>
-                    <h6 style={{marginLeft:'10px',marginRight:"10px",marginTop:'10px',paddingTop:"10px",paddingBottom:"10px", fontSize:"15px",color:'black', borderRadius:"5px",backgroundColor:"white", textAlign:"center"}}>Dummy Tanggal</h6>
-                  </div>
+                <IonCard color="primary" className="card-th-dh-lds-modal ion-no-margin">
+                  <IonRow className="center">
+                    <IonCol size="5.5" className="label-TH">Total Harga</IonCol>
+                    <IonCol size="5.5" className="label-DH">Dummy Harga</IonCol>
+                  </IonRow>
+                  <IonRow className="center">
+                    <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}> 
+                    Tanggal: 01/01/2022
+                    </IonCol>
+                  </IonRow>
                 </IonCard>
 
             </IonModal>

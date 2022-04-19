@@ -1,0 +1,59 @@
+.modalContent::part(scroll){
+    padding-bottom: 110px;
+}
+
+/* Modal Box Daftar Sturk */
+.modal-box{
+    /* atas(kiri kanan) bawah(kanan kiri) */
+    --border-radius: 25px 25px 0 0;
+    --height: calc(100% - (var(--ion-safe-area-top) + 100px));
+}
+  
+/* Total Barang di Modal Box */
+.total-barang{
+    right: 0;
+    padding: 10px;
+    font-size: medium;
+}
+  
+/* Card Barang di Modal Box */
+.card-modal{
+    margin: 10px;
+    border-radius: 5px;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+}
+  
+/* Image di Modal Box */
+.img-modal{
+    width: 70px;
+    height: 70px;
+    border-radius: 100% !important;
+    object-fit: cover;
+    margin: auto;
+    display: block;
+}
+  
+/* Button tong sampah */
+.trash-can{
+    position: absolute;
+    right: -10px;
+    top: -10px;
+}
+  
+/* Satuan Jumlah Barang (pcs/lusin) */
+.satuan-jumlah{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Card Modal Box
+  - Total Harga (TH)  
+  - Dummy Harga (DH)
+  - Lihat Daftar Struk (LDS) */
+.card-th-dh-lds-modal{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-radius: 15px 15px 0px 0px ;
+}
