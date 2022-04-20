@@ -5,7 +5,7 @@ http://ionicframework.com/docs/theming/ */
 :root {
   --ion-background-color: #6C8BA1;
   --ion-toolbar-background: #B5D0E4;
-  --ion-item-background: #ffffff;
+  --ion-item-background: #B5D0E4;
   --ion-tab-bar-color: #000000;
   --ion-tab-bar-color-selected: #000000;
 

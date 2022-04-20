@@ -68,6 +68,7 @@ body {
 }
 /* Cuma bold text doang */
 .text-bold{
+  margin: 0;
   font-weight: bold;
 }
 
@@ -106,7 +107,7 @@ body {
 }
 
 /* Card Box
-  - Total Harga (TH)  
+  - Total Harga (TH)
   - Dummy Harga (DH)
   - Lihat Daftar Struk (LDS) */
 .card-th-dh-lds{
@@ -139,4 +140,3 @@ body {
   border-radius: 5px;
   text-align: center;
 }
-

@@ -94,7 +94,7 @@ const InputBarang: React.FC = () => {
               {/* <IonLabel>Harga Barang</IonLabel> */}
               <IonInput className="inputtext" placeholder="Harga Barang" type="text" ref={priceRef}></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
-                  <IonSelectOption value="pcs">Pcs</IonSelectOption>
+                  <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
                   <IonSelectOption value="kodi">Kodi</IonSelectOption>
                   <IonSelectOption value="gross">Gross</IonSelectOption>

@@ -36,3 +36,11 @@
     width: 100%;
     color: dark;
 }
+
+.list-md{
+  background: white;
+  padding:0;
+}
+.select-interface-option{
+  --background: white;
+}

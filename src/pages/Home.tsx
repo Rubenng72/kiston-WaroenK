@@ -12,7 +12,7 @@ import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/ic
 
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-  
+
     return (
         <IonPage>
           <IonHeader class="ion-no-border">
@@ -36,10 +36,10 @@ const Home: React.FC = () => {
           <IonContent fullscreen>
             <IonHeader collapse="condense">
               <IonToolbar>
-                
+
               </IonToolbar>
             </IonHeader>
-            
+
             <Swiper
               effect={"coverflow"}
               spaceBetween={1}
@@ -55,7 +55,7 @@ const Home: React.FC = () => {
                 slideShadows: true,
               }}
               pagination={{
-                // clickable: true, 
+                // clickable: true,
                 dynamicBullets:true
               }}
               modules={[ Grid,Pagination,EffectCoverflow]}>
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
                     </IonCol>
                   </IonRow>
                 </SwiperSlide>
-                
+
                 <SwiperSlide>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
@@ -93,7 +93,7 @@ const Home: React.FC = () => {
                   </IonRow>
                 </SwiperSlide>
 
-                <SwiperSlide> 
+                <SwiperSlide>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
                       <img className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
@@ -126,12 +126,12 @@ const Home: React.FC = () => {
                 <IonCol size="5.5" className="label-DH">Dummy Harga</IonCol>
               </IonRow>
               <IonRow className="center">
-                <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}> 
+                <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}>
                 Lihat Daftar Struk
                 </IonCol>
               </IonRow>
             </IonCard>
-               
+
             <IonModal
               isOpen={showModal}
               initialBreakpoint={0.25}
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
               onDidDismiss={() => setShowModal(false)}
               className="modal-box"
               >
-                <IonItem className="handle-bar"></IonItem>
+                <IonItem lines="none"></IonItem>
                 <h3 className="center text-bold">Struk Belanja</h3>
                 <IonGrid className="ion-no-padding ion-no-margin" style={{maxHeight:"35px"}}>
                   <IonRow>
@@ -230,7 +230,7 @@ const Home: React.FC = () => {
                     <IonCol size="5.5" className="label-DH">Dummy Harga</IonCol>
                   </IonRow>
                   <IonRow className="center">
-                    <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}> 
+                    <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}>
                     Tanggal: 01/01/2022
                     </IonCol>
                   </IonRow>
