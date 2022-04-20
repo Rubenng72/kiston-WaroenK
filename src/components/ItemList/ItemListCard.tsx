@@ -67,6 +67,7 @@ const ItemListCard: React.FC = () => {
         </IonButtons>
         }
         {ids && <IonActionSheet
+            cssClass = 'IASBackground'
             isOpen={actionSheet}
             onDidDismiss={() => setShowActionSheet(false)}
             header="Hapus barang?"

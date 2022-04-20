@@ -1,8 +1,10 @@
 .Item{
-    padding-top: 10%;    
+    padding-top: 10%;
 }
 .hargacolor{
     color:var(--ion-color-medium);
-    
 }
 
+.IASBackground{
+  --background: white;
+}
