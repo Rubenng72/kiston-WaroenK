@@ -16,7 +16,7 @@ const Home: React.FC = () => {
     return (
         <IonPage>
           <IonHeader class="ion-no-border">
-            <IonToolbar>
+            <IonToolbar color="none">
               <IonButtons slot="start" >
               <IonSearchbar id="caribarang" placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"5px"}} />
                 <IonButton routerLink="/tabs/TambahBarang"/>

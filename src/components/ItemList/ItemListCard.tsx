@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext, useState } from "react";
-import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonItem, IonButtons, IonButton, IonActionSheet} from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonItem, IonButtons, IonButton, IonActionSheet, IonCard} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
 import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
@@ -27,36 +27,36 @@ const ItemListCard: React.FC = () => {
     return (
       <IonGrid>
         {barangctx.items.length != 0 ? barangctx.items.map((item) => (
-          <IonRow key={item.id}>
-            <IonItem id="item-list" className="ion-no-padding" lines="none">
-              <IonCol size="3">
-                  <img src={item.base64url} className="Item" alt={item.title} />
-              </IonCol>
-              <IonCol size="5">
-                <IonCardContent className="ion-text-left" id="content-list">
-                  <IonText>
-                    <h2>{item.title}</h2>
-                    <h2>1 {item.type}</h2>
-                    <p className="hargacolor">{item.price}</p>
-                  </IonText>
-                </IonCardContent>
-              </IonCol>
-              <IonCol size="2">
-                <IonButtons >
-                  <IonButton color="warning" routerLink={`/EditBarang/${item.id}`} style={{height:"40px"}}>
-                    <IonIcon icon={pencilOutline} slot="icon-only" />
-                  </IonButton>
-                </IonButtons>
-              </IonCol>
-              <IonCol size="2">
-                <IonButtons>
-                  <IonButton color="danger" onClick={() => sheetHandler(item.id)} fill ="solid" style={{height:"40px"}}>
-                    <IonIcon icon={trashOutline} slot="icon-only" />
-                  </IonButton>
-                </IonButtons>
-              </IonCol>
-            </IonItem>
-        </IonRow>))
+          <IonCard id="item-list" className="ion-no-margin" key={item.id}>
+            <IonRow>
+          <IonCol size="3" className="ion-no-margin">
+          <img src={item.base64url} className="Item-img" alt={item.title} />
+          </IonCol>
+          <IonCol size="5">
+            <IonCardContent className="ion-text-left ion-no-padding " id="content-list" >
+              <IonText>
+                <h2>{item.title}</h2>
+                <h2>1 {item.type}</h2>
+                <p className="hargacolor">{item.price}</p>
+              </IonText>
+            </IonCardContent>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton routerLink={`/EditBarang/${item.id}`} fill ="solid" className="icon" >
+                <IonIcon icon={pencilOutline} slot="icon-only" size="large"/>
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton color="danger" onClick={() => sheetHandler (item.id)}  fill ="solid" className="icon">
+                <IonIcon icon={trashOutline} slot="icon-only"size="large" />
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          </IonRow>
+        </IonCard>))
         :
         <IonButtons className="ion-padding ion-margin">
           <IonText className="ion-text-center">
