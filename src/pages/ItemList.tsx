@@ -13,7 +13,7 @@ const ItemList: React.FC = () => {
               <IonButtons slot="start" >
               <IonSearchbar id="caribarang" placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"10px"}} />
               </IonButtons>
-              <HapusSemuabtn />
+              <HapusSemuabtn/>
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>
