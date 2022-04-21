@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useContext} from "react";
-import { IonButtons, IonButton, IonGrid, IonActionSheet, IonToolbar} from '@ionic/react';
+import { IonButtons, IonButton, IonGrid, IonActionSheet, IonToolbar, IonLoading} from '@ionic/react';
 import BarangContext from '../../data/barang-context';
 import { checkmarkOutline, closeOutline } from "ionicons/icons";
 
@@ -11,6 +11,7 @@ const HapusSemua: React.FC = () => {
     const deleteAll = () => {
       console.log("delete all function");
       barangctx.deleteAllItems();
+      window.location.assign("/tabs/ItemList");
     }
     const sheetHandler = () => {
       setShowActionSheet(true);
@@ -24,7 +25,6 @@ const HapusSemua: React.FC = () => {
           Hapus Semua
         </IonButton>
       </IonButtons>
-
       { <IonActionSheet 
             cssClass = 'IASBackground'
             isOpen={actionSheet}
