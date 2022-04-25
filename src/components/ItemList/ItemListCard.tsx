@@ -19,11 +19,6 @@ const ItemListCard: React.FC = () => {
       setId(id);
     }
 
-    const editHandler = (id: string, imagePath: string, base64url: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
-      barangctx.updateItem(id, imagePath, base64url, title, price, type);
-    }
-
-
     return (
       <IonGrid>
         {barangctx.items.length != 0 ? barangctx.items.map((item) => (

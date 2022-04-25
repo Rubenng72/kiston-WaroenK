@@ -72,7 +72,6 @@ const UpdateBarang: React.FC = () => {
     
     useEffect(() => {
       const item = barangctx.items.find(i => i.id === itemId);
-      
       setSelectedItem(item);
     }, [itemId]);
 
@@ -103,7 +102,7 @@ const UpdateBarang: React.FC = () => {
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
               <IonInput className="inputtext" placeholder="Harga Barang" type="text" value={selectedItem?.price} ref={priceRef}></IonInput>
-              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
+              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={selectedItem?.type}>
                   <IonSelectOption value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
                   <IonSelectOption value="kodi">Kodi</IonSelectOption>
