@@ -81,7 +81,7 @@ const UpdateBarang: React.FC = () => {
             <IonRow className="ion-text-center">
               <IonCol>
                 <div >
-                  {!takenPhoto && <h3>Belum Ada Photo</h3>}
+                  {!takenPhoto && <img className="image-preview" src={selectedItem?.base64url} alt="Preview"/>}
                   {takenPhoto && <img className="image-preview" src={takenPhoto.preview} alt="Preview"/>}
                 </div>
               </IonCol>
