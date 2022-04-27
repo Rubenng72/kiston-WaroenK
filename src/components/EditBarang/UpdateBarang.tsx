@@ -30,20 +30,26 @@ const UpdateBarang: React.FC = () => {
     const editBarangHandler = async () =>{
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
-      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || enteredPrice.toString().trim().length === 0 || !takenPhoto || !chosenSatuan){
+      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || enteredPrice.toString().trim().length === 0 || !chosenSatuan){
         console.log('sad');
         return;
       }
 
-      const fileName = new Date().getTime() + '.jpeg';
-      const base64 = await base64FromPath(takenPhoto!.preview);
-      await Filesystem.writeFile({
-        path: fileName,
-        data: base64,
-        directory: Directory.Data
-      });
+      if(takenPhoto != null){
+        const fileName = new Date().getTime() + '.jpeg';
+        const base64 = await base64FromPath(takenPhoto!.preview);
+        await Filesystem.writeFile({
+          path: fileName,
+          data: base64,
+          directory: Directory.Data
+        });
 
-      barangctx.addItem(fileName, base64, enteredTitle.toString(), enteredPrice.toString(),chosenSatuan);
+        barangctx.updateItem(itemId, fileName, base64, enteredTitle.toString(), enteredPrice.toString(),chosenSatuan);
+      }else {
+        barangctx.updateItem(itemId, selectedItem?.imagePath!, selectedItem?.base64url!, enteredTitle.toString(), enteredPrice.toString(), chosenSatuan);
+      }
+      
+      
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
@@ -102,7 +108,7 @@ const UpdateBarang: React.FC = () => {
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
               <IonInput className="inputtext" placeholder="Harga Barang" type="text" value={selectedItem?.price} ref={priceRef}></IonInput>
-              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={selectedItem?.type}>
+              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
                   <IonSelectOption value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
                   <IonSelectOption value="kodi">Kodi</IonSelectOption>
