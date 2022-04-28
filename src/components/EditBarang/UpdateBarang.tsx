@@ -30,20 +30,34 @@ const UpdateBarang: React.FC = () => {
     const editBarangHandler = async () =>{
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
+<<<<<<< HEAD
       if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
+=======
+      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || enteredPrice.toString().trim().length === 0 || !chosenSatuan){
+>>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
         console.log('sad');
         return;
       }
 
-      const fileName = new Date().getTime() + '.jpeg';
-      const base64 = await base64FromPath(takenPhoto!.preview);
-      await Filesystem.writeFile({
-        path: fileName,
-        data: base64,
-        directory: Directory.Data
-      });
+      if(takenPhoto != null){
+        const fileName = new Date().getTime() + '.jpeg';
+        const base64 = await base64FromPath(takenPhoto!.preview);
+        await Filesystem.writeFile({
+          path: fileName,
+          data: base64,
+          directory: Directory.Data
+        });
 
+<<<<<<< HEAD
       barangctx.addItem(fileName, base64, enteredTitle.toString(), Number(enteredPrice), chosenSatuan);
+=======
+        barangctx.updateItem(itemId, fileName, base64, enteredTitle.toString(), enteredPrice.toString(),chosenSatuan);
+      }else {
+        barangctx.updateItem(itemId, selectedItem?.imagePath!, selectedItem?.base64url!, enteredTitle.toString(), enteredPrice.toString(), chosenSatuan);
+      }
+      
+      
+>>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
@@ -75,13 +89,23 @@ const UpdateBarang: React.FC = () => {
       setSelectedItem(item);
     }, [itemId]);
 
+    useEffect(() => {
+      setChosenSatuan(selectedItem?.type!);
+    }, [selectedItem])
+
+
+    
     return (
           <IonGrid className="card-box">
 
             <IonRow className="ion-text-center">
               <IonCol>
                 <div >
+<<<<<<< HEAD
                   {!takenPhoto && <img className="image-preview" src={selectedItem?.base64url}/>}
+=======
+                  {!takenPhoto && <img className="image-preview" src={selectedItem?.base64url} alt="Preview"/>}
+>>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
                   {takenPhoto && <img className="image-preview" src={takenPhoto.preview} alt="Preview"/>}
                 </div>
               </IonCol>
@@ -98,11 +122,16 @@ const UpdateBarang: React.FC = () => {
                 {/* <IonLabel>Nama Barang</IonLabel> */}
                 <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={selectedItem?.title} ref={titleRef}></IonInput>
             </IonRow>
-
+              
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
+<<<<<<< HEAD
               <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={selectedItem?.price} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={selectedItem?.type}>
+=======
+              <IonInput className="inputtext" placeholder="Harga Barang" type="text" value={selectedItem?.price} ref={priceRef}></IonInput>
+              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
+>>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
                   <IonSelectOption value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
                   <IonSelectOption value="kodi">Kodi</IonSelectOption>
