@@ -81,6 +81,12 @@ const UpdateBarang: React.FC = () => {
       setSelectedItem(item);
     }, [itemId]);
 
+    useEffect(() => {
+      setChosenSatuan(selectedItem?.type!);
+    }, [selectedItem])
+
+
+    
     return (
           <IonGrid className="card-box">
 
@@ -104,7 +110,7 @@ const UpdateBarang: React.FC = () => {
                 {/* <IonLabel>Nama Barang</IonLabel> */}
                 <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={selectedItem?.title} ref={titleRef}></IonInput>
             </IonRow>
-
+              
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
               <IonInput className="inputtext" placeholder="Harga Barang" type="text" value={selectedItem?.price} ref={priceRef}></IonInput>
