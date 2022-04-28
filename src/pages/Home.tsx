@@ -9,16 +9,11 @@ import "swiper/css/grid";
 import { useContext, useState } from "react";
 import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/icons";
 import BarangContext from '../data/barang-context';
-<<<<<<< HEAD
-=======
-
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
 
 const Home: React.FC = () => {
   const barangctx = useContext(BarangContext);
   const [ids, setId] = useState<string>();
   const [showModal, setShowModal] = useState(false);
-<<<<<<< HEAD
   const [TotalHarga, setTotalHarga] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
 
@@ -27,9 +22,6 @@ const Home: React.FC = () => {
     setTotalHarga(quantity * price);
     setQuantity(quantity);
   }
-=======
-  const barangctx = useContext(BarangContext);
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
 
     return (
         <IonPage>
@@ -78,56 +70,8 @@ const Home: React.FC = () => {
               }}
               modules={[ Grid,Pagination,EffectCoverflow]}>
 
-<<<<<<< HEAD
               {barangctx.items.length != 0 ? barangctx.items.map((item)=>(
                 <SwiperSlide key={item.id}>
-=======
-              {/* {shuffledata.map((data)=>( */}
-              {barangctx.items.length != 0 ? barangctx.items.map((item) => (
-                <SwiperSlide>
-                  <IonRow className="card-slider center">
-                    <IonCol size="5">
-                      <IonImg className="img-slider" src={item.base64url} alt={item.imagePath}/>
-                    </IonCol>
-                    <IonCol size="7">
-                      <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>1 {item.type}</IonCardSubtitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
-                      <IonRow className="jumlah-item">
-                        <IonInput id="home" maxlength={2} value={0}></IonInput>
-                      </IonRow>
-                    </IonCol>
-                  </IonRow>
-                </SwiperSlide>
-                ))
-              :
-                <SwiperSlide>
-                   <IonText className="ion-text-center">
-                    <h5>Tidak Ada Barang</h5>
-                  </IonText>
-                </SwiperSlide>
-
-              }
-                
-
-                {/* <SwiperSlide>
-                  <IonRow className="card-slider center">
-                    <IonCol size="5">
-                      <img className="img-slider" src="assets/foto/beefTesting.jpg"/>
-                    </IonCol>
-                    <IonCol size="7">
-                      <IonCardTitle style={{textAlign:"left"}}>Indomie Goreng</IonCardTitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>(1 pcs)</IonCardSubtitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. 2.500,00</IonCardSubtitle>
-                      <IonRow className="jumlah-item">
-                        <IonInput id="home" maxlength={2} value={0}></IonInput>
-                      </IonRow>
-                    </IonCol>
-                  </IonRow>
-                </SwiperSlide>
-
-                <SwiperSlide>
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
                   <IonRow className="card-slider center">
                     <IonCol size="5">
                       <IonImg className="img-slider" src={item.base64url} alt={item.title}/>
@@ -142,7 +86,6 @@ const Home: React.FC = () => {
                     </IonCol>
                   </IonRow>
                 </SwiperSlide>
-<<<<<<< HEAD
                ))
              :
              <SwiperSlide>
@@ -156,18 +99,6 @@ const Home: React.FC = () => {
              </IonButtons>
              </SwiperSlide>
            }
-=======
-
-                <SwiperSlide>Slide 4</SwiperSlide>
-                <SwiperSlide>Slide 5</SwiperSlide>
-                <SwiperSlide>Slide 6</SwiperSlide>
-                <SwiperSlide>Slide 7</SwiperSlide>
-                <SwiperSlide>Slide 8</SwiperSlide>
-                <SwiperSlide>Slide 9</SwiperSlide>
-                <SwiperSlide>Slide 10</SwiperSlide>
-                <SwiperSlide>Slide 11</SwiperSlide> */}
-              {/* ))} */}
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
             </Swiper>
 
             <IonCard className="card-th-dh-lds" color="primary">

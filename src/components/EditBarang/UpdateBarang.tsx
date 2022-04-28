@@ -10,144 +10,118 @@ import BarangContext from '../../data/barang-context';
 import './UpdateBarang.css';
 
 const UpdateBarang: React.FC = () => {
-    const [takenPhoto, setTakenPhoto] = useState<{
-      path: string | undefined;
-      preview: string;
-    }>();
-    const [selectedItem, setSelectedItem] = useState<{id: string, imagePath: string, base64url: string, title: string, price: number, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'}>();
-    const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
-    const titleRef = useRef<HTMLIonInputElement>(null);
-    const priceRef = useRef<HTMLIonInputElement>(null);
-    const barangctx = useContext(BarangContext);
-    const history = useHistory();
+  const [takenPhoto, setTakenPhoto] = useState<{
+    path: string | undefined;
+    preview: string;
+  }>();
+  const [selectedItem, setSelectedItem] = useState<{id: string, imagePath: string, base64url: string, title: string, price: number, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'}>();
+  const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
+  const titleRef = useRef<HTMLIonInputElement>(null);
+  const priceRef = useRef<HTMLIonInputElement>(null);
+  const barangctx = useContext(BarangContext);
+  const history = useHistory();
+  const selectSatuanhandler = (event: CustomEvent) => {
+    const selectedSatuan = event.detail.value;
+    setChosenSatuan(selectedSatuan);
+  }
 
-
-    const selectSatuanhandler = (event: CustomEvent) => {
-      const selectedSatuan = event.detail.value;
-      setChosenSatuan(selectedSatuan);
+  const editBarangHandler = async () =>{
+    const enteredTitle = titleRef.current?.value;
+    const enteredPrice = priceRef.current?.value;
+    if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
+      console.log('sad');
+      return;
     }
 
-    const editBarangHandler = async () =>{
-      const enteredTitle = titleRef.current?.value;
-      const enteredPrice = priceRef.current?.value;
-<<<<<<< HEAD
-      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
-=======
-      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || enteredPrice.toString().trim().length === 0 || !chosenSatuan){
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
-        console.log('sad');
-        return;
-      }
-
-      if(takenPhoto != null){
-        const fileName = new Date().getTime() + '.jpeg';
-        const base64 = await base64FromPath(takenPhoto!.preview);
-        await Filesystem.writeFile({
-          path: fileName,
-          data: base64,
-          directory: Directory.Data
-        });
-
-<<<<<<< HEAD
+    if(takenPhoto != null){
+      const fileName = new Date().getTime() + '.jpeg';
+      const base64 = await base64FromPath(takenPhoto!.preview);
+      await Filesystem.writeFile({
+        path: fileName,
+        data: base64,
+        directory: Directory.Data
+      });
       barangctx.addItem(fileName, base64, enteredTitle.toString(), Number(enteredPrice), chosenSatuan);
-=======
-        barangctx.updateItem(itemId, fileName, base64, enteredTitle.toString(), enteredPrice.toString(),chosenSatuan);
-      }else {
-        barangctx.updateItem(itemId, selectedItem?.imagePath!, selectedItem?.base64url!, enteredTitle.toString(), enteredPrice.toString(), chosenSatuan);
-      }
-      
-      
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
+  }
+  
+  const takePhotoHandler = async () => {
+    const photo = await Camera.getPhoto({
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera,
+      quality: 80,
+      width: 500
+    });
+    console.log(photo);
 
-    const takePhotoHandler = async () => {
-      const photo = await Camera.getPhoto({
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Camera,
-        quality: 80,
-        width: 500
-      });
-      console.log(photo);
+    if(!photo || /* !photo.path || */ !photo.webPath)
+    {
+      return;
+    }
 
-      if(!photo || /* !photo.path || */ !photo.webPath)
+    setTakenPhoto(
       {
-        return;
-      }
+        path: photo.path,
+        preview: photo.webPath
+      });
+  };
 
-      setTakenPhoto(
-        {
-          path: photo.path,
-          preview: photo.webPath
-        });
-    };
+  const itemId = useParams<{itemId: string}>().itemId;
 
-    const itemId = useParams<{itemId: string}>().itemId;
+  useEffect(() => {
+    const item = barangctx.items.find(i => i.id === itemId);
+    setSelectedItem(item);
+  }, [itemId]);
 
-    useEffect(() => {
-      const item = barangctx.items.find(i => i.id === itemId);
-      setSelectedItem(item);
-    }, [itemId]);
+  useEffect(() => {
+    setChosenSatuan(selectedItem?.type!);
+  }, [selectedItem])
 
-    useEffect(() => {
-      setChosenSatuan(selectedItem?.type!);
-    }, [selectedItem])
+  return (
+        <IonGrid className="card-box">
 
+          <IonRow className="ion-text-center">
+            <IonCol>
+              <div >
+                {!takenPhoto && <img className="image-preview" src={selectedItem?.base64url}/>}
+                {takenPhoto && <img className="image-preview" src={takenPhoto.preview} alt="Preview"/>}
+              </div>
+            </IonCol>
+          </IonRow>
 
-    
-    return (
-          <IonGrid className="card-box">
+          <IonRow className="ion-text-center">
+            <IonButton color="success" className="camera-btn" fill = "clear" onClick={takePhotoHandler}>
+              <IonIcon slot="start" icon={camera}></IonIcon>
+              <IonLabel>Take Photo</IonLabel>
+            </IonButton>
+          </IonRow>
 
-            <IonRow className="ion-text-center">
-              <IonCol>
-                <div >
-<<<<<<< HEAD
-                  {!takenPhoto && <img className="image-preview" src={selectedItem?.base64url}/>}
-=======
-                  {!takenPhoto && <img className="image-preview" src={selectedItem?.base64url} alt="Preview"/>}
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
-                  {takenPhoto && <img className="image-preview" src={takenPhoto.preview} alt="Preview"/>}
-                </div>
-              </IonCol>
-            </IonRow>
+          <IonRow className="ion-padding">
+              {/* <IonLabel>Nama Barang</IonLabel> */}
+              <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={selectedItem?.title} ref={titleRef}></IonInput>
+          </IonRow>
 
-            <IonRow className="ion-text-center">
-              <IonButton color="success" className="camera-btn" fill = "clear" onClick={takePhotoHandler}>
-                <IonIcon slot="start" icon={camera}></IonIcon>
-                <IonLabel>Take Photo</IonLabel>
-              </IonButton>
-            </IonRow>
+          <IonRow className="ion-padding">
+            {/* <IonLabel>Harga Barang</IonLabel> */}
+            <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={selectedItem?.price} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
+            <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={selectedItem?.type}>
+                <IonSelectOption value="pcs">Pcs</IonSelectOption>
+                <IonSelectOption value="lusin">Lusin</IonSelectOption>
+                <IonSelectOption value="kodi">Kodi</IonSelectOption>
+                <IonSelectOption value="gross">Gross</IonSelectOption>
+                <IonSelectOption value="rim">Rim</IonSelectOption>
+            </IonSelect>
+          </IonRow>
 
-            <IonRow className="ion-padding">
-                {/* <IonLabel>Nama Barang</IonLabel> */}
-                <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={selectedItem?.title} ref={titleRef}></IonInput>
-            </IonRow>
-              
-            <IonRow className="ion-padding">
-              {/* <IonLabel>Harga Barang</IonLabel> */}
-<<<<<<< HEAD
-              <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={selectedItem?.price} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
-              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={selectedItem?.type}>
-=======
-              <IonInput className="inputtext" placeholder="Harga Barang" type="text" value={selectedItem?.price} ref={priceRef}></IonInput>
-              <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
->>>>>>> 3619fc6e11b46286b685150e28a0c376a1d272b0
-                  <IonSelectOption value="pcs">Pcs</IonSelectOption>
-                  <IonSelectOption value="lusin">Lusin</IonSelectOption>
-                  <IonSelectOption value="kodi">Kodi</IonSelectOption>
-                  <IonSelectOption value="gross">Gross</IonSelectOption>
-                  <IonSelectOption value="rim">Rim</IonSelectOption>
-              </IonSelect>
-            </IonRow>
+          <IonRow className="ion-margin-top">
+            <IonCol className="ion-text-center">
+              <IonButton color="success" onClick={editBarangHandler}>Edit Barang</IonButton>
+            </IonCol>
+          </IonRow>
 
-            <IonRow className="ion-margin-top">
-              <IonCol className="ion-text-center">
-                <IonButton color="success" onClick={editBarangHandler}>Edit Barang</IonButton>
-              </IonCol>
-            </IonRow>
-
-          </IonGrid>
-    );
+        </IonGrid>
+  );
 };
 
 export default UpdateBarang;
