@@ -55,8 +55,8 @@ const ItemListCard: React.FC = () => {
         :
         <IonButtons className="ion-padding ion-margin">
           <IonText className="ion-text-center">
-            <h5></h5>
-            <IonButton color="light" routerLink="">
+            <IonButton color="light" routerLink="/TambahBarang">
+            <h5>Tambah barang</h5>
             </IonButton>
           </IonText>
         </IonButtons>

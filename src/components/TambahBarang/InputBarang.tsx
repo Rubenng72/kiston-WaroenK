@@ -28,7 +28,7 @@ const InputBarang: React.FC = () => {
     const addBarangHandler = async () =>{
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
-      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || enteredPrice.toString().trim().length === 0 || !takenPhoto || !chosenSatuan){
+      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
         console.log('sad');
         return;
       }
@@ -41,7 +41,7 @@ const InputBarang: React.FC = () => {
         directory: Directory.Data
       });
 
-      barangctx.addItem(fileName, base64, enteredTitle.toString(), enteredPrice.toString(),chosenSatuan);
+      barangctx.addItem(fileName, base64, enteredTitle.toString(), Number(enteredPrice), chosenSatuan);
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
@@ -92,7 +92,7 @@ const InputBarang: React.FC = () => {
 
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
-              <IonInput className="inputtext" placeholder="Harga Barang" type="text" ref={priceRef}></IonInput>
+              <IonInput className="inputtext" placeholder="Harga Barang" type={"number"} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
                   <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>

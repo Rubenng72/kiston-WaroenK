@@ -14,13 +14,13 @@ const UpdateBarang: React.FC = () => {
       path: string | undefined;
       preview: string;
     }>();
-    const [selectedItem, setSelectedItem] = useState<{id: string, imagePath: string, base64url: string, title: string, price: string, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'}>();
+    const [selectedItem, setSelectedItem] = useState<{id: string, imagePath: string, base64url: string, title: string, price: number, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'}>();
     const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
     const titleRef = useRef<HTMLIonInputElement>(null);
     const priceRef = useRef<HTMLIonInputElement>(null);
     const barangctx = useContext(BarangContext);
     const history = useHistory();
-   
+
 
     const selectSatuanhandler = (event: CustomEvent) => {
       const selectedSatuan = event.detail.value;
@@ -30,7 +30,7 @@ const UpdateBarang: React.FC = () => {
     const editBarangHandler = async () =>{
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
-      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || enteredPrice.toString().trim().length === 0 || !takenPhoto || !chosenSatuan){
+      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
         console.log('sad');
         return;
       }
@@ -43,7 +43,7 @@ const UpdateBarang: React.FC = () => {
         directory: Directory.Data
       });
 
-      barangctx.addItem(fileName, base64, enteredTitle.toString(), enteredPrice.toString(),chosenSatuan);
+      barangctx.addItem(fileName, base64, enteredTitle.toString(), Number(enteredPrice), chosenSatuan);
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
@@ -69,7 +69,7 @@ const UpdateBarang: React.FC = () => {
     };
 
     const itemId = useParams<{itemId: string}>().itemId;
-    
+
     useEffect(() => {
       const item = barangctx.items.find(i => i.id === itemId);
       setSelectedItem(item);
@@ -81,7 +81,7 @@ const UpdateBarang: React.FC = () => {
             <IonRow className="ion-text-center">
               <IonCol>
                 <div >
-                  {!takenPhoto && <h3>Belum Ada Photo</h3>}
+                  {!takenPhoto && <img className="image-preview" src={selectedItem?.base64url}/>}
                   {takenPhoto && <img className="image-preview" src={takenPhoto.preview} alt="Preview"/>}
                 </div>
               </IonCol>
@@ -101,7 +101,7 @@ const UpdateBarang: React.FC = () => {
 
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
-              <IonInput className="inputtext" placeholder="Harga Barang" type="text" value={selectedItem?.price} ref={priceRef}></IonInput>
+              <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={selectedItem?.price} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={selectedItem?.type}>
                   <IonSelectOption value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
