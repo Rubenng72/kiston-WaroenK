@@ -12,15 +12,28 @@ import BarangContext from '../data/barang-context';
 
 const Home: React.FC = () => {
   const barangctx = useContext(BarangContext);
-  const [ids, setId] = useState<string>();
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
-  const [quantity, setQuantity] = useState<number>(0);
+  let calculation = 0;
+  let price = 0;
 
+  const inputHandler = (id: string, quantity: number) => {
+      barangctx.items.forEach((value) => {
+        if(value.id == id){
+          if(quantity != 0)
+          {
+            calculation += (quantity * value.price);
+          }
+          else
+          {
+            calculation = 0;
+          }
+        }
+      });
 
-  const inputHandler = (price: number, quantity: number) => {
-    setTotalHarga(quantity * price);
-    setQuantity(quantity);
+      setTotalHarga(calculation);
+      console.log(calculation);
+
   }
 
     return (
@@ -81,7 +94,7 @@ const Home: React.FC = () => {
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput id="home" maxlength={2} value={quantity} type={"number"} onIonChange={quantity => inputHandler(item.price, Number(quantity.detail.value))}></IonInput>
+                        <IonInput id="home" maxlength={2} onIonChange={quantity => inputHandler(item.id, Number(quantity.detail.value))}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>
