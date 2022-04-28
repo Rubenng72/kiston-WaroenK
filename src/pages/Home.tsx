@@ -6,12 +6,14 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/icons";
+import BarangContext from '../data/barang-context';
 
 
 const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const barangctx = useContext(BarangContext);
 
     return (
         <IonPage>
@@ -61,23 +63,34 @@ const Home: React.FC = () => {
               modules={[ Grid,Pagination,EffectCoverflow]}>
 
               {/* {shuffledata.map((data)=>( */}
+              {barangctx.items.length != 0 ? barangctx.items.map((item) => (
                 <SwiperSlide>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
-                      <IonImg className="img-slider" src="assets/foto/beefTesting.jpg" alt="yoast seo"/>
+                      <IonImg className="img-slider" src={item.base64url} alt={item.imagePath}/>
                     </IonCol>
                     <IonCol size="7">
-                      <IonCardTitle style={{textAlign:"left"}}>Indomie Goreng</IonCardTitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>(1 pcs)</IonCardSubtitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. 2.500,00</IonCardSubtitle>
+                      <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
+                      <IonCardSubtitle style={{textAlign:"left"}}>1 {item.type}</IonCardSubtitle>
+                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
                         <IonInput id="home" maxlength={2} value={0}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>
                 </SwiperSlide>
-
+                ))
+              :
                 <SwiperSlide>
+                   <IonText className="ion-text-center">
+                    <h5>Tidak Ada Barang</h5>
+                  </IonText>
+                </SwiperSlide>
+
+              }
+                
+
+                {/* <SwiperSlide>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
                       <img className="img-slider" src="assets/foto/beefTesting.jpg"/>
@@ -116,7 +129,7 @@ const Home: React.FC = () => {
                 <SwiperSlide>Slide 8</SwiperSlide>
                 <SwiperSlide>Slide 9</SwiperSlide>
                 <SwiperSlide>Slide 10</SwiperSlide>
-                <SwiperSlide>Slide 11</SwiperSlide>
+                <SwiperSlide>Slide 11</SwiperSlide> */}
               {/* ))} */}
             </Swiper>
 
