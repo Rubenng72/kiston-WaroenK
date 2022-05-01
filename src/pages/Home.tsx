@@ -6,11 +6,14 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/icons";
 import BarangContext from '../data/barang-context';
+import Splash from "../components/SplashScreen/Splash";
 
 const Home: React.FC = () => {
+
+  const [mostrarSplash, setMostrarSplash] = useState(false);
   const barangctx = useContext(BarangContext);
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
@@ -55,8 +58,21 @@ const Home: React.FC = () => {
     }
   }
 
+    //splashscreen
+    useEffect(() =>{
+      setMostrarSplash(true);
+      setTimeout(()=>{
+          setMostrarSplash(false);
+      }, 2000)
+    }, [])
+
     return (
         <IonPage>
+  
+        {
+        mostrarSplash? <Splash />: null
+        }
+
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >
