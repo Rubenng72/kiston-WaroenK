@@ -3,6 +3,8 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useContext, useEffect } from 'react';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import ItemList from './pages/ItemList';
 import TambahBarang from './pages/TambahBarang';
 import EditBarang from './pages/EditBarang';
@@ -29,6 +31,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import "./firebaseConfig";
+
 
 setupIonicReact();
 
@@ -40,22 +44,22 @@ const App: React.FC = () => {
   useEffect(() => {
     initContext();
   }, [initContext]);
-  
+
   return(
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet>
           <BarangContextProvider>
             <IonRouterOutlet id="main">
             <Route path="/tabs" component={NavTabs}/>
             <Route path="/Home" component={Home}/>
+            <Route path="/Login" component={Login}/>
+            <Route path="/Register" component={Register}/>
             <Route path="/ItemList" component={ItemList}/>
             <Route path="/TambahBarang" component={TambahBarang}/>
             <Route path="/EditBarang/:itemId" component={EditBarang}/>
             <Redirect exact from="/" to="/tabs" />
             </IonRouterOutlet>
           </BarangContextProvider>
-        </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
   )

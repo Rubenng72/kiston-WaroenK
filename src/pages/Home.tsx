@@ -1,4 +1,4 @@
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonFooter, IonInfiniteScroll, IonInfiniteScrollContent, IonText, IonTitle, IonLabel, IonCardSubtitle, IonAvatar, IonCardTitle, IonImg} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonText, IonTitle, IonLabel, IonCardSubtitle, IonCardTitle, IonImg} from "@ionic/react";
 import './Home.css'
 import './HomeModal.css'
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -36,13 +36,32 @@ const Home: React.FC = () => {
 
   }
 
+  const signinhandler = () =>
+  {
+    const tf = 1;
+    if(1){
+      return(<IonButtons slot="end" >
+        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="primary" routerLink="/login">
+          Login/Register
+        </IonButton>
+      </IonButtons>)
+    }
+    else{
+      return(<IonButtons slot="end" >
+        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={()=>console.log()}>
+          Logout
+        </IonButton>
+      </IonButtons>)
+    }
+  }
+
     return (
         <IonPage>
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >
               <IonSearchbar id="caribarang" placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"5px"}} />
-                <IonButton routerLink="/tabs/TambahBarang"/>
+                <IonButton routerLink="#"/>
               </IonButtons>
               {/* <IonButtons slot="end" >
                 <IonButton routerLink="/tabs/TambahBarang">
@@ -50,10 +69,13 @@ const Home: React.FC = () => {
                 </IonButton> */}
               {/* </IonButtons> */}
               <IonButtons slot="end" >
-                <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="danger" routerLink="/tabs/TambahBarang">
+                <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="danger" routerLink="#">
                   Reset
                 </IonButton>
               </IonButtons>
+              {signinhandler}
+
+
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>
@@ -129,7 +151,7 @@ const Home: React.FC = () => {
             <IonModal
               isOpen={showModal}
               initialBreakpoint={0.25}
-              breakpoints={[0, 0.5, 1]}
+              breakpoints={[0, 0.25, 0.5, 1]}
               onDidDismiss={() => setShowModal(false)}
               className="modal-box"
               >
