@@ -13,19 +13,20 @@ const ForgotPassword: React.FC = () => {
 
     return (
       <IonPage>
-        <IonToolbar color="none">
+        <IonToolbar>
           <IonButtons slot="start" >
             <IonBackButton defaultHref="/"></IonBackButton>
           </IonButtons>
           <IonTitle>Forgot Password</IonTitle>
         </IonToolbar>
         <IonContent>
-          <IonGrid>
+          <IonGrid className="card-box">
             <IonRow className="ion-padding">
                 <IonLabel className="ion-padding">Email</IonLabel>
                 <IonInput className="inputtext" placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
             </IonRow>
             <IonRow className="ion-padding">
+              <IonCol className="center">
               <IonButton
                 id="g-button"
                 color="light"
@@ -34,6 +35,7 @@ const ForgotPassword: React.FC = () => {
                 >
                 <IonLabel>send</IonLabel>
               </IonButton>
+              </IonCol>
             </IonRow>
           </IonGrid>
 

@@ -25,40 +25,68 @@ const Register: React.FC = () => {
     }
     return (
         <IonPage>
-          <IonToolbar color="none">
+          <IonToolbar>
             <IonButtons slot="start" >
               <IonBackButton defaultHref="/"></IonBackButton>
             </IonButtons>
             <IonTitle>Register</IonTitle>
           </IonToolbar>
           <IonContent>
-            <IonGrid>
-              <IonRow className="ion-padding">
-                  <IonLabel className="ion-padding">Email</IonLabel>
-                  <IonInput className="inputtext" placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
+            <IonGrid className="card-box">
+
+              <IonRow className="ion-padding"  style={{paddingBottom: 0, paddingTop: 0}}>
+                <IonCol>
+                  <IonRow className="ion-padding" style={{paddingBottom: 0}}>
+                    <IonLabel >Email</IonLabel>
+                  </IonRow>
+                  <IonRow className="ion-padding" style={{paddingBottom: 0}}>
+                    <IonInput className="inputtext" placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
+                  </IonRow>
+                </IonCol>
               </IonRow>
-              <IonRow className="ion-padding">
-                  <IonLabel className="ion-padding">Password</IonLabel>
-                  <IonInput className="inputtext" placeholder="Password" type="password" minlength={6} onIonChange={(e: any) => setPassword(e.target.value)}></IonInput>
+
+              <IonRow className="ion-padding"  style={{paddingTop: 0, paddingBottom:0}}>
+                <IonCol>
+                  <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
+                    <IonLabel>Password</IonLabel>
+                  </IonRow>
+                  <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
+                    <IonInput className="inputtext" placeholder="Password" type="password" minlength={6} onIonChange={(e: any) => setPassword(e.target.value)}></IonInput>
+                  </IonRow>
+                </IonCol>
               </IonRow>
-              <IonRow className="ion-padding">
-                  <IonLabel className="ion-padding">Confirm Password</IonLabel>
-                  <IonInput className="inputtext" placeholder="Confirm" type="password" onIonChange={(e: any) => setConfimPassword(e.target.value)}></IonInput>
+
+              <IonRow className="ion-padding" style={{paddingTop: 0}}>
+                <IonCol>
+                  <IonRow>
+                    <IonLabel className="ion-padding" style={{paddingBottom: 0}}>Confirm Password</IonLabel>
+                  </IonRow>
+                  <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
+                    <IonInput className="inputtext" placeholder="Confirm" type="password" onIonChange={(e: any) => setConfimPassword(e.target.value)}></IonInput>
+                  </IonRow>
+                </IonCol>
               </IonRow>
+              
+              <IonRow className="ion-padding" style={{paddingTop: 0}}>
+                <IonCol className="center">
+                  <IonButton
+                    id="g-button"
+                    color="light"
+                    shape="round"
+                    onClick={uRegister}
+                    >
+                    <IonLabel>Register</IonLabel>
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+
               <IonRow className="ion-padding">
-                <IonButton
-                  id="g-button"
-                  color="light"
-                  shape="round"
-                  onClick={uRegister}
-                  >
-                  <IonLabel>Register</IonLabel>
-                </IonButton>
+                <IonLabel>Already have an Account?</IonLabel>
+                <Link to="/Login"><IonLabel color="warning">Login</IonLabel></Link>
               </IonRow>
             </IonGrid>
-            <IonLabel>Already have an Account?</IonLabel>
-            <Link to="/Login"><IonLabel color="warning">Login</IonLabel></Link>
-            <IonLabel>OR</IonLabel>
+            
+            {/* <IonLabel>OR</IonLabel>
             <IonButton
               id="g-button"
               color="light"
@@ -67,9 +95,7 @@ const Register: React.FC = () => {
               >
               <IonIcon class="ion-margin-end" icon={logoGoogle} />
               <IonLabel>Continue With Google</IonLabel>
-            </IonButton>
-
-
+            </IonButton> */}
           </IonContent>
 
         </IonPage>
