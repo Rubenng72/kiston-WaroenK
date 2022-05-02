@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput} from "@ionic/react";
-import {camera} from "ionicons/icons";
+import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput, IonToast, IonAlert, IonActionSheet} from "@ionic/react";
+import {camera, checkmarkOutline, closeOutline} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {collection, addDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
@@ -26,10 +26,16 @@ const InputBarang: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File>();
     const [fileName, setFileName] = useState('');
     const history = useHistory();
+    const [actionSheet, setShowActionSheet] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
 
     const selectSatuanhandler = (event: CustomEvent) => {
       const selectedSatuan = event.detail.value;
       setChosenSatuan(selectedSatuan);
+    }
+
+    const sheetHandler = () => {
+      setShowActionSheet(true);
     }
 
     const addData = async(url: string, uId: string|null, title: string, price: number) =>{
@@ -50,6 +56,7 @@ const InputBarang: React.FC = () => {
     }
 
     const addBarangHandler = async () =>{
+      setToastMessage('Barang berhasil ditambahkan!');
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
       if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
@@ -99,7 +106,7 @@ const InputBarang: React.FC = () => {
           preview: photo.webPath
         });
     };
-
+ 
     return (
           <IonGrid className="card-box">
 
@@ -138,10 +145,31 @@ const InputBarang: React.FC = () => {
 
             <IonRow className="ion-margin-top">
               <IonCol className="ion-text-center">
-                <IonButton color="success" onClick={addBarangHandler}>Tambah Barang</IonButton>
+                <IonButton color="success" onClick={sheetHandler}>Tambah Barang</IonButton>
               </IonCol>
             </IonRow>
 
+            <IonToast isOpen={!!toastMessage}
+                      message={toastMessage}
+                      duration={2000}
+                      onDidDismiss={() => {setToastMessage('')}}/>
+
+            {<IonActionSheet
+            cssClass = 'IASBackground'
+            isOpen={actionSheet}
+            onDidDismiss={() => setShowActionSheet(false)}
+            header="Tambahkan Barang?"
+            buttons={[{
+                icon: checkmarkOutline,
+                text: "Iya, Tambahkan Barang",
+                handler: () => addBarangHandler(),
+              },
+              {
+                icon: closeOutline,
+                text: "Tidak",
+              }
+            ]}/>
+          }
           </IonGrid>
     );
 };

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useState, useRef, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput} from "@ionic/react";
-import {camera} from "ionicons/icons";
+import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput, IonToast, IonAlert, IonActionSheet} from "@ionic/react";
+import {camera, checkmarkOutline, closeOutline} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {Directory, Filesystem} from '@capacitor/filesystem';
 import {base64FromPath} from '@ionic/react-hooks/filesystem';
@@ -20,9 +20,16 @@ const UpdateBarang: React.FC = () => {
   const priceRef = useRef<HTMLIonInputElement>(null);
   const barangctx = useContext(BarangContext);
   const history = useHistory();
+  const [actionSheet, setShowActionSheet] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
   const selectSatuanhandler = (event: CustomEvent) => {
     const selectedSatuan = event.detail.value;
     setChosenSatuan(selectedSatuan);
+  }
+
+  const sheetHandler = () => {
+    setShowActionSheet(true);
   }
 
   const editBarangHandler = async () =>{
@@ -44,7 +51,10 @@ const UpdateBarang: React.FC = () => {
       barangctx.addItem(fileName, base64, enteredTitle.toString(), Number(enteredPrice), chosenSatuan);
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
+    setToastMessage('Barang berhasil diubah!');
   }
+
+  
   
   const takePhotoHandler = async () => {
     const photo = await Camera.getPhoto({
@@ -116,11 +126,32 @@ const UpdateBarang: React.FC = () => {
 
           <IonRow className="ion-margin-top">
             <IonCol className="ion-text-center">
-              <IonButton color="success" onClick={editBarangHandler}>Edit Barang</IonButton>
+              <IonButton color="success" onClick={sheetHandler}>Edit Barang</IonButton>
             </IonCol>
           </IonRow>
 
-        </IonGrid>
+        <IonToast isOpen={!!toastMessage}
+                      message={toastMessage}
+                      duration={2000}
+                      onDidDismiss={() => {setToastMessage('')}}/>
+
+            {<IonActionSheet
+            cssClass = 'IASBackground'
+            isOpen={actionSheet}
+            onDidDismiss={() => setShowActionSheet(false)}
+            header="Edit Barang?"
+            buttons={[{
+                icon: checkmarkOutline,
+                text: "Iya, Edit Barang",
+                handler: () => editBarangHandler(),
+              },
+              {
+                icon: closeOutline,
+                text: "Tidak",
+              }
+            ]}/>
+          }
+          </IonGrid>
   );
 };
 
