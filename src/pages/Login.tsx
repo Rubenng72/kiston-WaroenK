@@ -33,7 +33,7 @@ const Login: React.FC = () => {
 
         <IonContent>
           <IonGrid className="card-box">
-            <IonRow className="ion-padding">
+            <IonRow className="ion-padding" style={{paddingBottom: 0}}>
                 <IonLabel className="ion-padding" style={{marginRight:27}}>Email</IonLabel>
                 <IonInput className="inputtext" placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
             </IonRow>
@@ -46,8 +46,9 @@ const Login: React.FC = () => {
               <IonButton
                 id="g-button"
                 color="light"
-                
                 onClick={uLogin}
+                shape="round"
+                expand="block"
                 >
                 <IonLabel>Login</IonLabel>
               </IonButton>
@@ -55,9 +56,10 @@ const Login: React.FC = () => {
               <IonButton 
                 routerLink='/ForgotPassword' 
                 color="light"
-                style={{textDecoration: 'none', color:'black'}}
+                shape="round"
+                expand="block"
                >
-                <IonLabel color="warning">forgot password</IonLabel>
+                <IonLabel color="warning">Forgot Password</IonLabel>
               </IonButton>
           
               </IonCol>
@@ -65,7 +67,7 @@ const Login: React.FC = () => {
 
             <IonRow>  
               <IonCol>
-                <IonText className='text-between-line'>Or</IonText>
+                <IonText className='text-between-line'>OR</IonText>
               </IonCol>
             </IonRow>
 
