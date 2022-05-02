@@ -1,15 +1,21 @@
 import React from "react";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput} from "@ionic/react";
 import {camera} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import {Directory, Filesystem} from '@capacitor/filesystem';
-import {base64FromPath} from '@ionic/react-hooks/filesystem';
-import BarangContext from '../../data/barang-context';
+import {collection, addDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 import './InputBarang.css';
 
 const InputBarang: React.FC = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const db = getFirestore();
+    const storage = getStorage();
+
     const [takenPhoto, setTakenPhoto] = useState<{
       path: string | undefined;
       preview: string;
@@ -17,12 +23,30 @@ const InputBarang: React.FC = () => {
     const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
     const titleRef = useRef<HTMLIonInputElement>(null);
     const priceRef = useRef<HTMLIonInputElement>(null);
-    const barangctx = useContext(BarangContext);
+    const [selectedFile, setSelectedFile] = useState<File>();
+    const [fileName, setFileName] = useState('');
     const history = useHistory();
 
     const selectSatuanhandler = (event: CustomEvent) => {
       const selectedSatuan = event.detail.value;
       setChosenSatuan(selectedSatuan);
+    }
+
+    const addData = async(url: string, uId: string|null, title: string, price: number) =>{
+      try {
+        const docRef = await addDoc(collection(db, "barang"), {
+          uId: uId,
+          title: title,
+          price: price,
+          type: chosenSatuan,
+          foto: fileName,
+          fotoUrl: url,
+          quantity: 0,
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding Document: ", e);
+      }
     }
 
     const addBarangHandler = async () =>{
@@ -33,15 +57,20 @@ const InputBarang: React.FC = () => {
         return;
       }
 
-      const fileName = new Date().getTime() + '.jpeg';
-      const base64 = await base64FromPath(takenPhoto!.preview);
-      await Filesystem.writeFile({
-        path: fileName,
-        data: base64,
-        directory: Directory.Data
-      });
-
-      barangctx.addItem(fileName, base64, enteredTitle.toString(), Number(enteredPrice), chosenSatuan);
+      const title= titleRef.current?.value as string;
+      const price= priceRef.current?.value as number;
+      const storageRef = ref(storage, fileName);
+      uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
+        console.log('upload file success');
+        getDownloadURL(ref(storage, fileName)).then((url) => {
+          if(user == null){
+            addData(url, 'all', title, price);
+          }
+          else{
+            addData(url, user.uid, title, price);
+          }
+        })
+      })
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
@@ -52,16 +81,21 @@ const InputBarang: React.FC = () => {
         quality: 80,
         width: 500
       });
-      console.log(photo);
+      // console.log(photo);
+      const response = await fetch(photo.webPath!);
+      const blob = await response.blob();
+      setSelectedFile(blob as File);
+      const photoName = (new Date().getTime() + ".jpeg") as string;
+      setFileName(photoName);
 
-      if(!photo || /* !photo.path || */ !photo.webPath)
+      if(!photo || !photo.webPath)
       {
         return;
       }
 
       setTakenPhoto(
         {
-          path: photo.path,
+          path: photo.path ? photo.path : "",
           preview: photo.webPath
         });
     };

@@ -50,6 +50,7 @@ const Login: React.FC = () => {
               </IonButton>
             </IonRow>
           </IonGrid>
+          <IonButton routerLink='/ForgotPassword' color="none"><IonLabel color="warning">forgot password</IonLabel></IonButton>
           <IonLabel>OR</IonLabel>
           <IonButton
             id="g-button"

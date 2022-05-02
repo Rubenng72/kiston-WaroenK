@@ -1,17 +1,24 @@
 import React from "react";
-import { useContext, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonItem, IonButtons, IonButton, IonActionSheet, IonCard} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
-import BarangContext from '../../data/barang-context';
+import { collection, getDocs, query, where } from "firebase/firestore"
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+// import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
 
 const ItemListCard: React.FC = () => {
-    const barangctx = useContext(BarangContext);
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const db = getFirestore();
+    const [barang, setBarang] = useState<Array<any>>([]);
+    // const barangctx = useContext(BarangContext);
     const [ids, setId] = useState<string>();
     const [actionSheet, setShowActionSheet] = useState(false);
 
     const deleteBarang = (id: string) => {
-      barangctx.deleteItem(id);
+      // barangctx.deleteItem(id);
     }
 
     const sheetHandler = (id: string) => {
@@ -19,13 +26,34 @@ const ItemListCard: React.FC = () => {
       setId(id);
     }
 
+    let dbquery = query(collection(db, "barang"),where("uId","==", "all"));
+
+    if(user !== null)
+    {
+      dbquery = query(collection(db, "barang"),where("uId","==", user.uid));
+    }
+
+    useEffect(() => {
+      async function getData() {
+        const querySnapshot = await getDocs(dbquery);
+        console.log('querySnapshot: ', querySnapshot);
+        setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
+
+        querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${doc.data()}`);
+          console.log('doc:', doc);
+        })
+      }
+      getData();
+    }, []);
+
     return (
       <IonGrid>
-        {barangctx.items.length != 0 ? barangctx.items.map((item) => (
+        {barang.length != 0 ? barang.map((item) => (
           <IonCard id="item-list" className="ion-no-margin" key={item.id}>
             <IonRow>
           <IonCol size="3" className="ion-no-margin">
-          <img src={item.base64url} className="Item-img" alt={item.title} />
+            <img src={(item.fotoUrl)} className="Item-img" alt={item.title}/>
           </IonCol>
           <IonCol size="5">
             <IonCardContent className="ion-text-left ion-no-padding " id="content-list" >

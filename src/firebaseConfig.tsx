@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendSignInLinkToEmail} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signOut, sendPasswordResetEmail} from "firebase/auth";
 import { addData } from './data/addUserData';
 
 const firebaseConfig = {
@@ -14,6 +14,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const user = auth.currentUser;
 
 export async function userRegister(email: string, password: string) {
   createUserWithEmailAndPassword(auth, email, password)
@@ -21,6 +22,7 @@ export async function userRegister(email: string, password: string) {
     // Signed in
     const user = userCredential.user;
     addData(user.uid, user.email);
+    sendEmailVerification(auth.currentUser!).then(()=>{console.log('email sent')})
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -45,8 +47,21 @@ export async function userLogin(email: string, password: string) {
   });
 }
 
+export async function fpass(email:string){
+  sendPasswordResetEmail(auth, email);
+}
+
 export function GoogleLogin() {
 
+}
+
+export function logout(){
+  signOut(auth).then(()=>{
+    console.log('Sign-out successful.');
+    console.log(user);
+  }).catch((error) => {
+    console.log(error);
+  })
 }
 
 onAuthStateChanged(auth, (user) => {
@@ -54,11 +69,11 @@ onAuthStateChanged(auth, (user) => {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
     const uid = user.uid;
-    return true;
+    console.log(uid);
     // ...
   } else {
     // User is signed out
     // ...
-    return false;
+    console.log('das');
   }
 });

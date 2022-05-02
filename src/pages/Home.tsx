@@ -8,21 +8,51 @@ import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useContext, useEffect, useState } from "react";
 import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/icons";
-import BarangContext from '../data/barang-context';
+import { collection, getDocs, query, where } from "firebase/firestore"
+import { getFirestore } from "firebase/firestore";
+import {logout} from "../firebaseConfig";
+import { getAuth } from "firebase/auth";
+
 import Splash from "../components/SplashScreen/Splash";
 
 const Home: React.FC = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const db = getFirestore();
+  const [barang, setBarang] = useState<Array<any>>([]);
 
   const [mostrarSplash, setMostrarSplash] = useState(false);
-  const barangctx = useContext(BarangContext);
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
+  const [quantity, setQuantity] = useState<string>();
+
   let calculation = 0;
-  let price = 0;
+
+  let dbquery = query(collection(db, "barang"),where("uId","==", "all"));
+
+  if(user !== null)
+  {
+    dbquery = query(collection(db, "barang"),where("uId","==", user.uid));
+  }
+
+  useEffect(() => {
+    async function getData() {
+      const querySnapshot = await getDocs(dbquery);
+      console.log('querySnapshot: ', querySnapshot);
+      setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
+
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+        console.log('doc:', doc);
+      })
+    }
+    getData();
+  }, []);
 
   const inputHandler = (id: string, quantity: number) => {
-      barangctx.items.forEach((value) => {
+      barang.forEach((value) => {
         if(value.id == id){
+          setQuantity(value.quantity);
           if(quantity != 0)
           {
             calculation += (quantity * value.price);
@@ -41,8 +71,7 @@ const Home: React.FC = () => {
 
   const signinhandler = () =>
   {
-    const tf = 1;
-    if(1){
+    if(user == null){
       return(<IonButtons slot="end" >
         <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="primary" routerLink="/login">
           Login/Register
@@ -51,7 +80,7 @@ const Home: React.FC = () => {
     }
     else{
       return(<IonButtons slot="end" >
-        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={()=>console.log()}>
+        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={()=>logout()}>
           Logout
         </IonButton>
       </IonButtons>)
@@ -68,7 +97,7 @@ const Home: React.FC = () => {
 
     return (
         <IonPage>
-  
+
         {
         mostrarSplash? <Splash />: null
         }
@@ -89,7 +118,7 @@ const Home: React.FC = () => {
                   Reset
                 </IonButton>
               </IonButtons>
-              {signinhandler}
+              {signinhandler()}
 
 
             </IonToolbar>
@@ -121,18 +150,18 @@ const Home: React.FC = () => {
               }}
               modules={[ Grid,Pagination,EffectCoverflow]}>
 
-              {barangctx.items.length != 0 ? barangctx.items.map((item)=>(
+              {barang.length != 0 ? barang.map((item)=>(
                 <SwiperSlide key={item.id}>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
-                      <IonImg className="img-slider" src={item.base64url} alt={item.title}/>
+                      <IonImg className="img-slider" src={item.fotoUrl} alt={item.title}/>
                     </IonCol>
                     <IonCol size="7">
                       <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput id="home" maxlength={2} onIonChange={quantity => inputHandler(item.id, Number(quantity.detail.value))}></IonInput>
+                        <IonInput className="ion-margin" maxlength={2} value={quantity} onIonChange={e => inputHandler(item.id, Number(e.detail.value))}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>

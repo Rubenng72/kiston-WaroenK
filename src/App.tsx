@@ -5,6 +5,7 @@ import { useContext, useEffect } from 'react';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import ItemList from './pages/ItemList';
 import TambahBarang from './pages/TambahBarang';
 import EditBarang from './pages/EditBarang';
@@ -54,6 +55,7 @@ const App: React.FC = () => {
             <Route path="/Home" component={Home}/>
             <Route path="/Login" component={Login}/>
             <Route path="/Register" component={Register}/>
+            <Route path="/ForgotPassword" component={ForgotPassword}/>
             <Route path="/ItemList" component={ItemList}/>
             <Route path="/TambahBarang" component={TambahBarang}/>
             <Route path="/EditBarang/:itemId" component={EditBarang}/>
