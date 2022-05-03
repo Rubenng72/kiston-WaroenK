@@ -20,7 +20,7 @@ const UpdateBarang: React.FC = () => {
   const priceRef = useRef<HTMLIonInputElement>(null);
   const barangctx = useContext(BarangContext);
   const history = useHistory();
-  const [actionSheet, setShowActionSheet] = useState(false);
+  const [startAlert, serStartAlert] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
   const selectSatuanhandler = (event: CustomEvent) => {
@@ -28,15 +28,12 @@ const UpdateBarang: React.FC = () => {
     setChosenSatuan(selectedSatuan);
   }
 
-  const sheetHandler = () => {
-    setShowActionSheet(true);
-  }
-
   const editBarangHandler = async () =>{
     const enteredTitle = titleRef.current?.value;
     const enteredPrice = priceRef.current?.value;
     if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
       console.log('sad');
+      serStartAlert(true);
       return;
     }
 
@@ -89,6 +86,15 @@ const UpdateBarang: React.FC = () => {
   }, [selectedItem])
 
   return (
+    <React.Fragment>
+        <IonAlert isOpen={startAlert}
+                  cssClass="alertCss"
+                  header="Warning!!!"
+                  message="Lengkapi data barang yang ingin diedit!"
+                  buttons={[ 
+                      {text: 'Ok', role: 'cancel', handler: () => {serStartAlert(false)}}
+                  ]}></IonAlert>
+
         <IonGrid className="card-box">
 
           <IonRow className="ion-text-center">
@@ -126,7 +132,7 @@ const UpdateBarang: React.FC = () => {
 
           <IonRow className="ion-margin-top">
             <IonCol className="ion-text-center">
-              <IonButton color="success" onClick={sheetHandler}>Edit Barang</IonButton>
+              <IonButton color="success" onClick={editBarangHandler}>Edit Barang</IonButton>
             </IonCol>
           </IonRow>
 
@@ -134,24 +140,8 @@ const UpdateBarang: React.FC = () => {
                       message={toastMessage}
                       duration={2000}
                       onDidDismiss={() => {setToastMessage('')}}/>
-
-            {<IonActionSheet
-            cssClass = 'IASBackground'
-            isOpen={actionSheet}
-            onDidDismiss={() => setShowActionSheet(false)}
-            header="Edit Barang?"
-            buttons={[{
-                icon: checkmarkOutline,
-                text: "Iya, Edit Barang",
-                handler: () => editBarangHandler(),
-              },
-              {
-                icon: closeOutline,
-                text: "Tidak",
-              }
-            ]}/>
-          }
           </IonGrid>
+      </React.Fragment>
   );
 };
 

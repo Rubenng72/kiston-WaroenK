@@ -26,16 +26,12 @@ const InputBarang: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File>();
     const [fileName, setFileName] = useState('');
     const history = useHistory();
-    const [actionSheet, setShowActionSheet] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+    const [startAlert, serStartAlert] = useState(false);
 
     const selectSatuanhandler = (event: CustomEvent) => {
       const selectedSatuan = event.detail.value;
       setChosenSatuan(selectedSatuan);
-    }
-
-    const sheetHandler = () => {
-      setShowActionSheet(true);
     }
 
     const addData = async(url: string, uId: string|null, title: string, price: number) =>{
@@ -56,11 +52,11 @@ const InputBarang: React.FC = () => {
     }
 
     const addBarangHandler = async () =>{
-      setToastMessage('Barang berhasil ditambahkan!');
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
       if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
         console.log('sad');
+        serStartAlert(true);
         return;
       }
 
@@ -78,6 +74,8 @@ const InputBarang: React.FC = () => {
           }
         })
       })
+      serStartAlert(false);
+      setToastMessage('Barang berhasil ditambahkan!');
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
@@ -108,6 +106,15 @@ const InputBarang: React.FC = () => {
     };
  
     return (
+      <React.Fragment>
+          <IonAlert isOpen={startAlert}
+                    cssClass="alertCss"
+                    header="Warning!!!"
+                    message="Lengkapi data barang yang ingin ditambahkan!"
+                    buttons={[ 
+                        {text: 'Ok', role: 'cancel', handler: () => {serStartAlert(false)}}
+                    ]}></IonAlert>
+
           <IonGrid className="card-box">
 
             <IonRow className="ion-text-center">
@@ -145,7 +152,7 @@ const InputBarang: React.FC = () => {
 
             <IonRow className="ion-margin-top">
               <IonCol className="ion-text-center">
-                <IonButton color="success" onClick={sheetHandler}>Tambah Barang</IonButton>
+                <IonButton color="success" onClick={addBarangHandler}>Tambah Barang</IonButton>
               </IonCol>
             </IonRow>
 
@@ -153,24 +160,8 @@ const InputBarang: React.FC = () => {
                       message={toastMessage}
                       duration={2000}
                       onDidDismiss={() => {setToastMessage('')}}/>
-
-            {<IonActionSheet
-            cssClass = 'IASBackground'
-            isOpen={actionSheet}
-            onDidDismiss={() => setShowActionSheet(false)}
-            header="Tambahkan Barang?"
-            buttons={[{
-                icon: checkmarkOutline,
-                text: "Iya, Tambahkan Barang",
-                handler: () => addBarangHandler(),
-              },
-              {
-                icon: closeOutline,
-                text: "Tidak",
-              }
-            ]}/>
-          }
           </IonGrid>
+        </React.Fragment>
     );
 };
 

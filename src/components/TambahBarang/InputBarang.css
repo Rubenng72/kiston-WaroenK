@@ -44,3 +44,10 @@
 .select-interface-option{
   --background: white;
 }
+
+/* Alert */
+.alertCss{
+  --background: white!important;   
+  
+}
+
