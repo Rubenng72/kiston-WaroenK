@@ -6,8 +6,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
-import { useContext, useEffect, useState } from "react";
-import {createOutline, text, trashOutline, closeCircleOutline} from "ionicons/icons";
+import { useEffect, useState } from "react";
+import { trashOutline } from "ionicons/icons";
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { getFirestore } from "firebase/firestore";
 import {logout} from "../firebaseConfig";
@@ -36,17 +36,23 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
+    // let isMounted = true;
+
     async function getData() {
       const querySnapshot = await getDocs(dbquery);
-      console.log('querySnapshot: ', querySnapshot);
-      setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
+      // console.log('querySnapshot: ', querySnapshot);
+      // if(isMounted){
+        setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
+      // }
 
-      querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        console.log('doc:', doc);
-      })
+      // querySnapshot.forEach((doc) => {
+      //   console.log(`${doc.id} => ${doc.data()}`);
+      //   console.log('doc:', doc);
+      // })
     }
     getData();
+
+    // return() => {isMounted = false}
   }, []);
 
   const inputHandler = (id: string, quantity: number) => {
