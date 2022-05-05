@@ -1,11 +1,12 @@
 import React from "react";
 import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory  } from 'react-router-dom';
 import { userRegister } from '../firebaseConfig';
 import CryptoJS from 'crypto-js';
 
 const Register: React.FC = () => {
+    const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfimPassword] = useState('');
@@ -23,6 +24,9 @@ const Register: React.FC = () => {
         return false;
       }
       const res = await userRegister(email, password);
+      if(res){
+        history.replace('/tabs/Home');
+      }
     }
     return (
         <IonPage>

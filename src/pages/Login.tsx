@@ -1,24 +1,51 @@
 import React from "react";
 import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText} from "@ionic/react";
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { userLogin, userAsAnonymous } from '../firebaseConfig';
+import { getAuth } from "firebase/auth";
 import CryptoJS from 'crypto-js';
 import './Login.css';
 
 const Login: React.FC = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const history = useHistory();
     const [email, setEmail] = useState('');
-    const secretKey = "kiston";
     const [password, setPassword] = useState('');
 
     async function uLogin()
     {
       const res = await userLogin(email, password);
+      if(res){
+        history.replace('/tabs/Home');
+      }
     }
 
     async function uSkip()
     {
       const res = await userAsAnonymous();
+      if(res){
+        history.replace('/tabs/Home');
+      }
+    }
+
+    const skipbuttonhandler = () =>
+    {
+      if(user == null)
+      {
+        return(<IonButton
+          routerLink='/Home'
+          color="light"
+          shape="round"
+          expand="block"
+          onClick={uSkip}>
+          <IonLabel color="warning">SKIP continue as guest</IonLabel>
+        </IonButton>);
+      }
+      else{
+        return;
+      }
     }
 
     return (
@@ -74,15 +101,7 @@ const Login: React.FC = () => {
             <IonLabel>New here?</IonLabel>
             <Link to="/Register"><IonLabel color="warning">Register</IonLabel></Link>
         </IonRow>
-        <IonButton
-          routerLink='/Home'
-          color="light"
-          shape="round"
-          expand="block"
-          onClick={uSkip}
-         >
-          <IonLabel color="warning">SKIP continue as guest</IonLabel>
-        </IonButton>
+        {skipbuttonhandler()}
         </IonGrid>
         </IonContent>
       </IonPage>

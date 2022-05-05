@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signOut, sendPasswordResetEmail} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signOut, sendPasswordResetEmail, signInAnonymously, EmailAuthProvider, linkWithCredential} from "firebase/auth";
 import { addData } from './data/addUserData';
 
 const firebaseConfig = {
@@ -16,64 +16,68 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const user = auth.currentUser;
 
-export async function userRegister(email: string, password: string) {
-  createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in
-    const user = userCredential.user;
-    addData(user.uid, user.email);
-    sendEmailVerification(auth.currentUser!).then(()=>{console.log('email sent')})
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode, errorMessage);
-    // ..
-  });
+export const userRegister = async (email: string, password: string) => {
+  if(user !== null && user.isAnonymous){
+    try{
+      const credential = EmailAuthProvider.credential(email, password);
+      linkWithCredential(user, credential);
+      return true;
+    }catch(error){
+      console.log(error);
+      return false;
+    }
+  }else{
+    try{
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        addData(user.uid, user.email);
+        sendEmailVerification(auth.currentUser!).then(()=>{console.log('email sent')})
+      })
+      return true;
+    }catch(error){
+      console.log(error);
+      return false;
+    }
+  }
 }
 
 export async function userLogin(email: string, password: string) {
-  signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in
-    const user = userCredential.user;
-    console.log(user.email);
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode, errorMessage);
-  });
+  try{
+    await signInWithEmailAndPassword(auth, email, password)
+    return true;
+  }catch(error){
+    return false;
+  };
 }
 
 export async function fpass(email:string){
   sendPasswordResetEmail(auth, email);
 }
 
-export function GoogleLogin() {
-
+export const userAsAnonymous  = async () => {
+  try{
+    signInAnonymously(auth);
+    return true;
+  }catch(error){
+    return false;
+  }
 }
 
-export function logout(){
-  signOut(auth).then(()=>{
-    console.log('Sign-out successful.');
-    console.log(user);
-  }).catch((error) => {
-    console.log(error);
-  })
+export async function logout(){
+  try{
+    signOut(auth);
+    return true;
+  }catch(error){
+    return false;
+  }
+
 }
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    const uid = user.uid;
-    console.log(uid);
-    // ...
+    localStorage.setItem("users", JSON.stringify(user));
   } else {
-    // User is signed out
-    // ...
-    console.log('das');
+    localStorage.clear();
   }
 });
