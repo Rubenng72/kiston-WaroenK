@@ -2,15 +2,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, IonButton, IonActionSheet, IonCard} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
-import { collection, getDocs, deleteDoc, query, doc, where } from "firebase/firestore"
+import { deleteDoc, doc } from "firebase/firestore"
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getItemData } from "../../data/getItemData";
 import './ItemListCard.css'
 
 const ItemListCard: React.FC = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
     const db = getFirestore();
     const storage = getStorage();
     const [barang, setBarang] = useState<Array<any>>([]);
@@ -18,32 +16,14 @@ const ItemListCard: React.FC = () => {
     const [img, setImg] = useState<string>('');
     const [actionSheet, setShowActionSheet] = useState(false);
 
-    let dbquery = query(collection(db, "barang"),where("uId","==", "all"));
-
-    if(user !== null)
-    {
-      dbquery = query(collection(db, "barang"),where("uId","==", user.uid));
-    }
-
     useEffect(() => {
-      // let isMounted = true;
-
-      async function getData() {
-        const querySnapshot = await getDocs(dbquery);
-        // console.log('querySnapshot: ', querySnapshot);
-
-        // if(isMounted){
-          setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
-        // }
-
-        // querySnapshot.forEach((doc) => {
-        //   console.log(`${doc.id} => ${doc.data()}`);
-        //   console.log('doc:', doc);
-        // })
+      let isMounted = true;
+        getItemData().then((querySnapshot) => {
+          if(querySnapshot && isMounted) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
+        });
+      return ()=> {
+        isMounted = false
       }
-      getData();
-
-      // return() => {isMounted = false}
     }, []);
 
     async function deleteBarang(id: string, img: string) {
@@ -56,7 +36,6 @@ const ItemListCard: React.FC = () => {
       }catch(error){
         console.log(error);
       }
-
     }
 
     const sheetHandler = (id: string, img: string) => {
@@ -64,8 +43,6 @@ const ItemListCard: React.FC = () => {
       setId(id);
       setImg(img);
     }
-
-
 
     return (
       <IonGrid>

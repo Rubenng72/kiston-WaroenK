@@ -8,17 +8,17 @@ import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useEffect, useState } from "react";
 import { trashOutline } from "ionicons/icons";
-import { collection, getDocs, query, where } from "firebase/firestore"
-import { getFirestore } from "firebase/firestore";
 import {logout} from "../firebaseConfig";
+import { getItemData } from "../data/getItemData";
 import { getAuth } from "firebase/auth";
+import { useHistory  } from 'react-router-dom';
 
 import Splash from "../components/SplashScreen/Splash";
 
 const Home: React.FC = () => {
+  const history = useHistory();
   const auth = getAuth();
   const user = auth.currentUser;
-  const db = getFirestore();
   const [barang, setBarang] = useState<Array<any>>([]);
 
   const [mostrarSplash, setMostrarSplash] = useState(false);
@@ -28,31 +28,14 @@ const Home: React.FC = () => {
 
   let calculation = 0;
 
-  let dbquery = query(collection(db, "barang"),where("uId","==", "all"));
-
-  if(user !== null)
-  {
-    dbquery = query(collection(db, "barang"),where("uId","==", user.uid));
-  }
-
   useEffect(() => {
-    // let isMounted = true;
-
-    async function getData() {
-      const querySnapshot = await getDocs(dbquery);
-      // console.log('querySnapshot: ', querySnapshot);
-      // if(isMounted){
-        setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
-      // }
-
-      // querySnapshot.forEach((doc) => {
-      //   console.log(`${doc.id} => ${doc.data()}`);
-      //   console.log('doc:', doc);
-      // })
+    let isMounted = true;
+      getItemData().then((querySnapshot) => {
+        if(querySnapshot && isMounted) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
+      });
+    return ()=> {
+      isMounted = false
     }
-    getData();
-
-    // return() => {isMounted = false}
   }, []);
 
   const inputHandler = (id: string, quantity: number) => {
@@ -75,20 +58,37 @@ const Home: React.FC = () => {
 
   }
 
+  async function uLogout()
+  {
+    const res = await logout();
+    if(res){
+      history.replace('/tabs/Home');
+    }
+  }
+
   const signinhandler = () =>
   {
-    if(user == null){
-      return(<IonButtons slot="end" >
+    if(user !== null){
+      if(user.isAnonymous){
+        return(<IonButtons slot="end" >
         <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="primary" routerLink="/login">
-          Login/Register
+        Login/Register
         </IonButton>
-      </IonButtons>)
+        </IonButtons>)
+      }
+      else{
+        return(<IonButtons slot="end" >
+        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={uLogout}>
+        Logout
+        </IonButton>
+        </IonButtons>)
+      }
     }
     else{
       return(<IonButtons slot="end" >
-        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={()=>logout()}>
-          Logout
-        </IonButton>
+      <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="primary" routerLink="/login">
+      Login/Register
+      </IonButton>
       </IonButtons>)
     }
   }
