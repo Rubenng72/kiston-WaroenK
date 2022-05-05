@@ -1,25 +1,24 @@
 import React from "react";
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText} from "@ionic/react";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {logoGoogle} from "ionicons/icons";
-import { userLogin, GoogleLogin } from '../firebaseConfig';
+import { userLogin, userAsAnonymous } from '../firebaseConfig';
+import CryptoJS from 'crypto-js';
 import './Login.css';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
+    const secretKey = "kiston";
     const [password, setPassword] = useState('');
 
     async function uLogin()
     {
       const res = await userLogin(email, password);
-
     }
 
-    async function uGoogleLogin()
+    async function uSkip()
     {
-      const res = GoogleLogin();
-
+      const res = await userAsAnonymous();
     }
 
     return (
@@ -39,7 +38,7 @@ const Login: React.FC = () => {
             </IonRow>
             <IonRow className="ion-padding">
                 <IonLabel className="ion-padding">Password</IonLabel>
-                <IonInput className="inputtext"minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => setPassword(e.target.value)}></IonInput>
+                <IonInput className="inputtext"minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => setPassword(CryptoJS.SHA256(e.target.value).toString())}></IonInput>
             </IonRow>
             <IonRow className="ion-padding">
               <IonCol className="center">
@@ -52,43 +51,38 @@ const Login: React.FC = () => {
                 >
                 <IonLabel>Login</IonLabel>
               </IonButton>
-              
-              <IonButton 
-                routerLink='/ForgotPassword' 
+
+              <IonButton
+                routerLink='/ForgotPassword'
                 color="light"
                 shape="round"
                 expand="block"
                >
                 <IonLabel color="warning">Forgot Password</IonLabel>
               </IonButton>
-          
+
               </IonCol>
             </IonRow>
 
-            <IonRow>  
+            <IonRow>
               <IonCol>
                 <IonText className='text-between-line'>OR</IonText>
               </IonCol>
             </IonRow>
 
-          <IonRow className="ion-padding">
-            <IonCol className="center">
-              <IonButton
-                id="g-button"
-                color="light"
-                shape="round"
-                onClick={uGoogleLogin}
-                >
-                <IonIcon class="ion-margin-end" icon={logoGoogle} />
-                <IonLabel>Continue With Google</IonLabel>
-              </IonButton>
-            </IonCol>
-          </IonRow>
-
         <IonRow className="ion-padding">
             <IonLabel>New here?</IonLabel>
             <Link to="/Register"><IonLabel color="warning">Register</IonLabel></Link>
         </IonRow>
+        <IonButton
+          routerLink='/Home'
+          color="light"
+          shape="round"
+          expand="block"
+          onClick={uSkip}
+         >
+          <IonLabel color="warning">SKIP continue as guest</IonLabel>
+        </IonButton>
         </IonGrid>
         </IonContent>
       </IonPage>

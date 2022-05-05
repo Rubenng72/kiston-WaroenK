@@ -1,9 +1,9 @@
 import React from "react";
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {logoGoogle} from "ionicons/icons";
 import { userRegister } from '../firebaseConfig';
+import CryptoJS from 'crypto-js';
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -14,6 +14,7 @@ const Register: React.FC = () => {
     {
       if(password != confirmPassword)
       {
+        console.log(password, confirmPassword);
         console.log('sad');
         return false;
       }
@@ -51,7 +52,7 @@ const Register: React.FC = () => {
                     <IonLabel>Password</IonLabel>
                   </IonRow>
                   <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
-                    <IonInput className="inputtext" placeholder="Password" type="password" minlength={6} onIonChange={(e: any) => setPassword(e.target.value)}></IonInput>
+                    <IonInput className="inputtext" placeholder="Password" type="password" minlength={6} onIonChange={(e: any) => setPassword(CryptoJS.SHA256(e.target.value).toString())}></IonInput>
                   </IonRow>
                 </IonCol>
               </IonRow>
@@ -62,11 +63,11 @@ const Register: React.FC = () => {
                     <IonLabel className="ion-padding" style={{paddingBottom: 0}}>Confirm Password</IonLabel>
                   </IonRow>
                   <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
-                    <IonInput className="inputtext" placeholder="Confirm" type="password" onIonChange={(e: any) => setConfimPassword(e.target.value)}></IonInput>
+                    <IonInput className="inputtext" placeholder="Confirm" type="password" onIonChange={(e: any) => setConfimPassword(CryptoJS.SHA256(e.target.value).toString())}></IonInput>
                   </IonRow>
                 </IonCol>
               </IonRow>
-              
+
               <IonRow className="ion-padding" style={{paddingTop: 0}}>
                 <IonCol className="center">
                   <IonButton
@@ -85,17 +86,7 @@ const Register: React.FC = () => {
                 <Link to="/Login"><IonLabel color="warning">Login</IonLabel></Link>
               </IonRow>
             </IonGrid>
-            
-            {/* <IonLabel>OR</IonLabel>
-            <IonButton
-              id="g-button"
-              color="light"
-              shape="round"
-              onClick={()=>console.log()}
-              >
-              <IonIcon class="ion-margin-end" icon={logoGoogle} />
-              <IonLabel>Continue With Google</IonLabel>
-            </IonButton> */}
+
           </IonContent>
 
         </IonPage>
