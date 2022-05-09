@@ -17,15 +17,18 @@ const Register: React.FC = () => {
       {
         console.log(password, confirmPassword);
         console.log('sad');
+        //password tidak sama
         return false;
       }
       if(email.trim() === '' || password === '')
       {
+        //password/email kosong
         return false;
       }
       const res = await userRegister(email, password);
       if(res){
         history.replace('/tabs/Home');
+        //berhasil register ((Alert)'Check email untuk verifikasi')
       }
     }
     return (

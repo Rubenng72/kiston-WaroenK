@@ -1,5 +1,5 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { userLogin, userAsAnonymous } from '../firebaseConfig';
@@ -11,6 +11,7 @@ const Login: React.FC = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     const history = useHistory();
+    const [toastMessage, setToastMessage] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -19,6 +20,7 @@ const Login: React.FC = () => {
       const res = await userLogin(email, password);
       if(res){
         history.replace('/tabs/Home');
+        //berhasil login
       }
     }
 
@@ -27,6 +29,7 @@ const Login: React.FC = () => {
       const res = await userAsAnonymous();
       if(res){
         history.replace('/tabs/Home');
+        //continue as guest
       }
     }
 
@@ -103,6 +106,7 @@ const Login: React.FC = () => {
         </IonRow>
         {skipbuttonhandler()}
         </IonGrid>
+
         </IonContent>
       </IonPage>
     );

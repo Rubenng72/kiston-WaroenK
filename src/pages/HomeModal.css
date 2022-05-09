@@ -9,7 +9,7 @@
 .modal-box{
     /* atas(kiri kanan) bawah(kanan kiri) */
     --border-radius: 25px 25px 0 0;
-    --height: calc(100% - (var(--ion-safe-area-top) + 100px));
+    /* --height: calc(100% - (var(--ion-safe-area-top) + 100px)); */
     --background: #B5D0E4;
 }
 
