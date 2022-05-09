@@ -4,8 +4,8 @@ import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, I
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
 import { deleteDoc, doc } from "firebase/firestore"
 import { getStorage, ref, deleteObject } from "firebase/storage";
-import { getFirestore } from "firebase/firestore";
-import { getItemData } from "../../data/getItemData";
+import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import './ItemListCard.css'
 
 const ItemListCard: React.FC = () => {
@@ -16,10 +16,18 @@ const ItemListCard: React.FC = () => {
     const [img, setImg] = useState<string>('');
     const [actionSheet, setShowActionSheet] = useState(false);
 
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const userId = user ? user.uid : '';
+
+    const q = query(collection(db, "barang"), where("uId", "==", userId));
+
     useEffect(() => {
-      getItemData().then((querySnapshot) => {
-        if(querySnapshot) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
-      });
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
+        localStorage.setItem("items", JSON.stringify(barang));
+      })
+      return () => unsubscribe();
     }, []);
 
     async function deleteBarang(id: string, img: string) {

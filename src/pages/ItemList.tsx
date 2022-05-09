@@ -1,13 +1,22 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton, IonLabel, IonSearchbar, IonItem} from "@ionic/react";
 import { isPlatform} from '@ionic/react';
-import {addOutline, createOutline, trashOutline} from "ionicons/icons";
+import {addOutline} from "ionicons/icons";
 import ItemListCard from '../components/ItemList/ItemListCard';
 import HapusSemuabtn from '../components/ItemList/HapusSemua';
 
 const ItemList: React.FC = () => {
+    const [loading, setLoading] = useState(false);
+    useEffect(() =>{
+      setLoading(true);
+      setTimeout(()=>{
+          setLoading(false);
+      }, 2000)
+    }, [])
     return (
         <IonPage>
+          {loading? <></> : null}
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >

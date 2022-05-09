@@ -1,7 +1,7 @@
 import React from "react";
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
 import { useState } from 'react';
-import { fpass } from '../firebaseConfig';
+import { fpass } from '../data/auth';
 
 const ForgotPassword: React.FC = () => {
     const [email, setEmail] = useState('');

@@ -2,7 +2,7 @@ import React from "react";
 import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory  } from 'react-router-dom';
-import { userRegister } from '../firebaseConfig';
+import { userRegister } from '../data/auth';
 import CryptoJS from 'crypto-js';
 
 const Register: React.FC = () => {

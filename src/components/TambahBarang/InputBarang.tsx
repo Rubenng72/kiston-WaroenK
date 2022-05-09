@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput, IonToast, IonAlert, IonActionSheet} from "@ionic/react";
-import {camera, checkmarkOutline, closeOutline} from "ionicons/icons";
+import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput, IonToast, IonAlert} from "@ionic/react";
+import {camera} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {collection, addDoc } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
@@ -20,6 +20,7 @@ const InputBarang: React.FC = () => {
       path: string | undefined;
       preview: string;
     }>();
+
     const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
     const titleRef = useRef<HTMLIonInputElement>(null);
     const priceRef = useRef<HTMLIonInputElement>(null);
@@ -55,7 +56,6 @@ const InputBarang: React.FC = () => {
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
       if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
-        console.log('sad');
         serStartAlert(true);
         return;
       }
@@ -64,7 +64,7 @@ const InputBarang: React.FC = () => {
       const price= priceRef.current?.value as number;
       const storageRef = ref(storage, fileName);
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
-        console.log('upload file success');
+        // console.log('upload file success');
         getDownloadURL(ref(storage, fileName)).then((url) => {
           if(user == null){
             addData(url, 'all', title, price);
@@ -86,7 +86,7 @@ const InputBarang: React.FC = () => {
         quality: 80,
         width: 500
       });
-      // console.log(photo);
+
       const response = await fetch(photo.webPath!);
       const blob = await response.blob();
       setSelectedFile(blob as File);
@@ -104,14 +104,14 @@ const InputBarang: React.FC = () => {
           preview: photo.webPath
         });
     };
- 
+
     return (
       <React.Fragment>
           <IonAlert isOpen={startAlert}
                     cssClass="alertCss"
                     header="Warning!!!"
                     message="Lengkapi data barang yang ingin ditambahkan!"
-                    buttons={[ 
+                    buttons={[
                         {text: 'Ok', role: 'cancel', handler: () => {serStartAlert(false)}}
                     ]}></IonAlert>
 

@@ -8,8 +8,8 @@ import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useEffect, useState, useRef } from "react";
 import { trashOutline } from "ionicons/icons";
-import {logout} from "../firebaseConfig";
-import { getItemData } from "../data/getItemData";
+import {logout} from "../data/auth";
+import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useHistory  } from 'react-router-dom';
 
@@ -19,6 +19,7 @@ const Home: React.FC = () => {
   const history = useHistory();
   const auth = getAuth();
   const user = auth.currentUser;
+  const db = getFirestore();
   const [barang, setBarang] = useState<Array<any>>([]);
 
   const [mostrarSplash, setMostrarSplash] = useState(false);
@@ -30,10 +31,16 @@ const Home: React.FC = () => {
 
   let calculation = 0;
 
+  const userId = user ? user.uid : '';
+
+  const q = query(collection(db, "barang"), where("uId", "==", userId));
+
   useEffect(() => {
-    getItemData().then((querySnapshot) => {
-      if(querySnapshot) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
-    });
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
+      localStorage.setItem("items", JSON.stringify(barang));
+    })
+    return () => unsubscribe();
   }, []);
 
   const inputHandler = (id: string, quantity: number) => {

@@ -2,7 +2,7 @@ import React from "react";
 import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { userLogin, userAsAnonymous } from '../firebaseConfig';
+import { userLogin, userAsAnonymous } from '../data/auth';
 import { getAuth } from "firebase/auth";
 import CryptoJS from 'crypto-js';
 import './Login.css';
