@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { trashOutline } from "ionicons/icons";
 import {logout} from "../firebaseConfig";
 import { getItemData } from "../data/getItemData";
@@ -22,20 +22,18 @@ const Home: React.FC = () => {
   const [barang, setBarang] = useState<Array<any>>([]);
 
   const [mostrarSplash, setMostrarSplash] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
+  const quantityRef = useRef<HTMLIonInputElement>(null);
   const [quantity, setQuantity] = useState<string>();
 
   let calculation = 0;
 
   useEffect(() => {
-    let isMounted = true;
-      getItemData().then((querySnapshot) => {
-        if(querySnapshot && isMounted) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
-      });
-    return ()=> {
-      isMounted = false
-    }
+    getItemData().then((querySnapshot) => {
+      if(querySnapshot) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
+    });
   }, []);
 
   const inputHandler = (id: string, quantity: number) => {
@@ -53,7 +51,7 @@ const Home: React.FC = () => {
         }
       });
 
-      setTotalHarga(calculation);
+      return setTotalHarga(calculation);
       console.log(calculation);
 
   }
@@ -167,7 +165,7 @@ const Home: React.FC = () => {
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput className="ion-margin" maxlength={2} value={quantity} onIonChange={e => inputHandler(item.id, Number(e.detail.value))}></IonInput>
+                        <IonInput className="ion-margin" maxlength={2} ref={quantityRef} onIonChange={e => inputHandler(item.id, Number(e.detail.value))}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>

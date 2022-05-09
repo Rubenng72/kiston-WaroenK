@@ -16,16 +16,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth();
-const user = auth.currentUser;
 const db = getFirestore();
+const user = auth.currentUser;
+const userId = user ? user.uid : '';
+
+const dbquery = query(collection(db, "barang"), where("uId", "==", userId));
 
 export const getItemData = async() =>{
-  if(user !== null)
-  {
-    const dbquery = query(collection(db, "barang"),where("uId","==", user.uid));
     const querySnapshot = await getDocs(dbquery);
     return querySnapshot;
-  }
 }
 
 export default getItemData;

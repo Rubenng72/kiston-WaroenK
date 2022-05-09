@@ -17,13 +17,9 @@ const ItemListCard: React.FC = () => {
     const [actionSheet, setShowActionSheet] = useState(false);
 
     useEffect(() => {
-      let isMounted = true;
-        getItemData().then((querySnapshot) => {
-          if(querySnapshot && isMounted) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
-        });
-      return ()=> {
-        isMounted = false
-      }
+      getItemData().then((querySnapshot) => {
+        if(querySnapshot) {setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})))};
+      });
     }, []);
 
     async function deleteBarang(id: string, img: string) {
