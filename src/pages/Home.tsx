@@ -9,7 +9,7 @@ import "swiper/css/grid";
 import { useEffect, useState, useRef } from "react";
 import { trashOutline } from "ionicons/icons";
 import {logout} from "../data/auth";
-import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useHistory  } from 'react-router-dom';
 
@@ -27,7 +27,6 @@ const Home: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
   const quantityRef = useRef<HTMLIonInputElement>(null);
-  const [quantity, setQuantity] = useState<string>();
 
   let calculation = 0;
 
@@ -43,24 +42,26 @@ const Home: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  const inputHandler = (id: string, quantity: number) => {
+  const inputHandler = (id: string) => {
+      const enteredQuantity = Number(quantityRef.current?.value);
+      const barangRef = doc(db, "barang", id);
+
+      updateDoc(barangRef, {
+        "quantity" : enteredQuantity
+      });
+
       barang.forEach((value) => {
-        if(value.id == id){
-          setQuantity(value.quantity);
-          if(quantity != 0)
-          {
-            calculation += (quantity * value.price);
-          }
-          else
-          {
-            calculation = 0;
-          }
+        if(value.id == id && value.quantity > 0){
+          setTotalHarga(calculation += (value.quantity * value.price));
+          console.log(calculation);
+        }
+        else {
+          console.log('here');
+          return setTotalHarga(0);
         }
       });
 
       return setTotalHarga(calculation);
-      console.log(calculation);
-
   }
 
   async function uLogout()
@@ -131,7 +132,6 @@ const Home: React.FC = () => {
               </IonButtons>
               {signinhandler()}
 
-
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>
@@ -172,7 +172,7 @@ const Home: React.FC = () => {
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput className="ion-margin" maxlength={2} ref={quantityRef} onIonChange={e => inputHandler(item.id, Number(e.detail.value))}></IonInput>
+                        <IonInput className="ion-margin" maxlength={2} placeholder={item.quantity} ref={quantityRef} onIonInput={()=>inputHandler(item.id)}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>

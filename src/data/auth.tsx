@@ -1,8 +1,8 @@
 import { app } from '../firebaseConfig';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signOut, sendPasswordResetEmail, signInAnonymously, EmailAuthProvider, linkWithCredential} from "firebase/auth";
 import { addData } from './addUserData';
-
-const auth = getAuth(app());
+app();
+const auth = getAuth();
 const user = auth.currentUser;
 
 export const userRegister = async (email: string, password: string) => {
