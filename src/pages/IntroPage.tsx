@@ -30,13 +30,16 @@ return(
       </IonSlide>
 
       <IonSlide className='slide'>
-    
-        <h1></h1><br></br>
-        <h2>Siap untuk Menggunakan <b>WaroenK?</b></h2>
-            <IonButton> Login <IonIcon slot="end" name="arrow-forward"></IonIcon>
+          <img src="assets/foto/burumasuksini-01.png"/>
+            
+            <h1><b>Siap Menggunakan WaroenK?</b></h1><br></br>
+
+            <IonButton fill="solid"> Login  <IonIcon slot="end" name="arrow-forward"></IonIcon>
             </IonButton>
-            <IonButton > Daftar <IonIcon slot="end" name="arrow-forward"></IonIcon>
+
+            <IonButton fill="solid"> Daftar <IonIcon slot="end" name="arrow-forward"></IonIcon>
             </IonButton>
+
             <IonButton fill="clear"> Skip as Guest <IonIcon slot="end" name="arrow-forward"></IonIcon>
             </IonButton>
       </IonSlide>
