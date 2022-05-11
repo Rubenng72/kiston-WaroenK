@@ -25,7 +25,7 @@ const ItemListCard: React.FC = () => {
     useEffect(() => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
-        localStorage.setItem("items", JSON.stringify(barang));
+        // localStorage.setItem("items", JSON.stringify(barang));
       })
       return () => unsubscribe();
     }, []);
@@ -48,6 +48,16 @@ const ItemListCard: React.FC = () => {
       setImg(img);
     }
 
+    const setEditData = (id: string) => {
+      barang.forEach((value)=>{
+        if(value.id == id)
+        {
+          localStorage.setItem("editId", value.id);
+          localStorage.setItem("editItem", JSON.stringify(value));
+        }
+      })
+    }
+
     return (
       <IonGrid>
         {barang.length != 0 ? barang.map((item) => (
@@ -67,7 +77,7 @@ const ItemListCard: React.FC = () => {
           </IonCol>
           <IonCol size="2" >
             <IonButtons className="icon-button">
-              <IonButton routerLink={`/EditBarang/${item.id}`} fill ="solid" className="icon" >
+              <IonButton routerLink={`/EditBarang/${item.id}`} fill ="solid" className="icon" onClick={()=>setEditData(item.id)} >
                 <IonIcon icon={pencilOutline} slot="icon-only" size="large"/>
               </IonButton>
             </IonButtons>
