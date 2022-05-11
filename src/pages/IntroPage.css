@@ -7,33 +7,39 @@ ion-slides {
     display: block;
   }
 
-  .swiper-slide h2 {
-    margin-top: 2.8rem;
+  /* buat h1 */
+  .swiper-slide h1 {
+    /* margin-top: 2.8rem; */
+    color: var(--ion-text-color, #5f5f5f);
     
   }
 
+  /* buat ngatur gambar */
   .swiper-slide img {
-    max-height: 50%;
-    max-width: 80%;
-    margin: 60px 0 40px;
+    max-height: 100%;
+    max-width: 85%;
+    margin: 100px 0 0px;
     pointer-events: none;
   }
 
+  /* cuman buat bold */
   b {
     font-weight: 500;
   }
 
+  /* buat text biasa */
   p {
     padding: 0 40px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
-    color: var(--ion-color-step-600, #000000);
+    color: var(--ion-color-step-600, #f0f0f0);
   }
 
   p b {
-    color: var(--ion-text-color, #000000);
+    color: var(--ion-text-color, #5f5f5f);
   }
 
+  /* buat background, masih belom bisa :( */
   ion-content.background-image{
-    background-image: url('/public/assets/foto/intropage-01.png') no-repeat 100% 100%;
+    background-image: url('/public/assets/foto/intropage-01.png') no-repeat center/cover fixed;;
   }
