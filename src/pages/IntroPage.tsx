@@ -12,7 +12,7 @@ const IntroPage: React.FC = () => {
 
 return(
 <IonPage >
-  <IonContent fullscreen class="ion-padding background-image" scroll-y="false" >
+  <IonContent fullscreen class="ion-padding background-image" scroll-y="false" id='noBG'  >
     <IonSlides pager={true} options={slideOpts}>
       
       <IonSlide className='slide'>
@@ -31,7 +31,6 @@ return(
 
       <IonSlide className='slide'>
           <img src="assets/foto/burumasuksini-01.png"/>
-            
             <h1><b>Siap Menggunakan WaroenK?</b></h1><br></br>
 
             <IonButton fill="solid"> Login  <IonIcon slot="end" name="arrow-forward"></IonIcon>
@@ -40,7 +39,7 @@ return(
             <IonButton fill="solid"> Daftar <IonIcon slot="end" name="arrow-forward"></IonIcon>
             </IonButton>
 
-            <IonButton fill="clear"> Skip as Guest <IonIcon slot="end" name="arrow-forward"></IonIcon>
+            <IonButton fill="clear"> Login as Guest <IonIcon slot="end" name="arrow-forward"></IonIcon>
             </IonButton>
       </IonSlide>
       

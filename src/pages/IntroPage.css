@@ -10,7 +10,7 @@ ion-slides {
   /* buat h1 */
   .swiper-slide h1{
     /* margin-top: 2.8rem; */
-    color: var(--ion-text-color, #d4d4d4);
+    color: var(--ion-text-color, #6C8BA1);
   }
 
   /* buat h2 */
@@ -37,14 +37,20 @@ ion-slides {
     padding: 0 40px;
     font-size: 15px;
     line-height: 1.5;
-    color: var(--ion-color-step-600, #f0f0f0);
+    text-align: center;
+    color: var(--ion-color-step-600, #6C8BA1);
   }
 
   p b {
-    color: var(--ion-text-color, #d4d4d4);
+    color: var(--ion-text-color, #5c7586);
   }
 
   /* buat background, masih belom bisa :( */
   ion-content.background-image{
-    background-image: url('/public/assets/foto/intropage-01.png') no-repeat center/cover fixed;;
+    background-size: cover;
+    background-image: url('../../public/assets/foto/intropage-01.png') !important ;
+  }
+
+  #noBG{
+    --background:none;
   }
