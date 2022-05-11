@@ -12,6 +12,7 @@ import EditBarang from './pages/EditBarang';
 import NavTabs from './components/NavigationTabs';
 import BarangContextProvider from './data/BarangContextProvider';
 import BarangContext from './data/barang-context';
+import IntroPage from './pages/IntroPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -59,6 +60,7 @@ const App: React.FC = () => {
             <Route path="/ItemList" component={ItemList}/>
             <Route path="/TambahBarang" component={TambahBarang}/>
             <Route path="/EditBarang/:itemId" component={EditBarang}/>
+            <Route path="/Welcome" component={IntroPage}/>
             <Redirect exact from="/" to="/tabs" />
             </IonRouterOutlet>
           </BarangContextProvider>
