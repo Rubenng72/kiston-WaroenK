@@ -15,11 +15,11 @@ const UpdateBarang: React.FC = () => {
   }>();
 
   const [selectedItem, setSelectedItem] = useState<any>();
-  const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>();
+  const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
   const titleRef = useRef<HTMLIonInputElement>(null);
   const priceRef = useRef<HTMLIonInputElement>(null);
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState('');
+  const [title, setTitle] = useState<string>('');
+  const [price, setPrice] = useState<number>(0);
   const [fotoUrl, setfotoUrl] = useState('');
   const [selectedFile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState('');
@@ -38,6 +38,7 @@ const UpdateBarang: React.FC = () => {
   }
 
   useEffect(() => {
+    
     if(id){
       const unsubscribe = onSnapshot(doc(db, "barang", id), (doc)=>{
         setSelectedItem({...doc.data()});
@@ -45,6 +46,12 @@ const UpdateBarang: React.FC = () => {
       return () =>{unsubscribe();}
     }
   }, []);
+
+  useEffect(() => {
+    setTitle(selectedItem?.title!);
+    setPrice(selectedItem?.price!);
+    setChosenSatuan(selectedItem?.type!);
+  },[selectedItem]);
 
 
   const updateData = async(url: string|null, bId: string|null, title: string, price: number) =>{
@@ -73,15 +80,16 @@ const UpdateBarang: React.FC = () => {
   }
 
   const editBarangHandler = async () =>{
-    const enteredTitle = titleRef.current?.value;
-    const enteredPrice = priceRef.current?.value;
-    if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !chosenSatuan){
+    
+    // const enteredTitle = titleRef.current?.value;
+    // const enteredPrice = priceRef.current?.value;
+    if(!title || title.toString().trim().length === 0 || !price || !chosenSatuan){
       serStartAlert(true);
       return;
     }
 
-    const title= titleRef.current?.value as string;
-    const price= priceRef.current?.value as number;
+    // const title1= titleRef.current?.value as string;
+    // const price= priceRef.current?.value as number;
     const storageRef = ref(storage, fileName);
     if(takenPhoto){
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
@@ -155,12 +163,12 @@ const UpdateBarang: React.FC = () => {
 
           <IonRow className="ion-padding">
               {/* <IonLabel>Nama Barang</IonLabel> */}
-              <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={selectedItem?.title} ref={titleRef}></IonInput>
+              <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={title} /*ref={titleRef}*/ onIonChange={e => setTitle(e.detail.value!)}></IonInput>
           </IonRow>
 
           <IonRow className="ion-padding">
             {/* <IonLabel>Harga Barang</IonLabel> */}
-            <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={selectedItem?.price} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
+            <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={price} /*ref={priceRef}*/ onIonChange={e => setPrice(parseInt(e.detail.value!))}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
             <IonSelect className="inputselection" interface="popover" placeholder={selectedItem?.type} onIonChange={selectSatuanhandler} value={chosenSatuan}>
                 <IonSelectOption value="pcs">Pcs</IonSelectOption>
                 <IonSelectOption value="lusin">Lusin</IonSelectOption>
