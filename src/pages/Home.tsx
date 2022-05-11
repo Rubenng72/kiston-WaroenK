@@ -11,12 +11,10 @@ import { trashOutline } from "ionicons/icons";
 import {logout} from "../data/auth";
 import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { useHistory  } from 'react-router-dom';
 
 import Splash from "../components/SplashScreen/Splash";
 
 const Home: React.FC = () => {
-  const history = useHistory();
   const auth = getAuth();
   const user = auth.currentUser;
   const db = getFirestore();
@@ -37,7 +35,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
-      localStorage.setItem("items", JSON.stringify(barang));
+      // localStorage.setItem("items", JSON.stringify(barang));
     })
     return () => unsubscribe();
   }, []);
@@ -68,7 +66,7 @@ const Home: React.FC = () => {
   {
     const res = await logout();
     if(res){
-      history.replace('/tabs/Home');
+      window.location.assign("/tabs/Home");
     }
   }
 

@@ -9,24 +9,32 @@ export const userRegister = async (email: string, password: string) => {
   if(user !== null && user.isAnonymous){
     try{
       const credential = EmailAuthProvider.credential(email, password);
-      linkWithCredential(user, credential);
-      return true;
+      const istrue = await linkWithCredential(user, credential).then(()=>{return true;})
+      .catch((error)=>{
+        alert(error);
+        return false});
+        if(istrue){
+          return true
+        }
     }catch(error){
       console.log(error);
       return false;
     }
   }else{
     try{
-      createUserWithEmailAndPassword(auth, email, password)
+      const istrue = await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         addData(user.uid, user.email);
-        sendEmailVerification(auth.currentUser!).then(()=>{console.log('email sent')})
+        sendEmailVerification(auth.currentUser!).then(()=>{alert('email sent')});
+        return true;
       }).catch((error)=>{
         console.log(error);
         return false;
       })
-      return true;
+      if(istrue){
+        return true
+      }
     }catch(error){
       console.log(error);
       return false;
@@ -36,19 +44,37 @@ export const userRegister = async (email: string, password: string) => {
 
 export async function userLogin(email: string, password: string) {
   try{
-    await signInWithEmailAndPassword(auth, email, password).catch((error)=>{
-      console.log(error);
+    const istrue = await signInWithEmailAndPassword(auth, email, password).then(()=>{return true})
+    .catch((error)=>{
+      alert(error);
       return false;
     })
-    return true;
+    if(istrue){
+      return true;
+    }
   }catch(error){
     return false;
   };
 }
 
 export async function fpass(email:string){
-  sendPasswordResetEmail(auth, email);
+  try{
+    const istrue = await sendPasswordResetEmail(auth, email).then(()=>{
+      alert('email terkirim');
+      return true;
+    })
+    .catch((error)=>{
+      alert(error);
+      return false;
+    })
+    if(istrue){
+      return true;
+    }
+  }catch(error){
+    return false;
+  }
 }
+
 
 export const userAsAnonymous  = async () => {
   try{
@@ -61,15 +87,19 @@ export const userAsAnonymous  = async () => {
 
 export async function logout(){
   try{
-    signOut(auth).catch((error)=>{
-      console.log(error);
+    const istrue = await signOut(auth).then(()=>{
+      return true;
+    })
+    .catch((error)=>{
+      alert(error);
       return false;
     });
-    return true;
+    if(istrue){
+      return true;
+    }
   }catch(error){
     return false;
   }
-
 }
 
 onAuthStateChanged(auth, (user) => {

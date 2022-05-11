@@ -1,14 +1,19 @@
 import React from "react";
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
 import { useState } from 'react';
 import { fpass } from '../data/auth';
+import { useHistory  } from 'react-router-dom';
 
 const ForgotPassword: React.FC = () => {
     const [email, setEmail] = useState('');
+    const history = useHistory();
 
     async function uFPass()
     {
       const res = await fpass(email);
+      if(res){
+        history.replace('/tabs/Home');
+      }
     }
 
     return (

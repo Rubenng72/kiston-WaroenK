@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton, IonLabel, IonSearchbar, IonItem} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton,IonSearchbar} from "@ionic/react";
 import { isPlatform} from '@ionic/react';
 import {addOutline} from "ionicons/icons";
 import ItemListCard from '../components/ItemList/ItemListCard';
@@ -16,7 +16,6 @@ const ItemList: React.FC = () => {
     }, [])
     return (
         <IonPage>
-          {loading? <></> : null}
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >
@@ -53,7 +52,7 @@ const ItemList: React.FC = () => {
                 </IonFabButton>
               </IonFab>
             )}
-            <ItemListCard />
+            {loading? <></> : <ItemListCard />}
           </IonContent>
         </IonPage>
     );
