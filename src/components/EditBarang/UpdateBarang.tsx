@@ -5,7 +5,7 @@ import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, 
 import {camera} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { getFirestore, doc, onSnapshot, updateDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import './UpdateBarang.css';
 
 const UpdateBarang: React.FC = () => {
@@ -16,11 +16,8 @@ const UpdateBarang: React.FC = () => {
 
   const [selectedItem, setSelectedItem] = useState<any>();
   const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
-  const titleRef = useRef<HTMLIonInputElement>(null);
-  const priceRef = useRef<HTMLIonInputElement>(null);
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
-  const [fotoUrl, setfotoUrl] = useState('');
   const [selectedFile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState('');
   // const barangctx = useContext(BarangContext);
@@ -38,7 +35,7 @@ const UpdateBarang: React.FC = () => {
   }
 
   useEffect(() => {
-    
+
     if(id){
       const unsubscribe = onSnapshot(doc(db, "barang", id), (doc)=>{
         setSelectedItem({...doc.data()});
@@ -64,7 +61,7 @@ const UpdateBarang: React.FC = () => {
           foto: fileName,
           fotoUrl: url,
         });
-        localStorage.removeItem('edit');
+        localStorage.removeItem('editItem');
       }
     if(bId && url == null){
       const docRef = await updateDoc(doc(db, "barang", bId), {
@@ -72,7 +69,7 @@ const UpdateBarang: React.FC = () => {
         price: price,
         type: chosenSatuan,
       });
-      localStorage.removeItem('edit');
+      localStorage.removeItem('editItem');
     }
     } catch (e) {
       console.error("Error adding Document: ", e);
@@ -80,27 +77,25 @@ const UpdateBarang: React.FC = () => {
   }
 
   const editBarangHandler = async () =>{
-    
-    // const enteredTitle = titleRef.current?.value;
-    // const enteredPrice = priceRef.current?.value;
     if(!title || title.toString().trim().length === 0 || !price || !chosenSatuan){
       serStartAlert(true);
       return;
     }
 
-    // const title1= titleRef.current?.value as string;
-    // const price= priceRef.current?.value as number;
     const storageRef = ref(storage, fileName);
     if(takenPhoto){
+      const imgDeleteRef = ref(storage,  selectedItem.foto);
+      await deleteObject(imgDeleteRef);
+
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
         // console.log('upload file success');
         getDownloadURL(ref(storage, fileName)).then((url) => {
-            updateData(null, id, title, price);
+            updateData(url, id, title, price);
         })
       })
     }else if(!takenPhoto){
-      const url = selectedItem.fotoUrl;
-      updateData(url,id,title,price);
+
+      updateData(null,id,title,price);
     }
 
     setToastMessage('Barang berhasil diubah!');
@@ -163,12 +158,12 @@ const UpdateBarang: React.FC = () => {
 
           <IonRow className="ion-padding">
               {/* <IonLabel>Nama Barang</IonLabel> */}
-              <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={title} /*ref={titleRef}*/ onIonChange={e => setTitle(e.detail.value!)}></IonInput>
+              <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={title} onIonChange={e => setTitle(e.detail.value!)}></IonInput>
           </IonRow>
 
           <IonRow className="ion-padding">
             {/* <IonLabel>Harga Barang</IonLabel> */}
-            <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={price} /*ref={priceRef}*/ onIonChange={e => setPrice(parseInt(e.detail.value!))}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
+            <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={price} onIonChange={e => setPrice(parseInt(e.detail.value!))}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
             <IonSelect className="inputselection" interface="popover" placeholder={selectedItem?.type} onIonChange={selectSatuanhandler} value={chosenSatuan}>
                 <IonSelectOption value="pcs">Pcs</IonSelectOption>
                 <IonSelectOption value="lusin">Lusin</IonSelectOption>
