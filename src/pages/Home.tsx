@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import { trashOutline } from "ionicons/icons";
 import {logout} from "../data/auth";
 import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
@@ -21,6 +21,7 @@ const Home: React.FC = () => {
   const [isEmpty, setIsEmpty] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
 
   const userId = user ? user.uid : '';
@@ -28,6 +29,22 @@ const Home: React.FC = () => {
   const q = query(collection(db, "barang"), where("uId", "==", userId));
 
   useEffect(() => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const dataBarang = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id}));
+      // localStorage.setItem("items", JSON.stringify(barang));
+      setBarang(dataBarang);
+      setIsEmpty(querySnapshot.empty);
+    })
+    return () => {
+      unsubscribe();
+    }
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(()=>{
+        setLoading(false);
+    }, 1)
     if(barang.length == 0 && !isEmpty){
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const dataBarang = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id}));
@@ -41,21 +58,13 @@ const Home: React.FC = () => {
     }
   }, [barang]);
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const dataBarang = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id}));
-      // localStorage.setItem("items", JSON.stringify(barang));
-      setBarang(dataBarang);
-    })
-    return () => {
-      unsubscribe();
-    }
-  }, []);
 
-  const inputHandler = (e:CustomEvent) => {
+
+
+  const inputHandler = async(e:CustomEvent) => {
     const amount = Number(e.detail.value);
     const barangRef = doc(db, "barang", ids);
-    updateDoc(barangRef, { "amount" : amount})
+    await updateDoc(barangRef, { "amount" : amount})
   }
 
   const priceCalculation = () =>{
@@ -68,6 +77,14 @@ const Home: React.FC = () => {
     setTotalHarga(sum);
   }
 
+  const resetAmount = () => {
+    console.log(barang.length, isEmpty);
+    // barang.forEach((value)=>{
+    //   const barangRef = doc(db, "barang", value.id);
+    //   updateDoc(barangRef, { "amount" : 0})
+    // })
+
+  }
   async function uLogout()
   {
     const res = await logout();
@@ -105,7 +122,6 @@ const Home: React.FC = () => {
 
     return (
         <IonPage>
-
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >
@@ -118,7 +134,7 @@ const Home: React.FC = () => {
                 </IonButton> */}
               {/* </IonButtons> */}
               <IonButtons slot="end" >
-                <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="danger" onClick={()=>console.log('bang')}>
+                <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="danger" onClick={()=>resetAmount()}>
                   Reset
                 </IonButton>
               </IonButtons>
@@ -133,6 +149,7 @@ const Home: React.FC = () => {
 
               </IonToolbar>
             </IonHeader>
+            {loading? <br/> :
             <Swiper
               effect={"coverflow"}
               spaceBetween={1}
@@ -164,7 +181,7 @@ const Home: React.FC = () => {
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput className="ion-margin" maxlength={2} placeholder={item.amount} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
+                        <IonInput className="ion-margin" maxlength={2} placeholder={item.amount} readonly={false} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>
@@ -183,7 +200,7 @@ const Home: React.FC = () => {
              </SwiperSlide>
            }
             </Swiper>
-
+          }
             <IonCard className="card-th-dh-lds" color="primary">
               <IonRow className="center">
                 <IonCol size="5.5" className="label-TH">Total Harga</IonCol>
@@ -195,6 +212,7 @@ const Home: React.FC = () => {
                 </IonCol>
               </IonRow>
             </IonCard>
+            {loading? <br/> :
             <IonModal
               isOpen={showModal}
               initialBreakpoint={0.25}
@@ -300,6 +318,7 @@ const Home: React.FC = () => {
                 </IonCard>
 
             </IonModal>
+            }
           </IonContent>
         </IonPage>
     );
