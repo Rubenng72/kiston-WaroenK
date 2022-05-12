@@ -1,5 +1,5 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast, useIonToast} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { userLogin, userAsAnonymous } from '../data/auth';
@@ -11,6 +11,7 @@ const Login: React.FC = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     const history = useHistory();
+    const [present] = useIonToast();
     const [toastMessage, setToastMessage] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,6 +20,7 @@ const Login: React.FC = () => {
     {
       const res = await userLogin(email, password);
       if(res){
+        present('Berhasil Login', 3000)
         history.replace('/tabs/Home');
         //berhasil login
       }
@@ -28,6 +30,7 @@ const Login: React.FC = () => {
     {
       const res = await userAsAnonymous();
       if(res){
+        present('Continue As Guest', 3000)
         history.replace('/tabs/Home');
         //continue as guest
       }

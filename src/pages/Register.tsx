@@ -1,5 +1,5 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, useIonToast} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory  } from 'react-router-dom';
 import { userRegister } from '../data/auth';
@@ -8,6 +8,7 @@ import CryptoJS from 'crypto-js';
 const Register: React.FC = () => {
     const history = useHistory();
     const [email, setEmail] = useState('');
+    const [present] = useIonToast();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfimPassword] = useState('');
 
@@ -17,11 +18,13 @@ const Register: React.FC = () => {
       {
         console.log(password, confirmPassword);
         console.log('sad');
+        present('Password Tidak Sama', 3000)
         //password tidak sama
         return false;
       }
       if(email.trim() === '' || password === '')
       {
+        present('Password/Email Kosong', 3000)
         //password/email kosong
         return false;
       }
