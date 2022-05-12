@@ -1,5 +1,5 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, useIonToast} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, useIonToast, useIonAlert} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory  } from 'react-router-dom';
 import { userRegister } from '../data/auth';
@@ -9,6 +9,7 @@ const Register: React.FC = () => {
     const history = useHistory();
     const [email, setEmail] = useState('');
     const [present] = useIonToast();
+    const [presentAlert] = useIonAlert();
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfimPassword] = useState('');
 
@@ -30,7 +31,15 @@ const Register: React.FC = () => {
       }
       const res = await userRegister(email, password);
       if(res){
-        history.replace('/tabs/Home');
+        presentAlert({
+          header: 'Alert',
+          message: 'Check email untuk verifikasi',
+          buttons: [
+            'Cancel',
+            { text: 'Ok', handler: (d) => history.replace('/tabs/Home')},
+          ],
+        })
+        
         //berhasil register ((Alert)'Check email untuk verifikasi')
       }
     }
