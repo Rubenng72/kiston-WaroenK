@@ -12,54 +12,60 @@ import {logout} from "../data/auth";
 import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import Splash from "../components/SplashScreen/Splash";
-
 const Home: React.FC = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   const db = getFirestore();
   const [barang, setBarang] = useState<Array<any>>([]);
-
-  const [mostrarSplash, setMostrarSplash] = useState(false);
+  const [ids, setIds] = useState<string>('');
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
-  const quantityRef = useRef<HTMLIonInputElement>(null);
-
-  let calculation = 0;
 
   const userId = user ? user.uid : '';
 
   const q = query(collection(db, "barang"), where("uId", "==", userId));
 
   useEffect(() => {
+    if(barang.length == 0 && !isEmpty){
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const dataBarang = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id}));
+        // localStorage.setItem("items", JSON.stringify(barang));
+        setBarang(dataBarang);
+        setIsEmpty(querySnapshot.empty);
+      })
+      return () => {
+        unsubscribe();
+      }
+    }
+  }, [barang]);
+
+  useEffect(() => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
+      const dataBarang = querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id}));
       // localStorage.setItem("items", JSON.stringify(barang));
+      setBarang(dataBarang);
     })
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    }
   }, []);
 
-  const inputHandler = (id: string) => {
-      const enteredQuantity = Number(quantityRef.current?.value);
-      const barangRef = doc(db, "barang", id);
+  const inputHandler = (e:CustomEvent) => {
+    const amount = Number(e.detail.value);
+    const barangRef = doc(db, "barang", ids);
+    updateDoc(barangRef, { "amount" : amount})
+  }
 
-      updateDoc(barangRef, {
-        "quantity" : enteredQuantity
-      });
-
-      barang.forEach((value) => {
-        if(value.id == id && value.quantity > 0){
-          setTotalHarga(calculation += (value.quantity * value.price));
-          console.log(calculation);
-        }
-        else {
-          console.log('here');
-          return setTotalHarga(0);
-        }
-      });
-
-      return setTotalHarga(calculation);
+  const priceCalculation = () =>{
+    let sum = 0;
+    barang.forEach((value)=>{
+      if(value.amount >0){
+        sum += value.price * value.amount;
+      }
+    })
+    setTotalHarga(sum);
   }
 
   async function uLogout()
@@ -97,20 +103,8 @@ const Home: React.FC = () => {
     }
   }
 
-    //splashscreen
-    useEffect(() =>{
-      setMostrarSplash(true);
-      setTimeout(()=>{
-          setMostrarSplash(false);
-      }, 2000)
-    }, [])
-
     return (
         <IonPage>
-
-        {
-        mostrarSplash? <Splash />: null
-        }
 
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
@@ -124,7 +118,7 @@ const Home: React.FC = () => {
                 </IonButton> */}
               {/* </IonButtons> */}
               <IonButtons slot="end" >
-                <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="danger" routerLink="#">
+                <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="danger" onClick={()=>console.log('bang')}>
                   Reset
                 </IonButton>
               </IonButtons>
@@ -132,13 +126,13 @@ const Home: React.FC = () => {
 
             </IonToolbar>
           </IonHeader>
+
           <IonContent fullscreen>
             <IonHeader collapse="condense">
               <IonToolbar>
 
               </IonToolbar>
             </IonHeader>
-
             <Swiper
               effect={"coverflow"}
               spaceBetween={1}
@@ -170,7 +164,7 @@ const Home: React.FC = () => {
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput className="ion-margin" maxlength={2} placeholder={item.quantity} ref={quantityRef} onIonInput={()=>inputHandler(item.id)}></IonInput>
+                        <IonInput className="ion-margin" maxlength={2} placeholder={item.amount} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>
@@ -201,7 +195,6 @@ const Home: React.FC = () => {
                 </IonCol>
               </IonRow>
             </IonCard>
-
             <IonModal
               isOpen={showModal}
               initialBreakpoint={0.25}

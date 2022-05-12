@@ -43,7 +43,7 @@ const InputBarang: React.FC = () => {
           type: chosenSatuan,
           foto: fileName,
           fotoUrl: url,
-          quantity: 0,
+          amount: 0,
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
