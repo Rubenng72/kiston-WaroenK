@@ -1,45 +1,19 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
 import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, IonButton, IonActionSheet, IonCard} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
-import { deleteDoc, doc } from "firebase/firestore"
-import { getStorage, ref, deleteObject } from "firebase/storage";
-import { getFirestore, collection, query, where, onSnapshot } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
 
 const ItemListCard: React.FC = () => {
-    const db = getFirestore();
-    const storage = getStorage();
-    const [barang, setBarang] = useState<Array<any>>([]);
+
+    const barangctx = useContext(BarangContext);
     const [ids, setId] = useState<string>('');
     const [img, setImg] = useState<string>('');
     const [actionSheet, setShowActionSheet] = useState(false);
 
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const userId = user ? user.uid : '';
-
-    const q = query(collection(db, "barang"), where("uId", "==", userId));
-
-    useEffect(() => {
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        setBarang(querySnapshot.docs.map((doc) => ({...doc.data(), id:doc.id})));
-        // localStorage.setItem("items", JSON.stringify(barang));
-      })
-      return () => unsubscribe();
-    }, []);
-
     async function deleteBarang(id: string, img: string) {
-      const dataRef = doc(db, "barang", id);
-      const imgRef = ref(storage,  img);
-      try{
-        await deleteDoc(dataRef);
-        await deleteObject(imgRef);
-        console.log('done');
-      }catch(error){
-        console.log(error);
-      }
+      barangctx.deleteSingleItem(id, img);
     }
 
     const sheetHandler = (id: string, img: string) => {
@@ -49,7 +23,7 @@ const ItemListCard: React.FC = () => {
     }
 
     const setEditData = (id: string) => {
-      barang.forEach((value)=>{
+      barangctx.items.forEach((value)=>{
         if(value.id == id)
         {
           localStorage.setItem("editId", value.id);
@@ -60,7 +34,7 @@ const ItemListCard: React.FC = () => {
 
     return (
       <IonGrid>
-        {barang.length != 0 ? barang.map((item) => (
+        {barangctx.items.length != 0  ? barangctx.items.map((item) =>(
           <IonCard id="item-list" className="ion-no-margin" key={item.id}>
             <IonRow>
           <IonCol size="3" className="ion-no-margin">
@@ -100,6 +74,7 @@ const ItemListCard: React.FC = () => {
           </IonText>
         </IonButtons>
         }
+
         {ids && <IonActionSheet
             cssClass = 'IASBackground'
             isOpen={actionSheet}

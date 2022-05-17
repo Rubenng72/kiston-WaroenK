@@ -41,8 +41,8 @@ setupIonicReact();
 const App: React.FC = () => {
   const barangCtx = useContext(BarangContext);
   const {initContext} = barangCtx;
-  localStorage.clear();
-  indexedDB.deleteDatabase("Disc");
+  // localStorage.clear();
+  // indexedDB.deleteDatabase("Disc");
   useEffect(() => {
     initContext();
   }, [initContext]);

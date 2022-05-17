@@ -1,19 +1,21 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import {IonGrid, IonSelect, IonSelectOption, IonLabel, IonIcon, IonRow, IonCol, IonButton, IonInput, IonToast, IonAlert} from "@ionic/react";
 import {camera} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth } from "firebase/auth";
+import BarangContext from '../../data/barang-context';
 import './InputBarang.css';
 
 const InputBarang: React.FC = () => {
     const auth = getAuth();
     const user = auth.currentUser;
-    const db = getFirestore();
+
     const storage = getStorage();
+    const barangctx = useContext(BarangContext);
 
     const [takenPhoto, setTakenPhoto] = useState<{
       path: string | undefined;
@@ -34,23 +36,6 @@ const InputBarang: React.FC = () => {
       setChosenSatuan(selectedSatuan);
     }
 
-    const addData = async(url: string, uId: string|null, title: string, price: number) =>{
-      try {
-        const docRef = await addDoc(collection(db, "barang"), {
-          uId: uId,
-          title: title,
-          price: price,
-          type: chosenSatuan,
-          foto: fileName,
-          fotoUrl: url,
-          amount: 0,
-        });
-        console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
-        console.error("Error adding Document: ", e);
-      }
-    }
-
     const addBarangHandler = async () =>{
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
@@ -63,13 +48,12 @@ const InputBarang: React.FC = () => {
       const price= priceRef.current?.value as number;
       const storageRef = ref(storage, fileName);
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
-        // console.log('upload file success');
         getDownloadURL(ref(storage, fileName)).then((url) => {
           if(user == null){
-            addData(url, 'all', title, price);
+            barangctx.addDataItem('all', title, price, chosenSatuan, fileName, url);
           }
           else{
-            addData(url, user.uid, title, price);
+            barangctx.addDataItem(user.uid, title, price, chosenSatuan, fileName, url);
           }
         })
       })

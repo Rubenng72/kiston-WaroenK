@@ -7,13 +7,6 @@ import ItemListCard from '../components/ItemList/ItemListCard';
 import HapusSemuabtn from '../components/ItemList/HapusSemua';
 
 const ItemList: React.FC = () => {
-    const [loading, setLoading] = useState(false);
-    useEffect(() =>{
-      setLoading(true);
-      setTimeout(()=>{
-          setLoading(false);
-      }, 200)
-    }, [])
     return (
         <IonPage>
           <IonHeader class="ion-no-border">
@@ -52,7 +45,7 @@ const ItemList: React.FC = () => {
                 </IonFabButton>
               </IonFab>
             )}
-            {loading? <br/> : <ItemListCard />}
+          <ItemListCard />
           </IonContent>
         </IonPage>
     );
