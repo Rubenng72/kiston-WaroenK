@@ -8,6 +8,7 @@ import { getAuth } from "firebase/auth";
 
 const BarangContextProvider: React.FC = props => {
   const [items, setItems] = useState<Barang[]>([]);
+  const [isEmpty, setIsEmpty] = useState(false);
   const db = getFirestore();
   const storage = getStorage();
 
@@ -74,6 +75,26 @@ const BarangContextProvider: React.FC = props => {
   const q = query(collection(db, "barang"), where("uId", "==", userId));
 
   useEffect(() => {
+    if(items.length == 0 && !isEmpty){
+      onSnapshot(q, (querySnapshot) => {
+        const storableItems = querySnapshot.docs.map((doc) => ({
+          id:doc.id,
+          uId:doc.data().uId,
+          foto:doc.data().foto,
+          fotoUrl:doc.data().fotoUrl,
+          title: doc.data().title,
+          price: doc.data().price,
+          type: doc.data().type,
+          amount: doc.data().amount
+        }));
+        setItems(storableItems);
+        setIsEmpty(querySnapshot.empty);
+        Storage.set({ key: "items", value: JSON.stringify(storableItems)});
+      })
+    }
+  }, [items]);
+
+  useEffect(() => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const storableItems = querySnapshot.docs.map((doc) => ({
         id:doc.id,
@@ -86,12 +107,13 @@ const BarangContextProvider: React.FC = props => {
         amount: doc.data().amount
       }));
       setItems(storableItems);
-      Storage.set({ key: "items", value: JSON.stringify(storableItems)});
+      setIsEmpty(querySnapshot.empty);
+      // Storage.set({ key: "items", value: JSON.stringify(storableItems)});
     })
     return () => {
       unsubscribe();
     }
-  }, [items]);
+  }, []);
 
   const initContext = useCallback(async () => {
     const itemsData = await Storage.get({ key: "items" });
