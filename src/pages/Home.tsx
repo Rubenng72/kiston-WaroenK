@@ -201,7 +201,7 @@ const Home: React.FC = () => {
                 {barangctx.items.length != 0 ? barangctx.items.map((item)=>{
                   if(item.amount > 0){
                     return(
-                      <IonItem lines="none" className="card-modal">
+                      <IonItem lines="none" className="card-modal" key={item.id}>
                         <IonCol size="3">
                           <img className="img-modal center" src={item.fotoUrl} alt={item.title}/>
                         </IonCol>
