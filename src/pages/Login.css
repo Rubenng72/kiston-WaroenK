@@ -1,16 +1,22 @@
-/*card box*/
-.card-box {
-    background-color: #DBF8FF;
-    border-radius: 10px;
-    margin: 20px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+.card-login {
+  background-color: #B5D0E4;
+  border-radius: 10px;
+  margin: 10%;
+  text-align: center;
+  padding: 5%;
 }
 
-.text-between-line {
-    display: flex;
-    flex-direction: row;
-    color: rgb(153, 152, 152);
-    font-size: small;
+.tombol-login{
+  width: 100%;
+  height: 30px;
+}
+
+
+/* .text-between-line {
+  display: flex;
+  flex-direction: row;
+  color: rgb(153, 152, 152);
+  font-size: small;
     margin: 10px 10px 10px 10px;
 }
 
@@ -20,4 +26,4 @@
   flex: 1 1;
   border-bottom: 1px solid grey;
   margin: 7px 10px 10px 10px;
-}
+} */

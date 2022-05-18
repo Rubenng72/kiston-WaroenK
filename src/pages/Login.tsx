@@ -1,5 +1,5 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast, useIonToast} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast, useIonToast, IonCard, IonItem} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { userLogin, userAsAnonymous } from '../data/auth';
@@ -64,52 +64,47 @@ const Login: React.FC = () => {
         </IonToolbar>
 
         <IonContent>
-          <IonGrid className="card-box">
-            <IonRow className="ion-padding" style={{paddingBottom: 0}}>
-                <IonLabel className="ion-padding" style={{marginRight:27}}>Email</IonLabel>
-                <IonInput className="inputtext" placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
+          <IonCard className="card-login">
+
+            <IonTitle className="ion-no-padding text-bold" color="dark">Login</IonTitle>
+            <IonRow className="ion-padding-vertical">
+                <IonLabel>Don't have an account?</IonLabel>
+                <Link to="/Register">
+                  <IonLabel color="dark">&nbsp; Create your account</IonLabel>
+                </Link>
             </IonRow>
-            <IonRow className="ion-padding">
-                <IonLabel className="ion-padding">Password</IonLabel>
-                <IonInput className="inputtext"minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => setPassword(CryptoJS.SHA256(e.target.value).toString())}></IonInput>
+
+            <IonItem className="ion-no-padding">
+                <IonLabel position="floating">Email</IonLabel>
+                <IonInput placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
+            </IonItem>
+
+            <IonItem className="ion-no-padding">
+                <IonLabel position="floating">Password</IonLabel>
+                <IonInput minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => setPassword(CryptoJS.SHA256(e.target.value).toString())}></IonInput>
+            </IonItem>
+
+            <IonRow className="ion-padding-vertical ion-float-right">
+              <Link to="/ForgotPassword">
+                <IonLabel color="dark">&nbsp; Forgot Password</IonLabel>
+              </Link>
             </IonRow>
-            <IonRow className="ion-padding">
-              <IonCol className="center">
-              <IonButton
-                id="g-button"
-                color="light"
-                onClick={uLogin}
-                shape="round"
-                expand="block"
-                >
+
+            <IonRow className="tombol-login">
+              <IonButton className="tombol-login" onClick={uLogin}>
                 <IonLabel>Login</IonLabel>
               </IonButton>
-
-              <IonButton
-                routerLink='/ForgotPassword'
-                color="light"
-                shape="round"
-                expand="block"
-               >
-                <IonLabel color="warning">Forgot Password</IonLabel>
-              </IonButton>
-
-              </IonCol>
             </IonRow>
 
-            <IonRow>
+            {/* <IonRow>
               <IonCol>
                 <IonText className='text-between-line'>OR</IonText>
               </IonCol>
-            </IonRow>
+            </IonRow> */}
 
-        <IonRow className="ion-padding">
-            <IonLabel>New here?</IonLabel>
-            <Link to="/Register"><IonLabel color="warning">Register</IonLabel></Link>
-        </IonRow>
-        {skipbuttonhandler()}
-        </IonGrid>
-
+            
+            {skipbuttonhandler()}
+          </IonCard>
         </IonContent>
       </IonPage>
     );
