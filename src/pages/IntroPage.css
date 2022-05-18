@@ -21,7 +21,7 @@ ion-slides {
 
   /* buat ngatur gambar */
   .swiper-slide img {
-    max-height: 150%;
+    max-height: 100%;
     max-width: 85%;
     margin: 100px 0 0px;
     pointer-events: none;

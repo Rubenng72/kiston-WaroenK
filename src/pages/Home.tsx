@@ -1,4 +1,4 @@
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonText, IonTitle, IonLabel, IonCardSubtitle, IonCardTitle, IonImg} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonText, IonTitle, IonLabel, IonCardSubtitle, IonCardTitle, IonImg, IonActionSheet} from "@ionic/react";
 import './Home.css'
 import './HomeModal.css'
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,13 +7,14 @@ import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useState, useContext} from "react";
-import { trashOutline } from "ionicons/icons";
+import { trash, trashOutline, close } from "ionicons/icons";
 import BarangContext from '../data/barang-context';
 import {logout} from "../data/auth";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const Home: React.FC = () => {
+  const [showActionSheet, setShowActionSheet] = useState(false);
   const auth = getAuth();
   const user = auth.currentUser;
   const db = getFirestore();
@@ -60,6 +61,10 @@ const Home: React.FC = () => {
     }
   }
 
+  const actionSheetHandler = () => {
+        setShowActionSheet(true);
+        };
+
   const signinhandler = () =>
   {
     if(user !== null){
@@ -72,7 +77,7 @@ const Home: React.FC = () => {
       }
       else{
         return(<IonButtons slot="end" >
-        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={uLogout}>
+        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={actionSheetHandler}>
         Logout
         </IonButton>
         </IonButtons>)
@@ -154,7 +159,7 @@ const Home: React.FC = () => {
                 </SwiperSlide>
                ))
              :
-             <SwiperSlide>
+             <SwiperSlide >
              <IonButtons className="ion-padding ion-margin">
                <IonText className="ion-text-center">
                 <h5>kosong</h5>
@@ -227,7 +232,7 @@ const Home: React.FC = () => {
                   }
                 })
                   :
-                  <h2>daftar kosong</h2>
+                  <h2 className="text-center">daftar kosong</h2>
                 }
                 </IonContent>
 
@@ -244,6 +249,35 @@ const Home: React.FC = () => {
                 </IonCard>
 
             </IonModal>
+
+        <IonActionSheet
+        isOpen={showActionSheet}
+        onDidDismiss={() => setShowActionSheet(false)}
+        // cssClass='my-custom-class'
+        header= 'Apakah kamu yakin ingin Logout dari akun ini ?'
+        buttons={[{
+          text: 'Saya Yakin',
+          role: 'destructive',
+          icon: trash,
+          id: 'delete-button',
+          data: {
+            type: 'delete'
+          },
+          handler: () => {
+            uLogout()
+          }
+        }, 
+        {
+          text: 'Cancel',
+          icon: close,
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]}
+      >
+      </IonActionSheet>
+
           </IonContent>
         </IonPage>
     );
