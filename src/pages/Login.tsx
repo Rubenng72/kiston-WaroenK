@@ -15,6 +15,12 @@ const Login: React.FC = () => {
     const [toastMessage, setToastMessage] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const secretKey = 'KistonWar';
+
+    const passwordEncryptionHandler = (pass: string) => {
+      var encrypted = CryptoJS.AES.encrypt(pass, secretKey).toString();
+      setPassword(encrypted);
+    }
 
     async function uLogin()
     {
@@ -81,7 +87,7 @@ const Login: React.FC = () => {
 
             <IonItem className="ion-no-padding">
                 <IonLabel position="floating">Password</IonLabel>
-                <IonInput minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => setPassword(CryptoJS.SHA256(e.target.value).toString())}></IonInput>
+                <IonInput minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => passwordEncryptionHandler(e.target.value)}></IonInput>
             </IonItem>
 
             <IonRow className="ion-padding-vertical ion-float-right">
@@ -102,7 +108,7 @@ const Login: React.FC = () => {
               </IonCol>
             </IonRow> */}
 
-            
+
             {skipbuttonhandler()}
           </IonCard>
         </IonContent>

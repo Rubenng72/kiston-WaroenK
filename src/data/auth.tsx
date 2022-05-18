@@ -1,14 +1,18 @@
 import { app } from '../firebaseConfig';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, signOut, sendPasswordResetEmail, signInAnonymously, EmailAuthProvider, linkWithCredential} from "firebase/auth";
 import { addData } from './addUserData';
+import CryptoJS from 'crypto-js';
 app();
 const auth = getAuth();
 const user = auth.currentUser;
+const secretKey = 'KistonWar';
 
 export const userRegister = async (email: string, password: string) => {
   if(user !== null && user.isAnonymous){
     try{
-      const credential = EmailAuthProvider.credential(email, password);
+      var decrypted = CryptoJS.AES.decrypt(password, secretKey);
+      const rPass = decrypted.toString(CryptoJS.enc.Utf8);
+      const credential = EmailAuthProvider.credential(email, rPass);
       const istrue = await linkWithCredential(user, credential).then(()=>{return true;})
       .catch((error)=>{
         alert(error);
@@ -22,7 +26,9 @@ export const userRegister = async (email: string, password: string) => {
     }
   }else{
     try{
-      const istrue = await createUserWithEmailAndPassword(auth, email, password)
+      var decrypted = CryptoJS.AES.decrypt(password, secretKey);
+      const rPass = decrypted.toString(CryptoJS.enc.Utf8);
+      const istrue = await createUserWithEmailAndPassword(auth, email, rPass)
       .then((userCredential) => {
         const user = userCredential.user;
         addData(user.uid, user.email);
@@ -44,7 +50,9 @@ export const userRegister = async (email: string, password: string) => {
 
 export async function userLogin(email: string, password: string) {
   try{
-    const istrue = await signInWithEmailAndPassword(auth, email, password).then(()=>{return true})
+    var decrypted = CryptoJS.AES.decrypt(password, secretKey);
+    const rPass = decrypted.toString(CryptoJS.enc.Utf8);
+    const istrue = await signInWithEmailAndPassword(auth, email, rPass).then(()=>{return true})
     .catch((error)=>{
       alert(error);
       return false;
