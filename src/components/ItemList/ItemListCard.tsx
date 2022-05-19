@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useContext } from "react";
 import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, IonButton, IonActionSheet, IonCard} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
 import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
 
-const ItemListCard: React.FC = () => {
+interface barangType {
+  id: string;
+  uId: string;
+  foto: string;
+  fotoUrl: string;
+  title: string;
+  price: number;
+  type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim';
+  amount: number;
+};
+
+const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
 
     const barangctx = useContext(BarangContext);
     const [ids, setId] = useState<string>('');
@@ -32,9 +43,20 @@ const ItemListCard: React.FC = () => {
       })
     }
 
+    // Function Search
+    useEffect(() => {
+      searchFunction();
+    }, [props.onSearchValue]);
+
+    const searchFunction = () => {
+      return barangctx.items.filter((barang: barangType) => (
+        barang.title.toLowerCase().includes(props.onSearchValue.toLowerCase())
+      ));
+    }
+
     return (
-      <IonGrid>
-        {barangctx.items.length != 0  ? barangctx.items.map((item) =>(
+      <IonGrid>        
+        {props.onSearchValue == '' && barangctx.items.length != 0  && ( barangctx.items.map((item) =>(
           <IonCard id="item-list" className="ion-no-margin" key={item.id}>
             <IonRow>
           <IonCol size="3" className="ion-no-margin">
@@ -65,15 +87,55 @@ const ItemListCard: React.FC = () => {
           </IonCol>
           </IonRow>
         </IonCard>))
-        :
-        <IonButtons className="ion-padding ion-margin">
-          <IonText className="ion-text-center">
+        )}
+
+        {barangctx.items.length == 0 && (
+          <IonButtons className="ion-padding ion-margin">
+            <IonText className="ion-text-center">
             <IonButton color="light" routerLink="/TambahBarang">
-            <h5>Tambah barang</h5>
-            </IonButton>
-          </IonText>
-        </IonButtons>
-        }
+              <h5>Tambah barang</h5>
+              </IonButton>
+            </IonText>
+         </IonButtons>
+        )}
+
+        {props.onSearchValue != '' && barangctx.items.length != 0  && ( searchFunction().map((item) =>(
+          <IonCard id="item-list" className="ion-no-margin" key={item.id}>
+            <IonRow>
+          <IonCol size="3" className="ion-no-margin">
+            <img src={(item.fotoUrl)} className="Item-img" alt={item.title}/>
+          </IonCol>
+          <IonCol size="5">
+            <IonCardContent className="ion-text-left ion-no-padding " id="content-list" >
+              <IonText>
+                <h2>{item.title}</h2>
+                <h2>1 {item.type}</h2>
+                <p className="hargacolor">{item.price}</p>
+              </IonText>
+            </IonCardContent>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton routerLink={`/EditBarang/${item.id}`} fill ="solid" className="icon" onClick={()=>setEditData(item.id)} >
+                <IonIcon icon={pencilOutline} slot="icon-only" size="large"/>
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton color="danger" onClick={() => sheetHandler (item.id, item.foto)}  fill ="solid" className="icon">
+                <IonIcon icon={trashOutline} slot="icon-only"size="large" />
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          </IonRow>
+        </IonCard>))
+        )}
+        
+
+      
+
+      
 
         {ids && <IonActionSheet
             cssClass = 'IASBackground'

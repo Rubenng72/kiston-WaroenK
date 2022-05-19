@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton,IonSearchbar} from "@ionic/react";
 import { isPlatform} from '@ionic/react';
@@ -7,12 +7,14 @@ import ItemListCard from '../components/ItemList/ItemListCard';
 import HapusSemuabtn from '../components/ItemList/HapusSemua';
 
 const ItemList: React.FC = () => {
+    const [searchValue, setSearchValue] = useState<string>('');
+
     return (
         <IonPage>
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >
-              <IonSearchbar id="caribarang" placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"10px"}} />
+              <IonSearchbar id="caribarang" placeholder="Cari Barang" onIonChange={e => setSearchValue(e.detail.value!)} style={{marginTop:"10px", marginRight:"10px"}} />
               </IonButtons>
               <HapusSemuabtn/>
             </IonToolbar>
@@ -45,7 +47,9 @@ const ItemList: React.FC = () => {
                 </IonFabButton>
               </IonFab>
             )}
-          <ItemListCard />
+
+            <ItemListCard onSearchValue={searchValue}/>    
+          
           </IonContent>
         </IonPage>
     );
