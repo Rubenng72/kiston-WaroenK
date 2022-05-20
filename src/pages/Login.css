@@ -9,8 +9,14 @@
 .tombol-login{
   width: 100%;
   height: 30px;
+  margin-bottom: 20px;
+  --background:#DBF8FF;
 }
 
+.tombol-skip{
+  width: 100%;
+  --background:#DBF8FF;
+}
 
 /* .text-between-line {
   display: flex;

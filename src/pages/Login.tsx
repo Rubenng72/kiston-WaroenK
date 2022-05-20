@@ -1,5 +1,5 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast, useIonToast, IonCard, IonItem} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast, useIonToast, IonCard, IonItem, IonImg} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { userLogin, userAsAnonymous } from '../data/auth';
@@ -48,11 +48,10 @@ const Login: React.FC = () => {
       {
         return(<IonButton
           routerLink='/Home'
-          color="light"
           shape="round"
-          expand="block"
+          class="tombol-skip"
           onClick={uSkip}>
-          <IonLabel color="warning">SKIP continue as guest</IonLabel>
+          <IonLabel class="tombol-skip">SKIP continue as guest</IonLabel>
         </IonButton>);
       }
       else{
@@ -71,8 +70,9 @@ const Login: React.FC = () => {
 
         <IonContent>
           <IonCard className="card-login">
-
-            <IonTitle className="ion-no-padding text-bold" color="dark">Login</IonTitle>
+          
+            <IonImg src={'https://www.svgrepo.com/show/382774/user-application-identity-authentication-login.svg'} />
+            <IonTitle className="ion-no-padding text-bold ion-margin-vertical" color="dark">Login</IonTitle>
             <IonRow className="ion-padding-vertical">
                 <IonLabel>Don't have an account?</IonLabel>
                 <Link to="/Register">
@@ -89,15 +89,22 @@ const Login: React.FC = () => {
                 <IonLabel position="floating">Password</IonLabel>
                 <IonInput minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => passwordEncryptionHandler(e.target.value)}></IonInput>
             </IonItem>
-
+            
             <IonRow className="ion-padding-vertical ion-float-right">
               <Link to="/ForgotPassword">
-                <IonLabel color="dark">&nbsp; Forgot Password</IonLabel>
+                <IonLabel color="dark">Forgot Password</IonLabel>
               </Link>
             </IonRow>
 
+            <IonRow className="ion-padding-vertical ion-float-left">
+              <IonLabel color="medium">6-20 characters or numbers</IonLabel>
+            </IonRow>
+
             <IonRow className="tombol-login">
-              <IonButton className="tombol-login" onClick={uLogin}>
+              <IonButton 
+              shape="round" 
+              expand="block" 
+              className="tombol-login" onClick={uLogin}>
                 <IonLabel>Login</IonLabel>
               </IonButton>
             </IonRow>
