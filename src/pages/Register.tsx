@@ -1,9 +1,10 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, useIonToast, useIonAlert} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, useIonToast, useIonAlert, IonCard, IonItem, IonText, IonImg} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory  } from 'react-router-dom';
 import { userRegister } from '../data/auth';
 import CryptoJS from 'crypto-js';
+import './Register.css';
 
 const Register: React.FC = () => {
     const history = useHistory();
@@ -68,62 +69,54 @@ const Register: React.FC = () => {
             <IonTitle>Register</IonTitle>
           </IonToolbar>
           <IonContent>
-            <IonGrid className="card-box">
+            <IonCard className="card-register">
+              
+              <IonImg src={'https://www.svgrepo.com/show/38273/file.svg'} />
+              <IonTitle className="ion-no-padding text-bold ion-margin-vertical" color="dark">Register</IonTitle>
 
-              <IonRow className="ion-padding"  style={{paddingBottom: 0, paddingTop: 0}}>
+              <IonRow>
                 <IonCol>
-                  <IonRow className="ion-padding" style={{paddingBottom: 0}}>
-                    <IonLabel >Email</IonLabel>
-                  </IonRow>
-                  <IonRow className="ion-padding" style={{paddingBottom: 0}}>
-                    <IonInput className="inputtext" placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
-                  </IonRow>
+                  <IonLabel className="text-bold">Email</IonLabel>
+                  <IonInput className="ion-text-start ion-padding-vertical" placeholder="Email" type="email" onIonChange={(e: any) => setEmail(e.target.value)}></IonInput>
+                  <IonText className='text-between-line'></IonText>
                 </IonCol>
               </IonRow>
 
-              <IonRow className="ion-padding"  style={{paddingTop: 0, paddingBottom:0}}>
+              <IonRow>
                 <IonCol>
-                  <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
-                    <IonLabel>Password</IonLabel>
-                  </IonRow>
-                  <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
-                    <IonInput className="inputtext" placeholder="Password" type="password" minlength={6} onIonChange={(e: any) => passwordEncryptionHandler(e.target.value)}></IonInput>
-                  </IonRow>
+                  <IonLabel className="text-bold">Password</IonLabel>
+                  <IonInput className="ion-text-start ion-padding-vertical" placeholder="Password" type="password" minlength={6} onIonChange={(e: any) => passwordEncryptionHandler(e.target.value)}></IonInput>
+                  <IonText className='text-between-line'></IonText>
                 </IonCol>
               </IonRow>
 
-              <IonRow className="ion-padding" style={{paddingTop: 0}}>
+              <IonRow>
                 <IonCol>
-                  <IonRow>
-                    <IonLabel className="ion-padding" style={{paddingBottom: 0}}>Confirm Password</IonLabel>
-                  </IonRow>
-                  <IonRow className="ion-padding"  style={{paddingBottom: 0}}>
-                    <IonInput className="inputtext" placeholder="Confirm" type="password" onIonChange={(e: any) => cPasswordEncryptionHandler(e.target.value)}></IonInput>
-                  </IonRow>
+                  <IonLabel className="text-bold">Confirm Password</IonLabel>
+                  <IonInput className="ion-text-start ion-padding-vertical" placeholder="Confirm" type="password" onIonChange={(e: any) => cPasswordEncryptionHandler(e.target.value)}></IonInput>
+                  <IonText className='text-between-line'></IonText>
                 </IonCol>
               </IonRow>
 
-              <IonRow className="ion-padding" style={{paddingTop: 0}}>
-                <IonCol className="center">
-                  <IonButton
-                    id="g-button"
-                    color="light"
-                    shape="round"
-                    onClick={uRegister}
-                    >
-                    <IonLabel>Register</IonLabel>
-                  </IonButton>
-                </IonCol>
+              <IonRow className="tombol-register">
+                <IonButton 
+                shape="round" 
+                expand="block" 
+                className="tombol-register" 
+                onClick={uRegister}>
+                  <IonLabel>Register</IonLabel>
+                </IonButton>
               </IonRow>
 
-              <IonRow className="ion-padding">
-                <IonLabel>Already have an Account?</IonLabel>
-                <Link to="/Login"><IonLabel color="warning">Login</IonLabel></Link>
+              <IonRow className="ion-padding-vertical">
+                  <IonLabel>Already have an Account?</IonLabel>
+                  <Link to="/Login">
+                    <IonLabel color="dark">&nbsp; Login</IonLabel>
+                  </Link>
               </IonRow>
-            </IonGrid>
 
+            </IonCard>
           </IonContent>
-
         </IonPage>
     );
 };
