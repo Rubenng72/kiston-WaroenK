@@ -6,12 +6,23 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
-import { useState, useContext} from "react";
+import { useState, useContext, useEffect} from "react";
 import { trash, trashOutline, close } from "ionicons/icons";
 import BarangContext from '../data/barang-context';
 import {logout} from "../data/auth";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+
+interface barangType {
+  id: string;
+  uId: string;
+  foto: string;
+  fotoUrl: string;
+  title: string;
+  price: number;
+  type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim';
+  amount: number;
+};
 
 const Home: React.FC = () => {
   const [showActionSheet, setShowActionSheet] = useState(false);
@@ -20,6 +31,7 @@ const Home: React.FC = () => {
   const db = getFirestore();
   const barangctx = useContext(BarangContext);
   const [ids, setIds] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
@@ -92,12 +104,23 @@ const Home: React.FC = () => {
     }
   }
 
+   // Function Search
+   useEffect(() => {
+    searchFunction();
+  }, [searchValue]);
+
+  const searchFunction = () => {
+    return barangctx.items.filter((barang: barangType) => (
+      barang.title.toLowerCase().includes(searchValue.toLowerCase())
+    ));
+  }
+
     return (
         <IonPage>
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >
-              <IonSearchbar id="caribarang" placeholder="Cari Barang" style={{marginTop:"10px", marginRight:"5px"}} />
+              <IonSearchbar id="caribarang" placeholder="Cari Barang" onIonChange={e => setSearchValue(e.detail.value!)} style={{marginTop:"10px", marginRight:"5px"}} />
                 <IonButton routerLink="#"/>
               </IonButtons>
               {/* <IonButtons slot="end" >
@@ -141,7 +164,7 @@ const Home: React.FC = () => {
               }}
               modules={[ Grid,Pagination,EffectCoverflow]}>
 
-              {barangctx.items.length != 0 ? barangctx.items.map((item)=>(
+              {searchValue == '' && barangctx.items.length != 0 && ( barangctx.items.map((item)=>(
                 <SwiperSlide key={item.id}>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
@@ -158,18 +181,40 @@ const Home: React.FC = () => {
                   </IonRow>
                 </SwiperSlide>
                ))
-             :
-             <SwiperSlide >
-             <IonButtons className="ion-padding ion-margin">
-               <IonText className="ion-text-center">
-                <h5>kosong</h5>
-                 <IonButton color="light" routerLink="/TambahBarang">
-                 <h5>Tambah barang</h5>
-                 </IonButton>
-               </IonText>
-             </IonButtons>
-             </SwiperSlide>
-           }
+              )}
+
+              {barangctx.items.length == 0 && (
+                <SwiperSlide >
+                <IonButtons className="ion-padding ion-margin">
+                  <IonText className="ion-text-center">
+                    <h5>kosong</h5>
+                    <IonButton color="light" routerLink="/TambahBarang">
+                    <h5>Tambah barang</h5>
+                    </IonButton>
+                  </IonText>
+                </IonButtons>
+                </SwiperSlide>
+              )}
+
+              {searchValue != '' && barangctx.items.length != 0 && ( searchFunction().map((item)=>(
+                <SwiperSlide key={item.id}>
+                  <IonRow className="card-slider center">
+                    <IonCol size="5">
+                      <IonImg className="img-slider" src={item.fotoUrl} alt={item.title}/>
+                    </IonCol>
+                    <IonCol size="7">
+                      <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
+                      <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
+                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
+                      <IonRow className="jumlah-item">
+                        <IonInput className="ion-margin" maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
+                      </IonRow>
+                    </IonCol>
+                  </IonRow>
+                </SwiperSlide>
+               ))
+              )}  
+
             </Swiper>
             <IonCard className="card-th-dh-lds" color="primary">
               <IonRow className="center">
