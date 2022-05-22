@@ -57,14 +57,11 @@ const InputBarang: React.FC = () => {
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
         getDownloadURL(ref(storage, fileName)).then((url) => {
           if(user !== null){
-            console.log('tesss');
             if(user.isAnonymous || !user.isAnonymous){
               barangctx.addDataItem(user.uid, title, price, chosenSatuan, disc, nMax, fileName, url);
-              console.log('tesss1');
             }
             else{
-              barangctx.addDataItem('teeeessssss', title, price, chosenSatuan, disc, nMax, fileName, url);
-              console.log('tesss2');
+              barangctx.addDataItem('all', title, price, chosenSatuan, disc, nMax, fileName, url);
             }
           }
         })

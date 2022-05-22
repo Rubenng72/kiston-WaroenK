@@ -12,7 +12,6 @@ const BarangContextProvider: React.FC = props => {
   const db = getFirestore();
   const storage = getStorage();
 
-  // const addDataItem = async(uId: string, title: string, price: number, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim', image: string, url: string, amount: number=0) =>{
   const addDataItem = async(uId: string, title: string, price: number, type: 'box', disc: number, nMax: number, image: string, url: string, amount: number=0) =>{
     try {
       const docRef = await addDoc(collection(db, "barang"), {
