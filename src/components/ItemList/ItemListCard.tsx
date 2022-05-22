@@ -66,8 +66,9 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
             <IonCardContent className="ion-text-left ion-no-padding " id="content-list" >
               <IonText>
                 <h2>{item.title}</h2>
-                <h2>1 {item.type}</h2>
-                <p className="hargacolor">{item.price}</p>
+                <h2>1 pcs</h2> <p className="hargacolor ion-no-padding">Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</p>
+                <h2>1 {item.type}</h2> <p className="hargacolor ion-no-padding">Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</p>
+                
               </IonText>
             </IonCardContent>
           </IonCol>

@@ -173,7 +173,7 @@ const Home: React.FC = () => {
                     <IonCol size="7">
                       <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
+                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
                         <IonInput maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                       </IonRow>
@@ -184,15 +184,21 @@ const Home: React.FC = () => {
               )}
 
               {barangctx.items.length == 0 && (
-                <SwiperSlide >
-                <IonButtons className="ion-padding ion-margin">
+                <SwiperSlide>
+                  <IonGrid>
+                    <IonRow className="center">
+                    <IonButtons>
                   <IonText className="ion-text-center">
-                    <h5>kosong</h5>
+                  <IonImg src={'https://www.svgrepo.com/show/157995/empty-white-box.svg'} />
+                    <h5>No Item Listed</h5>
                     <IonButton color="light" routerLink="/TambahBarang">
                     <h5>Tambah barang</h5>
                     </IonButton>
                   </IonText>
                 </IonButtons>
+                    </IonRow>
+                  </IonGrid>
+                
                 </SwiperSlide>
               )}
 
@@ -205,7 +211,7 @@ const Home: React.FC = () => {
                     <IonCol size="7">
                       <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
+                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
                         <IonInput className="ion-margin" maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                       </IonRow>
@@ -219,7 +225,7 @@ const Home: React.FC = () => {
             <IonCard className="card-th-dh-lds" color="primary">
               <IonRow className="center">
                 <IonCol size="5.5" className="label-TH">Total Harga</IonCol>
-                <IonCol size="5.5" className="label-DH"><IonLabel>Rp. </IonLabel>{TotalHarga},-</IonCol>
+                <IonCol size="5.5" className="label-DH"><IonLabel>Rp. {parseFloat(TotalHarga.toString()).toLocaleString('en')}</IonLabel>,-</IonCol>
               </IonRow>
               <IonRow className="center">
                 <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}>
@@ -259,8 +265,8 @@ const Home: React.FC = () => {
                           <IonRow>
                             <IonCol size="7">
                               <IonText>{item.title}</IonText>
-                              <IonCardSubtitle>Rp. {item.price}</IonCardSubtitle>
-                              <IonCardSubtitle>Rp. {item.price * item.amount}</IonCardSubtitle>
+                              <IonCardSubtitle>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
+                              <IonCardSubtitle>Rp. {item.price * item.amount} </IonCardSubtitle>
                             </IonCol>
                             <IonCol size="5">
                               <IonCol>
@@ -284,7 +290,7 @@ const Home: React.FC = () => {
                 <IonCard color="primary" className="card-th-dh-lds-modal ion-no-margin">
                   <IonRow className="center">
                     <IonCol size="5.5" className="label-TH">Total Harga</IonCol>
-                    <IonCol size="5.5" className="label-DH">{TotalHarga}</IonCol>
+                    <IonCol size="5.5" className="label-DH">{parseFloat(TotalHarga.toString()).toLocaleString('en')}</IonCol>
                   </IonRow>
                   <IonRow className="center">
                     <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}>
