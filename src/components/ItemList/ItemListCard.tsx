@@ -12,7 +12,9 @@ interface barangType {
   fotoUrl: string;
   title: string;
   price: number;
-  type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim';
+  type: 'box';
+  disc: number;
+  nMax: number;
   amount: number;
 };
 
@@ -128,11 +130,6 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
           </IonRow>
         </IonCard>))
         )}
-        
-
-      
-
-      
 
         {ids && <IonActionSheet
             cssClass = 'IASBackground'

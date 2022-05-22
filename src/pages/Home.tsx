@@ -7,12 +7,22 @@ import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useState, useContext, useEffect} from "react";
-import { trash, trashOutline, close } from "ionicons/icons";
+import { trashOutline, close, checkmark } from "ionicons/icons";
 import BarangContext from '../data/barang-context';
 import {logout} from "../data/auth";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+// interface barangType {
+//   id: string;
+//   uId: string;
+//   foto: string;
+//   fotoUrl: string;
+//   title: string;
+//   price: number;
+//   type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim';
+//   amount: number;
+// };
 interface barangType {
   id: string;
   uId: string;
@@ -20,7 +30,9 @@ interface barangType {
   fotoUrl: string;
   title: string;
   price: number;
-  type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim';
+  type: 'box';
+  disc: number;
+  nMax: number;
   amount: number;
 };
 
@@ -45,18 +57,44 @@ const Home: React.FC = () => {
     await updateDoc(barangRef, { "amount" : amount})
   }
 
+  // const priceCalculation = () =>{
+  //   let sum = 0;
+  //   barangctx.items.forEach((value)=>{
+  //     if(value.amount >0){
+  //       sum += value.price * value.amount;
+  //       console.log(value.amount);
+  //     }
+  //   })
+  //   setTotalHarga(sum);
+  // }
+
+  let hargaBox = 0;
   const priceCalculation = () =>{
     let sum = 0;
+    let temp = 0;
+    let modulus = 0;
+    let box = 0;
+   
+
     barangctx.items.forEach((value)=>{
-      if(value.amount >0){
+      if(value.amount > 0 && value.amount < value.nMax){
         sum += value.price * value.amount;
         console.log(value.amount);
+      } else if (value.amount > 0 && value.amount >= value.nMax){
+        hargaBox = (value.nMax * value.price) - ((value.nMax * value.price) * (value.disc));
+        console.log(hargaBox);
+        modulus = value.amount % value.nMax; 
+        temp = modulus; 
+
+        box = value.amount - temp; 
+        box = box / value.nMax;
+        sum += (box * hargaBox) + (temp * value.price); 
       }
     })
     setTotalHarga(sum);
   }
 
-  const resetAmount = () => {
+  const clearReceipt = () => {
     // console.log(barang.length, isEmpty);
     // barang.forEach((value)=>{
     //   const barangRef = doc(db, "barang", value.id);
@@ -129,7 +167,7 @@ const Home: React.FC = () => {
                 </IonButton> */}
               {/* </IonButtons> */}
               <IonButtons slot="end" >
-                <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" onClick={()=>resetAmount()}>
+                <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" onClick={()=>clearReceipt()}>
                   Reset
                 </IonButton>
               </IonButtons>
@@ -223,12 +261,12 @@ const Home: React.FC = () => {
             </Swiper>
             <IonCard className="card-th-dh-lds" color="primary">
               <IonRow className="center">
-                <IonCol size="5.5" className="label-TH">Total Harga</IonCol>
+                <IonCol size="5.5" className="label-TH">Total Price</IonCol>
                 <IonCol size="5.5" className="label-DH"><IonLabel>Rp. {parseFloat(TotalHarga.toString()).toLocaleString('en')}</IonLabel>,-</IonCol>
               </IonRow>
               <IonRow className="center">
                 <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}>
-                Lihat Daftar Struk
+                View Receipt
                 </IonCol>
               </IonRow>
             </IonCard>
@@ -265,7 +303,7 @@ const Home: React.FC = () => {
                             <IonCol size="7">
                               <IonText>{item.title}</IonText>
                               <IonCardSubtitle>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
-                              <IonCardSubtitle>Rp. {item.price * item.amount} </IonCardSubtitle>
+                              <IonCardSubtitle>Rp. {hargaBox} </IonCardSubtitle>
                             </IonCol>
                             <IonCol size="5">
                               <IonCol>
@@ -279,6 +317,13 @@ const Home: React.FC = () => {
                         </IonCol>
                       </IonItem>
                     )
+                  }else{
+                    return(
+                      <div style={{marginTop: '30px'}} className="ion-text-center">
+                        <IonImg style={{width:'20%'}} src={'assets/foto/empty.png'} /> 
+                        <h5 style={{fontWeight: 'bold'}}>Your Cart Is Empty</h5>
+                      </div>
+                  )
                   }
                 })
                   :
@@ -304,32 +349,32 @@ const Home: React.FC = () => {
 
             </IonModal>
 
-        <IonActionSheet
-        isOpen={showActionSheet}
-        onDidDismiss={() => setShowActionSheet(false)}
-        cssClass='my-custom-class'
-        header= 'Apakah kamu yakin ingin Logout dari akun ini ?'
-        buttons={[{
-          text: 'Saya Yakin',
-          role: 'destructive',
-          icon: trash,
-          id: 'delete-button',
-          data: {
-            type: 'delete'
-          },
-          handler: () => {
-            uLogout()
-          }
-        }, 
-        {
-          text: 'Cancel',
-          icon: close,
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }]}
-      >
+            <IonActionSheet
+            isOpen={showActionSheet}
+            onDidDismiss={() => setShowActionSheet(false)}
+            cssClass='my-custom-class'
+            header= 'Are you sure you want to Logout?'
+            buttons={[{
+              text: 'Ok',
+              role: 'destructive',
+              icon: checkmark,
+              id: 'delete-button',
+              data: {
+                type: 'delete'
+              },
+              handler: () => {
+                uLogout()
+              }
+            }, 
+            {
+              text: 'Cancel',
+              icon: close,
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+              }
+            }]}
+        >
       </IonActionSheet>
 
           </IonContent>

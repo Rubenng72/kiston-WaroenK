@@ -22,9 +22,12 @@ const InputBarang: React.FC = () => {
       preview: string;
     }>();
 
-    const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
+    // const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
+    const [chosenSatuan, setChosenSatuan] = useState<'box'>('box');
     const titleRef = useRef<HTMLIonInputElement>(null);
     const priceRef = useRef<HTMLIonInputElement>(null);
+    const discRef = useRef<HTMLIonInputElement>(null);
+    const nMaxRef = useRef<HTMLIonInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<File>();
     const [fileName, setFileName] = useState('');
     const history = useHistory();
@@ -39,21 +42,30 @@ const InputBarang: React.FC = () => {
     const addBarangHandler = async () =>{
       const enteredTitle = titleRef.current?.value;
       const enteredPrice = priceRef.current?.value;
-      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !takenPhoto || !chosenSatuan){
+      const enteredDisc = discRef.current?.value;
+      const enterednMax = nMaxRef.current?.value;
+      if(!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !enteredDisc || !enterednMax || !takenPhoto || !chosenSatuan){
         serStartAlert(true);
         return;
       }
 
       const title= titleRef.current?.value as string;
       const price= priceRef.current?.value as number;
+      const disc= discRef.current?.value as number;
+      const nMax= nMaxRef.current?.value as number;
       const storageRef = ref(storage, fileName);
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
         getDownloadURL(ref(storage, fileName)).then((url) => {
-          if(user == null){
-            barangctx.addDataItem('all', title, price, chosenSatuan, fileName, url);
-          }
-          else{
-            barangctx.addDataItem(user.uid, title, price, chosenSatuan, fileName, url);
+          if(user !== null){
+            console.log('tesss');
+            if(user.isAnonymous || !user.isAnonymous){
+              barangctx.addDataItem(user.uid, title, price, chosenSatuan, disc, nMax, fileName, url);
+              console.log('tesss1');
+            }
+            else{
+              barangctx.addDataItem('teeeessssss', title, price, chosenSatuan, disc, nMax, fileName, url);
+              console.log('tesss2');
+            }
           }
         })
       })
@@ -124,12 +136,19 @@ const InputBarang: React.FC = () => {
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
               <IonInput className="inputtext" placeholder="Harga Barang" type={"number"} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
+              
+            </IonRow>
+
+            <IonRow className="ion-padding">
+              <IonInput className="inputtext" placeholder="diskon" type={"number"} ref={discRef}></IonInput>
+              <IonInput className="inputtext" placeholder="MAX" type={"number"} ref={nMaxRef}></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
-                  <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>
+                  <IonSelectOption className="" value="box">box</IonSelectOption>
+                  {/* <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
                   <IonSelectOption value="kodi">Kodi</IonSelectOption>
                   <IonSelectOption value="gross">Gross</IonSelectOption>
-                  <IonSelectOption value="rim">Rim</IonSelectOption>
+                  <IonSelectOption value="rim">Rim</IonSelectOption> */}
               </IonSelect>
             </IonRow>
 

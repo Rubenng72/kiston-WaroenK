@@ -12,13 +12,16 @@ const BarangContextProvider: React.FC = props => {
   const db = getFirestore();
   const storage = getStorage();
 
-  const addDataItem = async(uId: string, title: string, price: number, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim', image: string, url: string, amount: number=0) =>{
+  // const addDataItem = async(uId: string, title: string, price: number, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim', image: string, url: string, amount: number=0) =>{
+  const addDataItem = async(uId: string, title: string, price: number, type: 'box', disc: number, nMax: number, image: string, url: string, amount: number=0) =>{
     try {
       const docRef = await addDoc(collection(db, "barang"), {
         uId: uId,
         title: title,
         price: price,
         type: type,
+        disc: disc,
+        nMax: nMax,
         foto: image,
         fotoUrl: url,
         amount: amount,
@@ -108,6 +111,8 @@ const BarangContextProvider: React.FC = props => {
           title: doc.data().title,
           price: doc.data().price,
           type: doc.data().type,
+          disc: doc.data().disc,
+          nMax: doc.data().nMax,
           amount: doc.data().amount
         }));
         setItems(storableItems);
@@ -130,6 +135,8 @@ const BarangContextProvider: React.FC = props => {
         title: storedItem.title,
         price: storedItem.price,
         type: storedItem.type,
+        disc: storedItem.disc,
+        nMax: storedItem.nMax,
         foto: storedItem.foto,
         fotoUrl: storedItem.fotoUrl,
         amount: storedItem.amount

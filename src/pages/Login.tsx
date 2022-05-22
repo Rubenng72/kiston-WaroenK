@@ -46,7 +46,8 @@ const Login: React.FC = () => {
       const res = await userAsAnonymous();
       if(res){
         present('Continue As Guest', 3000)
-        window.location.assign("/tabs/Home");
+        history.replace('/tabs/Home');
+        // window.location.assign("/tabs/Home");
         //continue as guest
       }
     }
