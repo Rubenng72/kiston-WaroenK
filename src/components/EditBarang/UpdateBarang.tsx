@@ -61,6 +61,7 @@ const UpdateBarang: React.FC = () => {
           foto: fileName,
           fotoUrl: url,
         });
+        localStorage.removeItem('editId');
         localStorage.removeItem('editItem');
       }
     if(bId && url == null){
@@ -69,6 +70,7 @@ const UpdateBarang: React.FC = () => {
         price: price,
         type: chosenSatuan,
       });
+      localStorage.removeItem('editId');
       localStorage.removeItem('editItem');
     }
     } catch (e) {

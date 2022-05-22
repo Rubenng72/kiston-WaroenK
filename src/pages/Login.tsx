@@ -27,7 +27,8 @@ const Login: React.FC = () => {
       const res = await userLogin(email, password);
       if(res){
         present('Berhasil Login', 3000)
-        history.replace('/tabs/Home');
+        window.location.assign("/tabs/Home");
+        // history.replace('/tabs/Home');
         //berhasil login
       }
     }
@@ -70,7 +71,7 @@ const Login: React.FC = () => {
 
         <IonContent>
           <IonCard className="card-login">
-          
+
             <IonImg src={'https://www.svgrepo.com/show/382774/user-application-identity-authentication-login.svg'} />
             <IonTitle className="ion-no-padding text-bold ion-margin-vertical" color="dark">Login</IonTitle>
             <IonRow className="ion-padding-vertical">
@@ -89,7 +90,7 @@ const Login: React.FC = () => {
                 <IonLabel position="floating">Password</IonLabel>
                 <IonInput minlength={6} placeholder="Password" type="password" onIonChange={(e: any) => passwordEncryptionHandler(e.target.value)}></IonInput>
             </IonItem>
-            
+
             <IonRow className="ion-padding-vertical ion-float-right">
               <Link to="/ForgotPassword">
                 <IonLabel color="dark">Forgot Password</IonLabel>
@@ -101,9 +102,9 @@ const Login: React.FC = () => {
             </IonRow>
 
             <IonRow className="tombol-login">
-              <IonButton 
-              shape="round" 
-              expand="block" 
+              <IonButton
+              shape="round"
+              expand="block"
               className="tombol-login" onClick={uLogin}>
                 <IonLabel>Login</IonLabel>
               </IonButton>

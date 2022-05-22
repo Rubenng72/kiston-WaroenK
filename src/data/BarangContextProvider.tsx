@@ -68,11 +68,34 @@ const BarangContextProvider: React.FC = props => {
   // const deleteAllItems = () => {
   //   items.splice(0, items.length);
   // };
+  
   const auth = getAuth();
   const user = auth.currentUser;
   const userId = user ? user.uid : '';
 
   const q = query(collection(db, "barang"), where("uId", "==", userId));
+
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //     const storableItems = querySnapshot.docs.map((doc) => ({
+  //       id:doc.id,
+  //       uId:doc.data().uId,
+  //       foto:doc.data().foto,
+  //       fotoUrl:doc.data().fotoUrl,
+  //       title: doc.data().title,
+  //       price: doc.data().price,
+  //       type: doc.data().type,
+  //       amount: doc.data().amount
+  //     }));
+  //     setItems(storableItems);
+  //     setIsEmpty(querySnapshot.empty);
+  //     console.log('woi stop');
+  //     // Storage.set({ key: "items", value: JSON.stringify(storableItems)});
+  //   })
+  //   return () => {
+  //     unsubscribe();
+  //   }
+  // },[]);
 
   useEffect(() => {
     if(items.length == 0 && !isEmpty){
@@ -92,28 +115,9 @@ const BarangContextProvider: React.FC = props => {
         Storage.set({ key: "items", value: JSON.stringify(storableItems)});
       })
     }
-  }, [items]);
+  });
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const storableItems = querySnapshot.docs.map((doc) => ({
-        id:doc.id,
-        uId:doc.data().uId,
-        foto:doc.data().foto,
-        fotoUrl:doc.data().fotoUrl,
-        title: doc.data().title,
-        price: doc.data().price,
-        type: doc.data().type,
-        amount: doc.data().amount
-      }));
-      setItems(storableItems);
-      setIsEmpty(querySnapshot.empty);
-      // Storage.set({ key: "items", value: JSON.stringify(storableItems)});
-    })
-    return () => {
-      unsubscribe();
-    }
-  }, []);
+
 
   const initContext = useCallback(async () => {
     const itemsData = await Storage.get({ key: "items" });
