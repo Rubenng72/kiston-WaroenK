@@ -89,7 +89,7 @@ const Home: React.FC = () => {
       }
       else{
         return(<IonButtons slot="end" >
-        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="secondary" onClick={actionSheetHandler}>
+        <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="primary" onClick={actionSheetHandler}>
         Logout
         </IonButton>
         </IonButtons>)
