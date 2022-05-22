@@ -15,7 +15,7 @@ export const userRegister = async (email: string, password: string) => {
       const credential = EmailAuthProvider.credential(email, rPass);
       const istrue = await linkWithCredential(user, credential).then(()=>{return true;})
       .catch((error)=>{
-        alert(error);
+        // alert(error);
         return false});
         if(istrue){
           return true
@@ -54,7 +54,7 @@ export async function userLogin(email: string, password: string) {
     const rPass = decrypted.toString(CryptoJS.enc.Utf8);
     const istrue = await signInWithEmailAndPassword(auth, email, rPass).then(()=>{return true})
     .catch((error)=>{
-      alert(error);
+      // alert(error);
       return false;
     })
     if(istrue){
@@ -68,11 +68,11 @@ export async function userLogin(email: string, password: string) {
 export async function fpass(email:string){
   try{
     const istrue = await sendPasswordResetEmail(auth, email).then(()=>{
-      alert('email terkirim');
+      // alert('email terkirim');
       return true;
     })
     .catch((error)=>{
-      alert(error);
+      // alert(error);
       return false;
     })
     if(istrue){
@@ -99,7 +99,7 @@ export async function logout(){
       return true;
     })
     .catch((error)=>{
-      alert(error);
+      // alert(error);
       return false;
     });
     if(istrue){

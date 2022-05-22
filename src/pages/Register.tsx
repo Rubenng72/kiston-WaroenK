@@ -52,7 +52,6 @@ const Register: React.FC = () => {
           header: 'Alert',
           message: 'Check your email for verification',
           buttons: [
-            'Cancel',
             { text: 'Ok', handler: (d) => history.replace('/tabs/Home')},
           ],
         })

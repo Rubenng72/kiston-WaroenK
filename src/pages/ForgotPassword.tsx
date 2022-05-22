@@ -1,5 +1,5 @@
 import React from "react";
-import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonItem, IonCard, IonImg} from "@ionic/react";
+import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonItem, IonCard, IonImg, useIonToast, useIonAlert} from "@ionic/react";
 import { useState } from 'react';
 import { fpass } from '../data/auth';
 import { useHistory  } from 'react-router-dom';
@@ -8,12 +8,29 @@ import './ForgotPassword.css';
 const ForgotPassword: React.FC = () => {
     const [email, setEmail] = useState('');
     const history = useHistory();
+    const [present] = useIonToast();
+    const [presentAlert] = useIonAlert();
 
     async function uFPass()
     {
+      if(email.trim() === '')
+      {
+        present('Please enter your email address', 3000)
+        //password/email kosong
+        return false;
+      }
       const res = await fpass(email);
       if(res){
-        history.replace('/tabs/Home');
+        presentAlert({
+          header: 'Alert',
+          message: 'We have sent you an email to reset your password',
+          buttons: [
+            { text: 'Ok', handler: (d) => history.replace('/tabs/Home')},
+          ],
+        })
+        // history.replace('/tabs/Home');
+      }else{
+        present('Your email is invalid or not registered', 3000)
       }
     }
 

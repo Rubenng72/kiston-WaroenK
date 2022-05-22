@@ -24,6 +24,12 @@ const Login: React.FC = () => {
 
     async function uLogin()
     {
+      if(email.trim() === '' || password === '')
+      {
+        present('Please fill your email and password', 3000)
+        //password/email kosong
+        return false;
+      }
       const res = await userLogin(email, password);
       if(res){
         present('Berhasil Login', 3000)
@@ -31,7 +37,7 @@ const Login: React.FC = () => {
         // history.replace('/tabs/Home');
         //berhasil login
       }else{
-        present('Please fill your email and password', 3000)
+        present('Incorrect email or password', 3000)
       }
     }
 
