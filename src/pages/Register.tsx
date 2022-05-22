@@ -35,13 +35,13 @@ const Register: React.FC = () => {
 
       if(rPass != rCoPass)
       {
-        present('Password Tidak Sama', 3000)
+        present('Password do not match', 3000)
         //password tidak sama
         return false;
       }
       if(email.trim() === '' || password === '')
       {
-        present('Password/Email Kosong', 3000)
+        present('Password or Email is empty', 3000)
         //password/email kosong
         return false;
       }
@@ -50,7 +50,7 @@ const Register: React.FC = () => {
       if(res){
         presentAlert({
           header: 'Alert',
-          message: 'Check email untuk verifikasi',
+          message: 'Check your email for verification',
           buttons: [
             'Cancel',
             { text: 'Ok', handler: (d) => history.replace('/tabs/Home')},
@@ -58,6 +58,8 @@ const Register: React.FC = () => {
         })
 
         //berhasil register ((Alert)'Check email untuk verifikasi')
+      }else{
+        present("Invalid email format or this email already used.", 3000)
       }
     }
     return (

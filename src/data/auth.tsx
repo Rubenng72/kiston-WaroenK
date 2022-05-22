@@ -32,7 +32,7 @@ export const userRegister = async (email: string, password: string) => {
       .then((userCredential) => {
         const user = userCredential.user;
         addData(user.uid, user.email);
-        sendEmailVerification(auth.currentUser!).then(()=>{alert('email sent')});
+        sendEmailVerification(auth.currentUser!).then(()=>{});
         return true;
       }).catch((error)=>{
         console.log(error);

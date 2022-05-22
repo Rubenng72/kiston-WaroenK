@@ -12,6 +12,10 @@
   margin-bottom: 20px;
   --background:#DBF8FF;
 }
+/* warna text alert cek email */
+.alert-head.sc-ion-alert-md+.alert-message.sc-ion-alert-md {
+  color: #313131;
+}
 
 .text-between-line {
   display: flex;

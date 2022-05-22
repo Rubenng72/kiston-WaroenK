@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useState, useContext, useEffect} from "react";
-import { trash, trashOutline, close } from "ionicons/icons";
+import { checkmark, trashOutline, close } from "ionicons/icons";
 import BarangContext from '../data/barang-context';
 import {logout} from "../data/auth";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
@@ -304,11 +304,11 @@ const Home: React.FC = () => {
         isOpen={showActionSheet}
         onDidDismiss={() => setShowActionSheet(false)}
         cssClass='my-custom-class'
-        header= 'Apakah kamu yakin ingin Logout dari akun ini ?'
+        header= 'Are you sure you want to Logout?'
         buttons={[{
-          text: 'Saya Yakin',
+          text: 'Ok',
           role: 'destructive',
-          icon: trash,
+          icon: checkmark,
           id: 'delete-button',
           data: {
             type: 'delete'

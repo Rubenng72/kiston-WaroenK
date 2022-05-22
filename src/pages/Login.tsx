@@ -30,6 +30,8 @@ const Login: React.FC = () => {
         window.location.assign("/tabs/Home");
         // history.replace('/tabs/Home');
         //berhasil login
+      }else{
+        present('Please fill your email and password', 3000)
       }
     }
 
