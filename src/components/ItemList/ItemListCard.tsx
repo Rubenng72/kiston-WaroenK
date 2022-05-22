@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState, useContext } from "react";
-import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, IonButton, IonActionSheet, IonCard} from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, IonButton, IonActionSheet, IonCard, IonTitle, IonLabel} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
 import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
@@ -91,13 +91,9 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
         )}
 
         {barangctx.items.length == 0 && (
-          <IonButtons className="ion-padding ion-margin">
-            <IonText className="ion-text-center">
-            <IonButton color="light" routerLink="/TambahBarang">
-              <h5>Tambah barang</h5>
-              </IonButton>
-            </IonText>
-         </IonButtons>
+          <IonButton fill="clear" expand="block" color="light" routerLink="/TambahBarang">
+            <IonTitle>Tambah barang</IonTitle>
+          </IonButton>
         )}
 
         {props.onSearchValue != '' && barangctx.items.length != 0  && ( searchFunction().map((item) =>(

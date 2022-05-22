@@ -187,18 +187,17 @@ const Home: React.FC = () => {
                 <SwiperSlide>
                   <IonGrid>
                     <IonRow className="center">
-                    <IonButtons>
-                  <IonText className="ion-text-center">
-                  <IonImg src={'https://www.svgrepo.com/show/157995/empty-white-box.svg'} />
-                    <h5>No Item Listed</h5>
-                    <IonButton color="light" routerLink="/TambahBarang">
-                    <h5>Tambah barang</h5>
-                    </IonButton>
-                  </IonText>
-                </IonButtons>
+                      <IonButtons>
+                        <IonText className="ion-text-center">
+                          <IonImg src={'https://www.svgrepo.com/show/157995/empty-white-box.svg'} />
+                          <h5>No Item Listed</h5>
+                          <IonButton color="light" routerLink="/TambahBarang">
+                          <h5>Add Item</h5>
+                          </IonButton>
+                        </IonText>
+                      </IonButtons>
                     </IonRow>
                   </IonGrid>
-                
                 </SwiperSlide>
               )}
 

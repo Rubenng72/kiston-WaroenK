@@ -45,7 +45,7 @@ const Register: React.FC = () => {
         //password/email kosong
         return false;
       }
-
+      
       const res = await userRegister(email, password);
       if(res){
         presentAlert({
@@ -53,10 +53,7 @@ const Register: React.FC = () => {
           message: 'Check email untuk verifikasi',
           buttons: [
             'Cancel',
-            { text: 'Ok', handler: () => {
-              window.location.assign("/tabs/Home");
-              //history.replace('/tabs/Home')
-            }},
+            { text: 'Ok', handler: (d) => history.replace('/tabs/Home')},
           ],
         })
 
@@ -73,7 +70,7 @@ const Register: React.FC = () => {
           </IonToolbar>
           <IonContent>
             <IonCard className="card-register">
-
+              
               <IonImg src={'https://www.svgrepo.com/show/38273/file.svg'} />
               <IonTitle className="ion-padding text-bold ion-margin-vertical" color="dark">Register</IonTitle>
 
@@ -96,16 +93,16 @@ const Register: React.FC = () => {
               <IonRow>
                 <IonCol>
                   <IonLabel className="text-bold">Confirm Password</IonLabel>
-                  <IonInput className="ion-text-start ion-padding-vertical" placeholder="Confirm Password" type="password" onIonChange={(e: any) => cPasswordEncryptionHandler(e.target.value)}></IonInput>
+                  <IonInput className="ion-text-start ion-padding-vertical" placeholder="Confirm" type="password" onIonChange={(e: any) => cPasswordEncryptionHandler(e.target.value)}></IonInput>
                   <IonText className='text-between-line'></IonText>
                 </IonCol>
               </IonRow>
 
               <IonRow className="tombol-register">
-                <IonButton
-                shape="round"
-                expand="block"
-                className="tombol-register"
+                <IonButton 
+                shape="round" 
+                expand="block" 
+                className="tombol-register" 
                 onClick={uRegister}>
                   <IonLabel>Register</IonLabel>
                 </IonButton>
