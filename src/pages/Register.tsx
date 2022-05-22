@@ -72,7 +72,7 @@ const Register: React.FC = () => {
             <IonCard className="card-register">
               
               <IonImg src={'https://www.svgrepo.com/show/38273/file.svg'} />
-              <IonTitle className="ion-no-padding text-bold ion-margin-vertical" color="dark">Register</IonTitle>
+              <IonTitle className="ion-padding text-bold ion-margin-vertical" color="dark">Register</IonTitle>
 
               <IonRow>
                 <IonCol>
@@ -93,7 +93,7 @@ const Register: React.FC = () => {
               <IonRow>
                 <IonCol>
                   <IonLabel className="text-bold">Confirm Password</IonLabel>
-                  <IonInput className="ion-text-start ion-padding-vertical" placeholder="Confirm" type="password" onIonChange={(e: any) => cPasswordEncryptionHandler(e.target.value)}></IonInput>
+                  <IonInput className="ion-text-start ion-padding-vertical" placeholder="Confirm Password" type="password" onIonChange={(e: any) => cPasswordEncryptionHandler(e.target.value)}></IonInput>
                   <IonText className='text-between-line'></IonText>
                 </IonCol>
               </IonRow>
