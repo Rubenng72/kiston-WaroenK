@@ -146,7 +146,7 @@ const Home: React.FC = () => {
             </IonHeader>
             <Swiper
               effect={"coverflow"}
-              spaceBetween={1}
+              spaceBetween={15}
               slidesPerView={1}
               grid={{
                 rows: 3,
@@ -238,11 +238,11 @@ const Home: React.FC = () => {
                 <h3 className="center text-bold">Struk Belanja</h3>
                 <IonGrid className="ion-no-padding ion-no-margin" style={{maxHeight:"35px"}}>
                   <IonRow>
-                    <IonCol size="8">
+                    <IonCol size="7">
                       <IonTitle className="total-barang text-bold">Total Barang: 07 </IonTitle>
                     </IonCol>
-                    <IonCol size="4">
-                      <IonButton fill="clear" color="medium" className="text-bold">Hapus Semua</IonButton>
+                    <IonCol size="5">
+                      <IonButton fill="clear" color="medium" className="text-bold hapusall">Hapus Semua</IonButton>
                     </IonCol>
                   </IonRow>
                 </IonGrid>
@@ -257,12 +257,12 @@ const Home: React.FC = () => {
                         </IonCol>
                         <IonCol size="9">
                           <IonRow>
-                            <IonCol size="8">
+                            <IonCol size="7">
                               <IonText>{item.title}</IonText>
                               <IonCardSubtitle>Rp. {item.price}</IonCardSubtitle>
                               <IonCardSubtitle>Rp. {item.price * item.amount}</IonCardSubtitle>
                             </IonCol>
-                            <IonCol size="4">
+                            <IonCol size="5">
                               <IonCol>
                                 <IonTitle class="satuan-jumlah">{item.amount} {item.type}</IonTitle>
                               </IonCol>
@@ -298,7 +298,7 @@ const Home: React.FC = () => {
         <IonActionSheet
         isOpen={showActionSheet}
         onDidDismiss={() => setShowActionSheet(false)}
-        // cssClass='my-custom-class'
+        cssClass='my-custom-class'
         header= 'Apakah kamu yakin ingin Logout dari akun ini ?'
         buttons={[{
           text: 'Saya Yakin',
