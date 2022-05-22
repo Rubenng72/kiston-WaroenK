@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
 import { useState, useContext, useEffect} from "react";
-import { checkmark, trashOutline, close } from "ionicons/icons";
+import { trash, trashOutline, close } from "ionicons/icons";
 import BarangContext from '../data/barang-context';
 import {logout} from "../data/auth";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
@@ -203,20 +203,20 @@ const Home: React.FC = () => {
 
               {searchValue != '' && barangctx.items.length != 0 && ( searchFunction().map((item)=>(
                 <SwiperSlide key={item.id}>
-                  <IonRow className="card-slider center">
-                    <IonCol size="5">
-                      <IonImg className="img-slider" src={item.fotoUrl} alt={item.title}/>
-                    </IonCol>
-                    <IonCol size="7">
-                      <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
-                      <IonCardSubtitle style={{textAlign:"left"}}>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
-                      <IonRow className="jumlah-item">
-                        <IonInput className="ion-margin" maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
-                      </IonRow>
-                    </IonCol>
-                  </IonRow>
-                </SwiperSlide>
+                <IonRow className="card-slider center">
+                  <IonCol size="5">
+                    <IonImg className="img-slider" src={item.fotoUrl} alt={item.title}/>
+                  </IonCol>
+                  <IonCol size="7">
+                    <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
+                    <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
+                    <IonCardSubtitle style={{textAlign:"left"}}>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
+                    <IonRow className="jumlah-item">
+                      <IonInput maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
+                    </IonRow>
+                  </IonCol>
+                </IonRow>
+              </SwiperSlide>
                ))
               )}  
 
@@ -240,14 +240,14 @@ const Home: React.FC = () => {
               className="modal-box"
               >
                 <IonItem lines="none"></IonItem>
-                <h3 className="center text-bold">Struk Belanja</h3>
+                <h3 className="center text-bold">Receipt</h3>
                 <IonGrid className="ion-no-padding ion-no-margin" style={{maxHeight:"35px"}}>
                   <IonRow>
-                    <IonCol size="7">
-                      <IonTitle className="total-barang text-bold">Total Barang: 07 </IonTitle>
+                    <IonCol size="8">
+                      <IonTitle className="total-barang text-bold">Total Items: 07 </IonTitle>
                     </IonCol>
-                    <IonCol size="5">
-                      <IonButton fill="clear" color="medium" className="text-bold hapusall">Hapus Semua</IonButton>
+                    <IonCol size="4">
+                      <IonButton fill="clear" color="medium" className="text-bold ion-text-right ion-margin-start">CLEAR ALL</IonButton>
                     </IonCol>
                   </IonRow>
                 </IonGrid>
@@ -282,18 +282,22 @@ const Home: React.FC = () => {
                   }
                 })
                   :
-                  <h2 className="text-center">Daftar Item Kosong</h2>
+                  <div style={{marginTop: '30px'}} className="ion-text-center">
+                    <IonImg style={{width:'20%'}} src={'assets/foto/empty.png'} /> 
+                    <h5 style={{fontWeight: 'bold'}}>Your Cart Is Empty</h5>
+                  </div>
+                  
                 }
                 </IonContent>
 
                 <IonCard color="primary" className="card-th-dh-lds-modal ion-no-margin">
                   <IonRow className="center">
-                    <IonCol size="5.5" className="label-TH">Total Harga</IonCol>
+                    <IonCol size="5.5" className="label-TH">Total Price</IonCol>
                     <IonCol size="5.5" className="label-DH">{parseFloat(TotalHarga.toString()).toLocaleString('en')}</IonCol>
                   </IonRow>
                   <IonRow className="center">
                     <IonCol size="11.5" color="light" className="label-LDS"onClick={()=>setShowModal(true)}>
-                    Tanggal: {date}
+                      Transaction Date: {date}
                     </IonCol>
                   </IonRow>
                 </IonCard>
@@ -304,11 +308,11 @@ const Home: React.FC = () => {
         isOpen={showActionSheet}
         onDidDismiss={() => setShowActionSheet(false)}
         cssClass='my-custom-class'
-        header= 'Are you sure you want to Logout?'
+        header= 'Apakah kamu yakin ingin Logout dari akun ini ?'
         buttons={[{
-          text: 'Ok',
+          text: 'Saya Yakin',
           role: 'destructive',
-          icon: checkmark,
+          icon: trash,
           id: 'delete-button',
           data: {
             type: 'delete'

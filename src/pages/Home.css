@@ -33,7 +33,7 @@ body {
   font-size: 18px;
   padding: 0;
   height: calc((90% - 45px) / 3) !important;
-  margin-top: 15px;
+  margin-top: 25px;
 
   /* Center slide text vertically */
   display: -webkit-box;
