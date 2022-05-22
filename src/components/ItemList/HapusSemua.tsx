@@ -57,7 +57,7 @@ const HapusSemua: React.FC = () => {
 
     return (
     
-    <IonToolbar>
+    <>
       <IonButtons slot="end" >
         <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" onClick={() => sheetHandler ()}>
           Hapus Semua
@@ -81,7 +81,7 @@ const HapusSemua: React.FC = () => {
             />
           }
 
-    </IonToolbar>
+    </>
     );
 };
 

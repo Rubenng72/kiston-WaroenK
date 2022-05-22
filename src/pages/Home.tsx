@@ -129,7 +129,7 @@ const Home: React.FC = () => {
                 </IonButton> */}
               {/* </IonButtons> */}
               <IonButtons slot="end" >
-                <IonButton style={{marginTop:"10px", marginRight:"10px"}} fill="solid" color="danger" onClick={()=>resetAmount()}>
+                <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" onClick={()=>resetAmount()}>
                   Reset
                 </IonButton>
               </IonButtons>
@@ -175,7 +175,7 @@ const Home: React.FC = () => {
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {item.price}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput className="ion-margin" maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
+                        <IonInput maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>
@@ -277,7 +277,7 @@ const Home: React.FC = () => {
                   }
                 })
                   :
-                  <h2 className="text-center">daftar kosong</h2>
+                  <h2 className="text-center">Daftar Item Kosong</h2>
                 }
                 </IonContent>
 
