@@ -64,6 +64,7 @@
 /* Satuan Jumlah Barang (pcs/lusin) */
 .satuan-jumlah{
     font-size: 14px;
+    margin-top: 15%;
     font-weight: bold;
 }
 

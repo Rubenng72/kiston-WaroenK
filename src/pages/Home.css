@@ -96,8 +96,6 @@ body {
 .jumlah-item{
   background-color: white;
   text-align: center;
-  width: 20%;
-  margin: 10px auto;
   border-radius: 5px;
 }
 #home.sc-ion-input-md-h{
@@ -157,4 +155,13 @@ body {
 .my-custom-class{
   --background: #B5D0E4 ;
   
+}
+
+.inputbox{
+  --padding-start : 0!important;
+}
+
+.padding-right{
+  --padding-start : 0;
+  --padding-end : 0;
 }

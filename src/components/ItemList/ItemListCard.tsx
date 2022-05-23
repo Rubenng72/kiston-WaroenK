@@ -77,7 +77,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
               <IonText>
                 <h2>{item.title}</h2>
                 <h2>1 pcs</h2> <p className="hargacolor ion-no-padding">Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</p>
-                <h2>1 {item.type}</h2> <p className="hargacolor ion-no-padding">Rp. {priceTypeHandler(item.price, item.nMax, item.disc)}</p>
+                <h2>1 {item.type} ({item.nMax} pcs)</h2> <p className="hargacolor ion-no-padding">Rp. {priceTypeHandler(item.price, item.nMax, item.disc)}</p>
               </IonText>
             </IonCardContent>
           </IonCol>
@@ -116,7 +116,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
               <IonText>
                 <h2>{item.title}</h2>
                 <h2>1 pcs</h2> <p className="hargacolor ion-no-padding">Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</p>
-                <h2>1 {item.type}</h2> <p className="hargacolor ion-no-padding">Rp. {priceTypeHandler(item.price, item.nMax, item.disc)}</p>
+                <h2>1 {item.type} ({item.nMax} pcs)</h2> <p className="hargacolor ion-no-padding">Rp. {priceTypeHandler(item.price, item.nMax, item.disc)}</p>
               </IonText>
             </IonCardContent>
           </IonCol>
