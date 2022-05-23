@@ -55,6 +55,7 @@ const Home: React.FC = () => {
     const amount = Number(e.detail.value);
     const barangRef = doc(db, "barang", ids);
     await updateDoc(barangRef, { "amount" : amount})
+    // barangctx.initContext()
   }
 
   // const priceCalculation = () =>{
@@ -100,6 +101,13 @@ const Home: React.FC = () => {
     //   const barangRef = doc(db, "barang", value.id);
     //   updateDoc(barangRef, { "amount" : 0})
     // })
+
+    barangctx.items.forEach(barang =>{
+      const barangRef = doc(db, "barang", barang.id);
+      updateDoc(barangRef, { "amount" : 0})
+    })
+
+    // console.log(barangctx.items)
   }
 
 
@@ -213,7 +221,7 @@ const Home: React.FC = () => {
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
+                        <IonInput maxlength={2} value={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>
@@ -250,7 +258,7 @@ const Home: React.FC = () => {
                     <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                     <IonCardSubtitle style={{textAlign:"left"}}>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
                     <IonRow className="jumlah-item">
-                      <IonInput maxlength={2} placeholder={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
+                      <IonInput maxlength={2} value={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                     </IonRow>
                   </IonCol>
                 </IonRow>
