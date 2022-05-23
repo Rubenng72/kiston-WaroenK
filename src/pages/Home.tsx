@@ -191,6 +191,80 @@ const Home: React.FC = () => {
     }
   };
 
+  //new func
+  const handlerHandler = () => {
+    if (user !== null) {
+      if (user.isAnonymous) {
+        return (
+          <IonGrid>
+                <IonRow className="center">
+                  <IonButtons>
+                    <IonText className="ion-text-center">
+                      <IonImg
+                        src={
+                          "https://www.svgrepo.com/show/157995/empty-white-box.svg"
+                        }
+                      />
+                      <h5>No Item Listed</h5>
+                      <IonButton color="light" routerLink="/TambahBarang">
+                        <h5>Add Item</h5>
+                      </IonButton>
+                    </IonText>
+                  </IonButtons>
+                </IonRow>
+              </IonGrid>
+        );
+      } else {
+        return (
+          <IonGrid>
+                <IonRow className="center">
+                  <IonButtons>
+                    <IonText className="ion-text-center">
+                      <IonImg
+                        src={
+                          "https://www.svgrepo.com/show/157995/empty-white-box.svg"
+                        }
+                      />
+                      <h5>No Item Listed</h5>
+                      <IonButton color="light" routerLink="/TambahBarang">
+                        <h5>Add Item</h5>
+                      </IonButton>
+                    </IonText>
+                  </IonButtons>
+                </IonRow>
+              </IonGrid>
+
+        );
+      }
+    } else {
+      return (
+        <IonGrid>
+                <IonRow className="center">
+                  <IonButtons>
+                    <IonText className="ion-text-center">
+                      <IonImg
+                        src={
+                          "https://www.svgrepo.com/show/157995/empty-white-box.svg"
+                        }
+                      />
+                      <IonTitle>You need to Sign In / Register first!</IonTitle>
+                      <IonButton color="" routerLink="/Register">
+                        <h5>Register</h5>
+                      </IonButton>
+                      <IonButton color="light" routerLink="/Login">
+                        <h5>Login</h5>
+                      </IonButton>
+                    </IonText>
+                  </IonButtons>
+                </IonRow>
+              </IonGrid>
+
+      );
+    }
+  };
+
+
+
   // Function Search
   useEffect(() => {
     searchFunction();
@@ -333,23 +407,7 @@ const Home: React.FC = () => {
 
           {barangctx.items.length == 0 && (
             <SwiperSlide>
-              <IonGrid>
-                <IonRow className="center">
-                  <IonButtons>
-                    <IonText className="ion-text-center">
-                      <IonImg
-                        src={
-                          "https://www.svgrepo.com/show/157995/empty-white-box.svg"
-                        }
-                      />
-                      <h5>No Item Listed</h5>
-                      <IonButton color="light" routerLink="/TambahBarang">
-                        <h5>Add Item</h5>
-                      </IonButton>
-                    </IonText>
-                  </IonButtons>
-                </IonRow>
-              </IonGrid>
+              {handlerHandler}
             </SwiperSlide>
           )}
 

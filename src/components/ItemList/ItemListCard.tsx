@@ -4,7 +4,7 @@ import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, I
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
 import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
-
+import { getAuth } from "firebase/auth";
 interface barangType {
   id: string;
   uId: string;
@@ -24,6 +24,8 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
     const [ids, setId] = useState<string>('');
     const [img, setImg] = useState<string>('');
     const [actionSheet, setShowActionSheet] = useState(false);
+    const auth = getAuth();
+    const user = auth.currentUser;
 
     async function deleteBarang(id: string, img: string) {
       barangctx.deleteSingleItem(id, img);
@@ -64,6 +66,40 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
       ));
     }
 
+    const handlerHandler = () => {
+      if (user !== null) {
+        if (user.isAnonymous) {
+          return (
+            <IonButton fill="clear" expand="block" color="light" routerLink="/TambahBarang">
+            <IonTitle>Tambah barang</IonTitle>
+          </IonButton>
+          );
+        } else {
+          return (
+            <IonButton fill="clear" expand="block" color="light" routerLink="/TambahBarang">
+            <IonTitle>Tambah barang</IonTitle>
+          </IonButton>
+  
+          );
+        }
+      } else {
+        return (
+          
+          <>
+          <br></br>
+          <IonTitle className="ion-text-center">You need to Sign In / Register first!</IonTitle>
+          <br></br>
+          <IonButton fill="clear" expand="block" color="light" routerLink="/Login">
+            <IonTitle>Login</IonTitle>
+          </IonButton><IonButton fill="clear" expand="block" color="" routerLink="/Login">
+              <IonTitle>Register</IonTitle>
+            </IonButton></>
+  
+        );
+      }
+    };
+
+
     return (
       <IonGrid>        
         {props.onSearchValue == '' && barangctx.items.length != 0  && ( barangctx.items.map((item) =>(
@@ -100,9 +136,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
         )}
 
         {barangctx.items.length == 0 && (
-          <IonButton fill="clear" expand="block" color="light" routerLink="/TambahBarang">
-            <IonTitle>Tambah barang</IonTitle>
-          </IonButton>
+         <IonGrid>{handlerHandler()}</IonGrid>
         )}
 
         {props.onSearchValue != '' && barangctx.items.length != 0  && ( searchFunction().map((item) =>(
