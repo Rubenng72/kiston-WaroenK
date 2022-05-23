@@ -6,6 +6,7 @@ import {camera} from "ionicons/icons";
 import {Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { getFirestore, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import BarangContext from '../../data/barang-context';
 import './UpdateBarang.css';
 
 const UpdateBarang: React.FC = () => {
@@ -15,12 +16,14 @@ const UpdateBarang: React.FC = () => {
   }>();
 
   const [selectedItem, setSelectedItem] = useState<any>();
-  const [chosenSatuan, setChosenSatuan] = useState<'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim'>('pcs');
+  const [chosenSatuan, setChosenSatuan] = useState<'box'>('box');
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
+  const [disc, setDisc] = useState<number>(0);
+  const [nMax, setnMax] = useState<number>(0);
   const [selectedFile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState('');
-  // const barangctx = useContext(BarangContext);
+  const barangctx = useContext(BarangContext);
   const history = useHistory();
   const [startAlert, serStartAlert] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -48,35 +51,9 @@ const UpdateBarang: React.FC = () => {
     setTitle(selectedItem?.title!);
     setPrice(selectedItem?.price!);
     setChosenSatuan(selectedItem?.type!);
+    setDisc(selectedItem?.disc!);
+    setnMax(selectedItem?.nMax);
   },[selectedItem]);
-
-
-  const updateData = async(url: string|null, bId: string|null, title: string, price: number) =>{
-    try {
-      if(bId && url !==null){
-        const docRef = await updateDoc(doc(db, "barang", bId), {
-          title: title,
-          price: price,
-          type: chosenSatuan,
-          foto: fileName,
-          fotoUrl: url,
-        });
-        localStorage.removeItem('editId');
-        localStorage.removeItem('editItem');
-      }
-    if(bId && url == null){
-      const docRef = await updateDoc(doc(db, "barang", bId), {
-        title: title,
-        price: price,
-        type: chosenSatuan,
-      });
-      localStorage.removeItem('editId');
-      localStorage.removeItem('editItem');
-    }
-    } catch (e) {
-      console.error("Error adding Document: ", e);
-    }
-  }
 
   const editBarangHandler = async () =>{
     if(!title || title.toString().trim().length === 0 || !price || !chosenSatuan){
@@ -92,12 +69,12 @@ const UpdateBarang: React.FC = () => {
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
         // console.log('upload file success');
         getDownloadURL(ref(storage, fileName)).then((url) => {
-            updateData(url, id, title, price);
+          barangctx.updateDataItem(url, id, title, price, chosenSatuan, disc, nMax, fileName);
         })
       })
     }else if(!takenPhoto){
 
-      updateData(null,id,title,price);
+      barangctx.updateDataItem(null, id, title, price, chosenSatuan, disc, nMax, fileName);
     }
 
     setToastMessage('Barang berhasil diubah!');
@@ -166,14 +143,20 @@ const UpdateBarang: React.FC = () => {
           <IonRow className="ion-padding">
             {/* <IonLabel>Harga Barang</IonLabel> */}
             <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={price} onIonChange={e => setPrice(parseInt(e.detail.value!))}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
-            <IonSelect className="inputselection" interface="popover" placeholder={selectedItem?.type} onIonChange={selectSatuanhandler} value={chosenSatuan}>
-                <IonSelectOption value="pcs">Pcs</IonSelectOption>
-                <IonSelectOption value="lusin">Lusin</IonSelectOption>
-                <IonSelectOption value="kodi">Kodi</IonSelectOption>
-                <IonSelectOption value="gross">Gross</IonSelectOption>
-                <IonSelectOption value="rim">Rim</IonSelectOption>
-            </IonSelect>
           </IonRow>
+
+          <IonRow className="ion-padding">
+              <IonInput className="inputtext" style={{marginRight: 5}} placeholder="diskon" type="number" value={disc}  onIonChange={e => setDisc(parseInt(e.detail.value!))}></IonInput>
+              <IonInput className="inputtext" placeholder="MAX" type="number" value={nMax} onIonChange={e => setnMax(parseInt(e.detail.value!))}></IonInput>
+              <IonSelect className="inputselection" interface="popover" placeholder={selectedItem?.type} onIonChange={selectSatuanhandler} value={chosenSatuan}>
+                  <IonSelectOption className="" value="box">box</IonSelectOption>
+                  {/* <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>
+                  <IonSelectOption value="lusin">Lusin</IonSelectOption>
+                  <IonSelectOption value="kodi">Kodi</IonSelectOption>
+                  <IonSelectOption value="gross">Gross</IonSelectOption>
+                  <IonSelectOption value="rim">Rim</IonSelectOption> */}
+              </IonSelect>
+            </IonRow>
 
           <IonRow className="ion-margin-top">
             <IonCol className="ion-text-center">

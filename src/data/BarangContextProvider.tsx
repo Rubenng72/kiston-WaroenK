@@ -2,7 +2,7 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import React, { useCallback, useEffect, useState } from "react";
 import BarangContext, { Barang } from "./barang-context";
 import { Storage } from "@capacitor/storage";
-import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc} from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, updateDoc} from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
@@ -31,6 +31,38 @@ const BarangContextProvider: React.FC = props => {
     }
   }
 
+
+  const updateDataItem = async(url: string|null, bId: string|null, title: string, price: number, type: 'box', disc: number, nMax: number, fileName: string) =>{
+    try {
+      if(bId && url !==null){
+        const docRef = await updateDoc(doc(db, "barang", bId), {
+          title: title,
+          price: price,
+          type: type,
+          disc: disc,
+          nMax: nMax,
+          foto: fileName,
+          fotoUrl: url,
+        });
+        localStorage.removeItem('editId');
+        localStorage.removeItem('editItem');
+      }
+    if(bId && url == null){
+      const docRef = await updateDoc(doc(db, "barang", bId), {
+        title: title,
+        price: price,
+        type: type,
+        disc: disc,
+        nMax: nMax,
+      });
+      localStorage.removeItem('editId');
+      localStorage.removeItem('editItem');
+    }
+    } catch (e) {
+      console.error("Error adding Document: ", e);
+    }
+  }
+
   const deleteSingleItem = async(id:string, img: string) => {
     const dataRef = doc(db, "barang", id);
     const imgRef = ref(storage,  img);
@@ -43,6 +75,7 @@ const BarangContextProvider: React.FC = props => {
     }
   }
 
+ 
   // const updateItem = (id: string, imagePath: string, base64url: string, title: string, price: number, type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim') => {
   //   const update: Barang = {id, imagePath, base64url, title, price, type}
   //   const updateIndex = items.findIndex(i => i.id === id)
@@ -147,7 +180,7 @@ const BarangContextProvider: React.FC = props => {
 
 
   return(
-    <BarangContext.Provider value={{items, addDataItem, deleteSingleItem, initContext}}>
+    <BarangContext.Provider value={{items, addDataItem, updateDataItem, deleteSingleItem, initContext}}>
       {props.children}
     </BarangContext.Provider>
   );

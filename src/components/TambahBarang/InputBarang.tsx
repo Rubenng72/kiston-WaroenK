@@ -137,7 +137,7 @@ const InputBarang: React.FC = () => {
             </IonRow>
 
             <IonRow className="ion-padding">
-              <IonInput className="inputtext" placeholder="diskon" type={"number"} ref={discRef}></IonInput>
+              <IonInput className="inputtext" style={{marginRight: 5}} placeholder="diskon" type={"number"} ref={discRef}></IonInput>
               <IonInput className="inputtext" placeholder="MAX" type={"number"} ref={nMaxRef}></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
                   <IonSelectOption className="" value="box">box</IonSelectOption>

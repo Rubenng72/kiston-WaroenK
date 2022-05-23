@@ -60,7 +60,7 @@ const Home: React.FC = () => {
         sum += value.price * value.amount;
         console.log(value.amount);
       } else if (value.amount > 0 && value.amount >= value.nMax){
-        hargaBox = (value.nMax * value.price) - ((value.nMax * value.price) * (value.disc));
+        hargaBox = (value.nMax * value.price) - ((value.nMax * value.price) * (value.disc/100));
 
         modulus = value.amount % value.nMax;
         temp = modulus;
@@ -82,7 +82,7 @@ const Home: React.FC = () => {
         let box = 0;
         let hargaBox = 0;
 
-        hargaBox = (inMax * iPrice) - ((inMax * iPrice) * (iDisc));
+        hargaBox = (inMax * iPrice) - ((inMax * iPrice) * (iDisc/100));
 
         modulus = iAmount % inMax;
         temp = modulus;
@@ -324,7 +324,6 @@ const Home: React.FC = () => {
                     </IonCol>
                   </IonRow>
                 </IonCard>
-
             </IonModal>
 
             <IonActionSheet
