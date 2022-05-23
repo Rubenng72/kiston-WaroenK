@@ -137,17 +137,17 @@ const UpdateBarang: React.FC = () => {
 
           <IonRow className="ion-padding">
               {/* <IonLabel>Nama Barang</IonLabel> */}
-              <IonInput className="inputtext" placeholder="Nama Barang" type="text" value={title} onIonChange={e => setTitle(e.detail.value!)}></IonInput>
+              <IonInput className="inputtext" placeholder="item Name" type="text" value={title} onIonChange={e => setTitle(e.detail.value!)}></IonInput>
           </IonRow>
 
           <IonRow className="ion-padding">
             {/* <IonLabel>Harga Barang</IonLabel> */}
-            <IonInput className="inputtext" placeholder="Harga Barang" type="number" value={price} onIonChange={e => setPrice(parseInt(e.detail.value!))}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
+            <IonInput className="inputtext" placeholder="Selling Price/pcs" type="number" value={price} onIonChange={e => setPrice(parseInt(e.detail.value!))}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
           </IonRow>
 
           <IonRow className="ion-padding">
-              <IonInput className="inputtext" style={{marginRight: 5}} placeholder="diskon" type="number" value={disc}  onIonChange={e => setDisc(parseInt(e.detail.value!))}></IonInput>
-              <IonInput className="inputtext" placeholder="MAX" type="number" value={nMax} onIonChange={e => setnMax(parseInt(e.detail.value!))}></IonInput>
+              <IonInput className="inputtext" style={{marginRight: 5}} placeholder="Discount %" type="number" value={disc}  onIonChange={e => setDisc(parseInt(e.detail.value!))}></IonInput>
+              <IonInput className="inputtext" placeholder="Max Items/Box" type="number" value={nMax} onIonChange={e => setnMax(parseInt(e.detail.value!))}></IonInput>
               <IonSelect className="inputselection" interface="popover" placeholder={selectedItem?.type} onIonChange={selectSatuanhandler} value={chosenSatuan}>
                   <IonSelectOption className="" value="box">box</IonSelectOption>
                   {/* <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>

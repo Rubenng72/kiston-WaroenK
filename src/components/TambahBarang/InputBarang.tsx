@@ -112,7 +112,7 @@ const InputBarang: React.FC = () => {
             <IonRow className="ion-text-center">
               <IonCol>
                 <div >
-                  {!takenPhoto && <h3>Belum Ada Photo</h3>}
+                  {!takenPhoto && <h3>No Photo Taken</h3>}
                   {takenPhoto && <img className="image-preview" src={takenPhoto.preview} alt="Preview"/>}
                 </div>
               </IonCol>
@@ -127,18 +127,18 @@ const InputBarang: React.FC = () => {
 
             <IonRow className="ion-padding">
                 {/* <IonLabel>Nama Barang</IonLabel> */}
-                <IonInput className="inputtext" placeholder="Nama Barang" type="text" ref={titleRef}></IonInput>
+                <IonInput className="inputtext" placeholder="Item Name" type="text" ref={titleRef}></IonInput>
             </IonRow>
 
             <IonRow className="ion-padding">
               {/* <IonLabel>Harga Barang</IonLabel> */}
-              <IonInput className="inputtext" placeholder="Harga Barang" type={"number"} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
+              <IonInput className="inputtext" placeholder="Selling Price/pcs" type={"number"} ref={priceRef}><IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel></IonInput>
               
             </IonRow>
 
             <IonRow className="ion-padding">
-              <IonInput className="inputtext" style={{marginRight: 5}} placeholder="diskon" type={"number"} ref={discRef}></IonInput>
-              <IonInput className="inputtext" placeholder="MAX" type={"number"} ref={nMaxRef}></IonInput>
+              <IonInput className="inputtext" style={{marginRight: 5}} placeholder="Discount %" type={"number"} ref={discRef}></IonInput>
+              <IonInput className="inputtext" placeholder="Max Items/Box" type={"number"} ref={nMaxRef}></IonInput>
               <IonSelect className="inputselection" interface="popover" onIonChange={selectSatuanhandler} value={chosenSatuan}>
                   <IonSelectOption className="" value="box">box</IonSelectOption>
                   {/* <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>
@@ -151,7 +151,7 @@ const InputBarang: React.FC = () => {
 
             <IonRow className="ion-margin-top">
               <IonCol className="ion-text-center">
-                <IonButton color="success" onClick={addBarangHandler}>Tambah Barang</IonButton>
+                <IonButton color="success" onClick={addBarangHandler}>Add Item</IonButton>
               </IonCol>
             </IonRow>
 

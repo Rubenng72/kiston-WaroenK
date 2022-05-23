@@ -11,7 +11,7 @@ const TambahBarang: React.FC = () => {
               <IonButtons slot="start" >
                 <IonBackButton defaultHref="/tabs/ItemList"></IonBackButton>
               </IonButtons>
-              <IonTitle>Tambah Barang</IonTitle>
+              <IonTitle>Add Item</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>

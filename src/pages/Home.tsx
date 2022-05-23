@@ -61,17 +61,15 @@ const Home: React.FC = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [TotalHarga, setTotalHarga] = useState<number>(0);
+  const [totalItem, setTotalItem] = useState<number>(0);
 
   const current = new Date();
-  const date = `${current.getDate()}/${
-    current.getMonth() + 1
-  }/${current.getFullYear()}`;
-  const iFormRef = useRef<HTMLFormElement>(null);
-  const inputHandler = async (e: CustomEvent) => {
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  const inputHandler = async(e:CustomEvent) => {
     const amount = Number(e.detail.value);
     const barangRef = doc(db, "barang", ids);
-    await updateDoc(barangRef, { amount: amount });
-  };
+    await updateDoc(barangRef, { "amount" : amount})
+  }
 
   const priceCalculation = () => {
     let sum = 0;
@@ -85,9 +83,7 @@ const Home: React.FC = () => {
         sum += value.price * value.amount;
         console.log(value.amount);
       } else if (value.amount > 0 && value.amount >= value.nMax) {
-        hargaBox =
-          value.nMax * value.price -
-          value.nMax * value.price * (value.disc / 100);
+        hargaBox = value.nMax * value.price - value.nMax * value.price * (value.disc / 100);
 
         modulus = value.amount % value.nMax;
         temp = modulus;
@@ -98,42 +94,72 @@ const Home: React.FC = () => {
       }
     });
     setTotalHarga(sum);
+    setTotalItem(0);
   };
 
-  const priceTypeHandler = (
-    iPrice: number,
-    iAmount: number,
-    inMax: number,
-    iDisc: number
-  ) => {
-    if (iAmount > 0 && iAmount < inMax) {
-      return parseFloat((iPrice * iAmount).toString()).toLocaleString("en");
-    } else if (iAmount > 0 && iAmount >= inMax) {
+  const priceTypeHandler = (iPrice: number, iAmount: number, inMax: number, iDisc: number) =>{
+    if(iAmount > 0 && iAmount < inMax){
+      return parseFloat((iPrice *  iAmount).toString()).toLocaleString('en');
+    } else if (iAmount > 0 && iAmount >= inMax){
       let temp = 0;
       let modulus = 0;
       let box = 0;
       let hargaBox = 0;
 
-      hargaBox = inMax * iPrice - inMax * iPrice * (iDisc / 100);
+      hargaBox = (inMax * iPrice) - ((inMax * iPrice) * (iDisc/100));
 
       modulus = iAmount % inMax;
       temp = modulus;
 
       box = iAmount - temp;
       box = box / inMax;
-      return parseFloat(
-        (box * hargaBox + temp * iPrice).toString()
-      ).toLocaleString("en");
+      return parseFloat(((box * hargaBox) + (temp * iPrice)).toString()).toLocaleString('en');
     }
-  };
+}
 
-  const clearReceipt = () => {
-    barangctx.items.forEach((value) => {
+  const clearAllReceipt = () => {
+    barangctx.items.forEach((value)=>{
       const barangRef = doc(db, "barang", value.id);
-      updateDoc(barangRef, { amount: 0 });
-    });
-    iFormRef.current!.reset();
-  };
+      updateDoc(barangRef, { "amount" : 0})
+      setTotalHarga(0);
+      setTotalItem(0);
+    })
+  }
+
+  const clearItemReceipt = () => {
+    console.log(ids);
+    const barangRef = doc(db, "barang", ids);
+    updateDoc(barangRef, { "amount" : 0})
+
+    setTotalItem(totalItem - 1);
+
+    let hargaItem = 0;
+    if(barangctx.items.length !== 0){
+      for(let i = 0; i < barangctx.items.length; i++){
+        if(barangctx.items[i].amount > 0 && barangctx.items[i].id == ids && barangctx.items[i].amount <  barangctx.items[i].nMax){
+          hargaItem = barangctx.items[i].price * barangctx.items[i].amount;
+          setTotalHarga(TotalHarga - hargaItem);
+        }else if (barangctx.items[i].amount > 0 && barangctx.items[i].id == ids && barangctx.items[i].amount >= barangctx.items[i].nMax){
+          let temp = 0;
+          let modulus = 0;
+          let box = 0;
+          let hargaBox = 0;
+          let sum = 0;
+
+          hargaBox = (barangctx.items[i].nMax * barangctx.items[i].price) - ((barangctx.items[i].nMax * barangctx.items[i].price) * (barangctx.items[i].disc/100));
+
+          modulus = barangctx.items[i].amount % barangctx.items[i].nMax;
+          temp = modulus;
+
+          box = barangctx.items[i].amount - temp;
+          box = box / barangctx.items[i].nMax;
+          sum += box * hargaBox + temp * barangctx.items[i].price;
+          
+          setTotalHarga(TotalHarga - sum);
+        }
+      }
+    }
+  }
 
   async function uLogout() {
     const res = await logout();
@@ -263,12 +289,27 @@ const Home: React.FC = () => {
     }
   };
 
+  const totalItemReceipt = () => {
+    console.log('tes')
+    setShowModal(true)
+    let totalItemR = 0;
+    if(barangctx.items.length !== 0){
+      for(let i = 0; i < barangctx.items.length; i++){
+        if(barangctx.items[i].amount > 0){
+          totalItemR = totalItemR + 1;
+        }
+      }
+    }
+    setTotalItem(totalItemR);
+  }
 
 
   // Function Search
-  useEffect(() => {
-    searchFunction();
-  }, [searchValue]);
+  // useEffect(() => {
+  //   searchFunction();
+  //   totalItemReceipt();
+  // }, [searchValue]);
+
 
   const searchFunction = () => {
     return barangctx.items.filter((barang: barangType) =>
@@ -411,62 +452,61 @@ const Home: React.FC = () => {
             </SwiperSlide>
           )}
 
-          {searchValue != "" &&
-            barangctx.items.length != 0 &&
-            searchFunction().map((item) => (
+          {searchValue != "" && barangctx.items.length != 0 && searchFunction().map((item) => (
               <SwiperSlide key={item.id}>
-                <IonRow className="card-slider center">
-                  <IonCol size="5">
-                    <IonImg
-                      className="img-slider"
-                      src={item.fotoUrl}
-                      alt={item.title}
-                    />
-                  </IonCol>
-                  <IonCol size="7">
-                    <IonCardTitle style={{ textAlign: "left" }}>
-                      {item.title}
-                    </IonCardTitle>
-                    <IonCardSubtitle style={{ textAlign: "left" }}>
-                      (1 {item.type})
-                    </IonCardSubtitle>
-                    <IonCardSubtitle style={{ textAlign: "left" }}>
-                      Rp.{" "}
-                      {parseFloat(item.price.toString()).toLocaleString("en")}
-                    </IonCardSubtitle>
-                    <IonRow className="jumlah-item">
-                      <IonInput
-                        maxlength={2}
-                        value={item.amount.toString()}
-                        onIonChange={(e) => inputHandler(e)}
-                        onIonInput={() => setIds(item.id)}
-                        onIonBlur={() => priceCalculation()}
-                      ></IonInput>
-                    </IonRow>
-                  </IonCol>
-                </IonRow>
-              </SwiperSlide>
+              <IonRow className="card-slider center">
+                <IonCol size="5">
+                  <IonImg
+                    className="img-slider"
+                    src={item.fotoUrl}
+                    alt={item.title}
+                  />
+                </IonCol>
+
+                <IonCol size="4.5">
+                  <IonCardTitle style={{ textAlign: "left" }}>
+                    {item.title}
+                  </IonCardTitle>
+                  <IonCardSubtitle style={{ textAlign: "left" }}>
+                    (1 pcs)
+                  </IonCardSubtitle>
+                  <IonCardSubtitle style={{ textAlign: "left" }}>
+                    Rp.{" "}
+                    {parseFloat(item.price.toString()).toLocaleString("en")}
+                  </IonCardSubtitle>
+                  <IonCardSubtitle style={{ textAlign: "left" }}>
+                    (1 {item.type}/{item.nMax} pcs)
+                  </IonCardSubtitle>
+                  <IonCardSubtitle style={{ textAlign: "left" }}>
+                    Rp. {boxPrice(item.price, item.nMax, item.disc)}
+                  </IonCardSubtitle>
+                </IonCol>
+                <IonCol size="2" className="padding-right">
+                  <IonRow className="jumlah-item">
+                    <IonInput
+                      className="inputbox"
+                      maxlength={2}
+                      value={item.amount.toString()}
+                      clearOnEdit
+                      onIonChange={(e) => inputHandler(e)}
+                      onIonInput={() => setIds(item.id)}
+                      onIonBlur={() => priceCalculation()}
+                    ></IonInput>
+                  </IonRow>
+                </IonCol>
+              </IonRow>
+            </SwiperSlide>
             ))}
         </Swiper>
         <IonCard className="card-th-dh-lds" color="primary">
           <IonRow className="center">
-            <IonCol size="5.5" className="label-TH">
-              Total Price
-            </IonCol>
+            <IonCol size="5.5" className="label-TH">Total Price</IonCol>
             <IonCol size="5.5" className="label-DH">
-              <IonLabel>
-                Rp. {parseFloat(TotalHarga.toString()).toLocaleString("en")}
-              </IonLabel>
-              ,-
+              <IonLabel>Rp. {parseFloat(TotalHarga.toString()).toLocaleString("en")}</IonLabel>,-
             </IonCol>
           </IonRow>
           <IonRow className="center">
-            <IonCol
-              size="11.5"
-              color="light"
-              className="label-LDS"
-              onClick={() => setShowModal(true)}
-            >
+            <IonCol size="11.5" color="light" className="label-LDS"  onClick={() =>totalItemReceipt()}>
               View Receipt
             </IonCol>
           </IonRow>
@@ -486,16 +526,14 @@ const Home: React.FC = () => {
           >
             <IonRow>
               <IonCol size="8">
-                <IonTitle className="total-barang text-bold">
-                  Total Items: 07{" "}
-                </IonTitle>
+                <IonTitle className="total-barang text-bold">Total Items: {totalItem}</IonTitle>
               </IonCol>
               <IonCol size="4">
                 <IonButton
                   fill="clear"
                   color="medium"
                   className="text-bold ion-text-right ion-margin-start"
-                  onClick={clearReceipt}
+                  onClick={clearAllReceipt}
                 >
                   CLEAR ALL
                 </IonButton>
@@ -503,43 +541,23 @@ const Home: React.FC = () => {
             </IonRow>
           </IonGrid>
           <IonContent scrollEvents={true} className="modalContent">
-            {barangctx.items.length != 0 ? (
-              barangctx.items.map((item) => {
+            {barangctx.items.length != 0 ? (barangctx.items.map((item) => {
                 if (item.amount > 0) {
                   return (
                     <IonItem lines="none" className="card-modal" key={item.id}>
                       <IonCol size="3">
-                        <img
-                          className="img-modal center"
-                          src={item.fotoUrl}
-                          alt={item.title}
-                        />
+                        <img className="img-modal center" src={item.fotoUrl} alt={item.title}/>
                       </IonCol>
                       <IonCol size="9">
                         <IonRow>
                           <IonCol size="7">
                             <IonText>{item.title}</IonText>
-                            <IonCardSubtitle>
-                              Price/Pcs <br />
-                              Rp.
-                              {parseFloat(item.price.toString()).toLocaleString(
-                                "en"
-                              )}
-                            </IonCardSubtitle>
-                            <IonCardSubtitle>
-                              Total Price/Item <br />
-                              Rp.{" "}
-                              {priceTypeHandler(
-                                item.price,
-                                item.amount,
-                                item.nMax,
-                                item.disc
-                              )}
-                            </IonCardSubtitle>
+                            <IonCardSubtitle>Price/Pcs <br /> Rp.{parseFloat(item.price.toString()).toLocaleString("en")}</IonCardSubtitle>
+                            <IonCardSubtitle>Total Price/Item <br />Rp. {priceTypeHandler(item.price, item.amount, item.nMax, item.disc)}</IonCardSubtitle>
                           </IonCol>
                           <IonCol size="5">
                             <IonCol>{convert(item.amount, item.nMax)}</IonCol>
-                            <IonButton className="trash-can" fill="clear">
+                            <IonButton onIonFocus={()=> (setIds(item.id))} className="trash-can" fill="clear" onClick={() => clearItemReceipt()}>
                               <IonIcon color="danger" icon={trashOutline} />
                             </IonButton>
                           </IonCol>
@@ -551,10 +569,7 @@ const Home: React.FC = () => {
               })
             ) : (
               <div style={{ marginTop: "30px" }} className="ion-text-center">
-                <IonImg
-                  style={{ width: "20%" }}
-                  src={"assets/foto/empty.png"}
-                />
+                <IonImg style={{ width: "20%" }} src={"assets/foto/empty.png"}/>
                 <h5 style={{ fontWeight: "bold" }}>Your Cart Is Empty</h5>
               </div>
             )}

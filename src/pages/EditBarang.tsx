@@ -22,7 +22,7 @@ const EditBarang: React.FC = () => {
                   <IonIcon size="large" icon={chevronBackOutline}/>
                 </IonButton>
               </IonButtons>
-              <IonTitle>Edit Barang</IonTitle>
+              <IonTitle>Edit Item</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>
