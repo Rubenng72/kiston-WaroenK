@@ -1,3 +1,4 @@
+import React from 'react';
 import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonSearchbar, IonItem, IonCard, IonCol, IonInput, IonModal, IonGrid, IonRow, IonText, IonTitle, IonLabel, IonCardSubtitle, IonCardTitle, IonImg, IonActionSheet} from "@ionic/react";
 import './Home.css'
 import './HomeModal.css'
@@ -6,23 +7,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination ,Grid, EffectCoverflow} from "swiper";
 import "swiper/css/grid";
-import { useState, useContext, useEffect} from "react";
+import { useState, useContext, useEffect, useRef} from "react";
 import { trashOutline, close, checkmark } from "ionicons/icons";
 import BarangContext from '../data/barang-context';
 import {logout} from "../data/auth";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-// interface barangType {
-//   id: string;
-//   uId: string;
-//   foto: string;
-//   fotoUrl: string;
-//   title: string;
-//   price: number;
-//   type: 'pcs' | 'lusin' | 'kodi' | 'gross' | 'rim';
-//   amount: number;
-// };
 interface barangType {
   id: string;
   uId: string;
@@ -50,32 +41,19 @@ const Home: React.FC = () => {
 
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-
+  const iFormRef = useRef<HTMLFormElement>(null);
   const inputHandler = async(e:CustomEvent) => {
     const amount = Number(e.detail.value);
     const barangRef = doc(db, "barang", ids);
     await updateDoc(barangRef, { "amount" : amount})
-    // barangctx.initContext()
   }
 
-  // const priceCalculation = () =>{
-  //   let sum = 0;
-  //   barangctx.items.forEach((value)=>{
-  //     if(value.amount >0){
-  //       sum += value.price * value.amount;
-  //       console.log(value.amount);
-  //     }
-  //   })
-  //   setTotalHarga(sum);
-  // }
-
-  let hargaBox = 0;
   const priceCalculation = () =>{
     let sum = 0;
     let temp = 0;
     let modulus = 0;
     let box = 0;
-   
+    let hargaBox = 0;
 
     barangctx.items.forEach((value)=>{
       if(value.amount > 0 && value.amount < value.nMax){
@@ -83,33 +61,45 @@ const Home: React.FC = () => {
         console.log(value.amount);
       } else if (value.amount > 0 && value.amount >= value.nMax){
         hargaBox = (value.nMax * value.price) - ((value.nMax * value.price) * (value.disc));
-        console.log(hargaBox);
-        modulus = value.amount % value.nMax; 
-        temp = modulus; 
 
-        box = value.amount - temp; 
+        modulus = value.amount % value.nMax;
+        temp = modulus;
+
+        box = value.amount - temp;
         box = box / value.nMax;
-        sum += (box * hargaBox) + (temp * value.price); 
+        sum += (box * hargaBox) + (temp * value.price);
       }
     })
     setTotalHarga(sum);
   }
 
-  const clearReceipt = () => {
-    // console.log(barang.length, isEmpty);
-    // barang.forEach((value)=>{
-    //   const barangRef = doc(db, "barang", value.id);
-    //   updateDoc(barangRef, { "amount" : 0})
-    // })
+  const priceTypeHandler = (iPrice: number, iAmount: number, inMax: number, iDisc: number) =>{
+      if(iAmount > 0 && iAmount < inMax){
+        return parseFloat((iPrice *  iAmount).toString()).toLocaleString('en');
+      } else if (iAmount > 0 && iAmount >= inMax){
+        let temp = 0;
+        let modulus = 0;
+        let box = 0;
+        let hargaBox = 0;
 
-    barangctx.items.forEach(barang =>{
-      const barangRef = doc(db, "barang", barang.id);
-      updateDoc(barangRef, { "amount" : 0})
-    })
+        hargaBox = (inMax * iPrice) - ((inMax * iPrice) * (iDisc));
 
-    // console.log(barangctx.items)
+        modulus = iAmount % inMax;
+        temp = modulus;
+
+        box = iAmount - temp;
+        box = box / inMax;
+        return parseFloat(((box * hargaBox) + (temp * iPrice)).toString()).toLocaleString('en');
+      }
   }
 
+  const clearReceipt = () => {
+    barangctx.items.forEach((value)=>{
+      const barangRef = doc(db, "barang", value.id);
+      updateDoc(barangRef, { "amount" : 0})
+    })
+    iFormRef.current!.reset();
+  }
 
   async function uLogout()
   {
@@ -169,16 +159,6 @@ const Home: React.FC = () => {
               <IonSearchbar id="caribarang" placeholder="Cari Barang" onIonChange={e => setSearchValue(e.detail.value!)} style={{marginTop:"10px", marginRight:"5px"}} />
                 <IonButton routerLink="#"/>
               </IonButtons>
-              {/* <IonButtons slot="end" >
-                <IonButton routerLink="/tabs/TambahBarang">
-                  <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-                </IonButton> */}
-              {/* </IonButtons> */}
-              <IonButtons slot="end" >
-                <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" onClick={()=>clearReceipt()}>
-                  Reset
-                </IonButton>
-              </IonButtons>
               {signinhandler()}
 
             </IonToolbar>
@@ -209,19 +189,18 @@ const Home: React.FC = () => {
                 dynamicBullets:true
               }}
               modules={[ Grid,Pagination,EffectCoverflow]}>
-
               {searchValue == '' && barangctx.items.length != 0 && ( barangctx.items.map((item)=>(
                 <SwiperSlide key={item.id}>
                   <IonRow className="card-slider center">
                     <IonCol size="5">
                       <IonImg className="img-slider" src={item.fotoUrl} alt={item.title}/>
                     </IonCol>
-                    <IonCol size="7">
+                    <IonCol size="7" >
                       <IonCardTitle style={{textAlign:"left"}}>{item.title}</IonCardTitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>(1 {item.type})</IonCardSubtitle>
                       <IonCardSubtitle style={{textAlign:"left"}}>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
                       <IonRow className="jumlah-item">
-                        <IonInput maxlength={2} value={item.amount.toString()} onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
+                        <IonInput maxlength={2} value={item.amount.toString()} clearOnEdit onIonChange={(e)=>inputHandler(e)} onIonInput={()=>setIds(item.id)} onIonBlur={()=>priceCalculation()}></IonInput>
                       </IonRow>
                     </IonCol>
                   </IonRow>
@@ -264,8 +243,7 @@ const Home: React.FC = () => {
                 </IonRow>
               </SwiperSlide>
                ))
-              )}  
-
+              )}
             </Swiper>
             <IonCard className="card-th-dh-lds" color="primary">
               <IonRow className="center">
@@ -293,7 +271,7 @@ const Home: React.FC = () => {
                       <IonTitle className="total-barang text-bold">Total Items: 07 </IonTitle>
                     </IonCol>
                     <IonCol size="4">
-                      <IonButton fill="clear" color="medium" className="text-bold ion-text-right ion-margin-start">CLEAR ALL</IonButton>
+                      <IonButton fill="clear" color="medium" className="text-bold ion-text-right ion-margin-start" onClick={clearReceipt}>CLEAR ALL</IonButton>
                     </IonCol>
                   </IonRow>
                 </IonGrid>
@@ -311,7 +289,7 @@ const Home: React.FC = () => {
                             <IonCol size="7">
                               <IonText>{item.title}</IonText>
                               <IonCardSubtitle>Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</IonCardSubtitle>
-                              <IonCardSubtitle>Rp. {hargaBox} </IonCardSubtitle>
+                              <IonCardSubtitle>Rp. {priceTypeHandler(item.price, item.amount, item.nMax, item.disc)}</IonCardSubtitle>
                             </IonCol>
                             <IonCol size="5">
                               <IonCol>
@@ -325,21 +303,13 @@ const Home: React.FC = () => {
                         </IonCol>
                       </IonItem>
                     )
-                  }else{
-                    return(
-                      <div style={{marginTop: '30px'}} className="ion-text-center">
-                        <IonImg style={{width:'20%'}} src={'assets/foto/empty.png'} /> 
-                        <h5 style={{fontWeight: 'bold'}}>Your Cart Is Empty</h5>
-                      </div>
-                  )
                   }
                 })
                   :
                   <div style={{marginTop: '30px'}} className="ion-text-center">
-                    <IonImg style={{width:'20%'}} src={'assets/foto/empty.png'} /> 
+                    <IonImg style={{width:'20%'}} src={'assets/foto/empty.png'} />
                     <h5 style={{fontWeight: 'bold'}}>Your Cart Is Empty</h5>
                   </div>
-                  
                 }
                 </IonContent>
 
@@ -373,7 +343,7 @@ const Home: React.FC = () => {
               handler: () => {
                 uLogout()
               }
-            }, 
+            },
             {
               text: 'Cancel',
               icon: close,
