@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "256630237276",
+    "project_id": "kiston-waroenk",
+    "storage_bucket": "kiston-waroenk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256630237276:android:5e11ce3ec7c7e6e1171e99",
+        "android_client_info": {
+          "package_name": "com.firebaseapp.kiston.waroenk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256630237276-e5hj2vkala2j1rclphuqqd00mjtdci5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe-hJjqGl96HE4Fp_xF6iP2Ry_jTbbC3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256630237276-e5hj2vkala2j1rclphuqqd00mjtdci5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
