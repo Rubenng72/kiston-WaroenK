@@ -52,22 +52,22 @@ const Login: React.FC = () => {
       }
     }
 
-    const skipbuttonhandler = () =>
-    {
-      if(user == null)
-      {
-        return(<IonButton
-          routerLink='/Home'
-          shape="round"
-          class="tombol-skip"
-          onClick={uSkip}>
-          <IonLabel class="tombol-skip">SKIP continue as guest</IonLabel>
-        </IonButton>);
-      }
-      else{
-        return;
-      }
-    }
+    // const skipbuttonhandler = () =>
+    // {
+    //   if(user == null)
+    //   {
+    //     return(<IonButton
+    //       routerLink='/Home'
+    //       shape="round"
+    //       class="tombol-skip"
+    //       onClick={uSkip}>
+    //       <IonLabel class="tombol-skip">SKIP continue as guest</IonLabel>
+    //     </IonButton>);
+    //   }
+    //   else{
+    //     return;
+    //   }
+    // }
 
     return (
       <IonPage>
@@ -126,7 +126,7 @@ const Login: React.FC = () => {
             </IonRow> */}
 
 
-            {skipbuttonhandler()}
+            {/* {skipbuttonhandler()} */}
           </IonCard>
         </IonContent>
       </IonPage>

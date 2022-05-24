@@ -148,14 +148,14 @@ const UpdateBarang: React.FC = () => {
           <IonRow className="ion-padding">
               <IonInput className="inputtext" style={{marginRight: 5}} placeholder="Discount %" type="number" value={disc}  onIonChange={e => setDisc(parseInt(e.detail.value!))}></IonInput>
               <IonInput className="inputtext" placeholder="Max Items/Box" type="number" value={nMax} onIonChange={e => setnMax(parseInt(e.detail.value!))}></IonInput>
-              <IonSelect className="inputselection" interface="popover" placeholder={selectedItem?.type} onIonChange={selectSatuanhandler} value={chosenSatuan}>
-                  <IonSelectOption className="" value="box">box</IonSelectOption>
+              <IonInput className="inputselection ion-padding-start" disabled><IonLabel className="ion-padding-start">Box</IonLabel>
+                  {/* <IonSelectOption className="" value="box">box</IonSelectOption> */}
                   {/* <IonSelectOption className="" value="pcs">Pcs</IonSelectOption>
                   <IonSelectOption value="lusin">Lusin</IonSelectOption>
                   <IonSelectOption value="kodi">Kodi</IonSelectOption>
                   <IonSelectOption value="gross">Gross</IonSelectOption>
                   <IonSelectOption value="rim">Rim</IonSelectOption> */}
-              </IonSelect>
+              </IonInput>
             </IonRow>
 
           <IonRow className="ion-margin-top">
