@@ -364,7 +364,7 @@ const Home: React.FC = () => {
           <IonButtons slot="start">
             <IonSearchbar
               id="caribarang"
-              placeholder="Cari Barang"
+              placeholder="Search"
               onIonChange={(e) => setSearchValue(e.detail.value!)}
               style={{ marginTop: "10px", marginRight: "5px" }}
             />

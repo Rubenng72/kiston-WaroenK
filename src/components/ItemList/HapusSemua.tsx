@@ -60,7 +60,7 @@ const HapusSemua: React.FC = () => {
     <>
       <IonButtons slot="end" >
         <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" onClick={() => sheetHandler ()}>
-          Hapus Semua
+          Delete All
         </IonButton>
       </IonButtons>
       { <IonActionSheet 

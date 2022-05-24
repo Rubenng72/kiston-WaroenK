@@ -49,7 +49,7 @@ const ItemList: React.FC = () => {
           <IonHeader class="ion-no-border">
             <IonToolbar color="none">
               <IonButtons slot="start" >
-              <IonSearchbar id="caribarang" placeholder="Cari Barang" onIonChange={e => setSearchValue(e.detail.value!)} style={{marginTop:"10px", marginRight:"10px"}} />
+              <IonSearchbar id="caribarang" placeholder="Search" onIonChange={e => setSearchValue(e.detail.value!)} style={{marginTop:"10px", marginRight:"10px"}} />
               </IonButtons>
               <HapusSemuabtn/>
             </IonToolbar>
