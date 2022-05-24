@@ -67,15 +67,15 @@ const HapusSemua: React.FC = () => {
             cssClass = 'IASBackground'
             isOpen={actionSheet}
             onDidDismiss={() => setShowActionSheet(false)}
-            header="Hapus barang?"
+            header="Delete All Item?"
             buttons={[{
                 icon: checkmarkOutline,
-                text: "Iya, Hapus",
+                text: "Yes, Delete",
                 handler: () => deleteAll(),
               },
               {
                 icon: closeOutline,
-                text: "Tidak",
+                text: "No",
               }
             ]}
             />

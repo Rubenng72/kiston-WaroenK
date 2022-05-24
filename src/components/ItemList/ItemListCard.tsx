@@ -176,15 +176,15 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
             cssClass = 'IASBackground'
             isOpen={actionSheet}
             onDidDismiss={() => setShowActionSheet(false)}
-            header="Hapus barang?"
+            header="Delete Item?"
             buttons={[{
                 icon: checkmarkOutline,
-                text: "Iya, Hapus",
+                text: "Yes, Delete",
                 handler: () => deleteBarang(ids, img),
               },
               {
                 icon: closeOutline,
-                text: "Tidak",
+                text: "No",
               }
             ]}
             />
