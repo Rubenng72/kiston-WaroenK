@@ -67,7 +67,7 @@ const HapusSemua: React.FC = () => {
             cssClass = 'IASBackground'
             isOpen={actionSheet}
             onDidDismiss={() => setShowActionSheet(false)}
-            header="Delete All Item?"
+            header="Delete All Items?"
             buttons={[{
                 icon: checkmarkOutline,
                 text: "Yes, Delete",
