@@ -38,8 +38,11 @@ const InputBarang: React.FC = () => {
   const [chosenSatuan, setChosenSatuan] = useState<"box">("box");
   const titleRef = useRef<HTMLIonInputElement>(null);
   const priceRef = useRef<HTMLIonInputElement>(null);
-  const discRef = useRef<HTMLIonInputElement>(null);
+  const costRef = useRef<HTMLIonInputElement>(null);
   const nMaxRef = useRef<HTMLIonInputElement>(null);
+  const bAmountRef = useRef<HTMLIonInputElement>(null);
+  const [marginPrice, setMarginPrice] = useState<number>(0);
+  const [marginPersen, setMarginPersen] = useState<number>(0);
   const [selectedFile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
   const history = useHistory();
@@ -51,53 +54,59 @@ const InputBarang: React.FC = () => {
     setChosenSatuan(selectedSatuan);
   };
 
+  
+  const calculateMargin = (nMaxRef: React.RefObject<HTMLIonInputElement>, costRef: React.RefObject<HTMLIonInputElement>, priceRef: React.RefObject<HTMLIonInputElement>) => {
+    const jumlahPcsPerBox = nMaxRef.current?.value as number;
+    const modalPricePerBox = costRef.current?.value as number;
+    const sellingPricePerPcs = priceRef.current?.value as number;
+
+    let hargaPerPiece = 0;
+    let hargaProfit = 0;
+    let marginProfit = 0;
+
+    hargaPerPiece = modalPricePerBox / jumlahPcsPerBox;
+    hargaProfit = sellingPricePerPcs - hargaPerPiece;
+    marginProfit = 100 * (sellingPricePerPcs - hargaPerPiece) / sellingPricePerPcs;
+
+    setMarginPrice(hargaProfit);
+    setMarginPersen(marginProfit);
+  }
+
   const addBarangHandler = async () => {
     const enteredTitle = titleRef.current?.value;
     const enteredPrice = priceRef.current?.value;
-    const enteredDisc = discRef.current?.value;
+    const enteredCost = costRef.current?.value;
+    const enteredbAmount = bAmountRef.current?.value;
     const enterednMax = nMaxRef.current?.value;
-    if (
-      !enteredTitle ||
-      enteredTitle.toString().trim().length === 0 ||
-      !enteredPrice ||
-      !enteredDisc ||
-      !enterednMax ||
-      !takenPhoto ||
-      !chosenSatuan
-    ) {
+    if (!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !enteredCost || !enterednMax || !enteredbAmount || !takenPhoto || !chosenSatuan) {
       serStartAlert(true);
       return;
     }
 
     const title = titleRef.current?.value as string;
     const price = priceRef.current?.value as number;
-    const disc = discRef.current?.value as number;
+    const cost = costRef.current?.value as number;
     const nMax = nMaxRef.current?.value as number;
+    const boxAmount = bAmountRef.current?.value as number;
     const storageRef = ref(storage, fileName);
+
+    let totalStock = 0;
+    totalStock = boxAmount * nMax;
+    
     uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
       getDownloadURL(ref(storage, fileName)).then((url) => {
         if (user !== null) {
-          if (user.isAnonymous || !user.isAnonymous) {
             barangctx.addDataItem(
               user.uid,
               title,
               price,
+              cost,
               chosenSatuan,
               nMax,
+              totalStock,
               fileName,
               url
             );
-          } else {
-            barangctx.addDataItem(
-              "all",
-              title,
-              price,
-              chosenSatuan,
-              nMax,
-              fileName,
-              url
-            );
-          }
         }
       });
     });
@@ -192,7 +201,7 @@ const InputBarang: React.FC = () => {
             style={{ marginRight: 30 }}
             placeholder="Box Amount "
             type={"number"}
-            ref={nMaxRef}
+            ref={bAmountRef}
           ></IonInput>
           <IonInput
             className="inputtext"
@@ -208,7 +217,7 @@ const InputBarang: React.FC = () => {
             className="inputtext"
             placeholder="Modal Price/box"
             type={"number"}
-            ref={priceRef}
+            ref={costRef}
           >
             <IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel>
           </IonInput>
@@ -227,9 +236,9 @@ const InputBarang: React.FC = () => {
         </IonRow>
 
         <IonRow className="ion-padding">
-          <IonButton className="">Calculate Margin</IonButton>
-          <IonLabel className="ion-padding">Test Price</IonLabel>
-          <IonLabel className="ion-padding">%</IonLabel>
+          <IonButton className="" onClick={() => calculateMargin(nMaxRef, costRef, priceRef)}>Calculate Margin</IonButton>
+          <IonLabel className="ion-padding">Rp. {parseFloat(marginPrice.toString()).toLocaleString("en")}</IonLabel>
+          <IonLabel className="ion-padding"> {parseFloat(marginPersen.toString()).toLocaleString("en")}%</IonLabel>
         </IonRow>
 
         <IonRow className="ion-margin-top">

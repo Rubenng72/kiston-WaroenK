@@ -44,9 +44,11 @@ interface barangType {
   fotoUrl: string;
   title: string;
   price: number;
-  type: "box";
+  type: 'box';
   nMax: number;
   amount: number;
+  cost: number;
+  stock: number;
 }
 
 const Home: React.FC = () => {

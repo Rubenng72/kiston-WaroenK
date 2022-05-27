@@ -1,33 +1,9 @@
 import React, { useEffect } from "react";
 import { useState, useContext } from "react";
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonCardContent,
-  IonText,
-  IonIcon,
-  IonButtons,
-  IonButton,
-  IonActionSheet,
-  IonCard,
-  IonTitle,
-  IonLabel,
-  IonAccordion,
-  IonItem,
-  IonList,
-  IonAccordionGroup,
-  IonInput,
-} from "@ionic/react";
-import {
-  pencilOutline,
-  trashOutline,
-  checkmarkOutline,
-  closeOutline,
-  arrowDownCircle,
-} from "ionicons/icons";
-import BarangContext from "../../data/barang-context";
-import "./ItemListCard.css";
+import { IonGrid, IonRow, IonCol, IonCardContent, IonText,IonIcon, IonButtons, IonButton, IonActionSheet, IonCard, IonTitle, IonLabel} from '@ionic/react';
+import { pencilOutline, trashOutline, checkmarkOutline, closeOutline} from "ionicons/icons";
+import BarangContext from '../../data/barang-context';
+import './ItemListCard.css'
 import { getAuth } from "firebase/auth";
 interface barangType {
   id: string;
@@ -36,287 +12,186 @@ interface barangType {
   fotoUrl: string;
   title: string;
   price: number;
-  type: "box";
+  type: 'box';
   nMax: number;
   amount: number;
-}
+  cost: number;
+  stock: number;
+};
 
-const ItemListCard: React.FC<{ onSearchValue: string }> = (props) => {
-  const barangctx = useContext(BarangContext);
-  const [ids, setId] = useState<string>("");
-  const [img, setImg] = useState<string>("");
-  const [actionSheet, setShowActionSheet] = useState(false);
-  const auth = getAuth();
-  const user = auth.currentUser;
+const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
 
-  async function deleteBarang(id: string, img: string) {
-    barangctx.deleteSingleItem(id, img);
-  }
+    const barangctx = useContext(BarangContext);
+    const [ids, setId] = useState<string>('');
+    const [img, setImg] = useState<string>('');
+    const [actionSheet, setShowActionSheet] = useState(false);
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-  const sheetHandler = (id: string, img: string) => {
-    setShowActionSheet(true);
-    setId(id);
-    setImg(img);
-  };
+    async function deleteBarang(id: string, img: string) {
+      barangctx.deleteSingleItem(id, img);
+    }
 
-  const setEditData = (id: string) => {
-    barangctx.items.forEach((value) => {
-      if (value.id == id) {
-        localStorage.setItem("editId", value.id);
-        localStorage.setItem("editItem", JSON.stringify(value));
-      }
-    });
-  };
+    const sheetHandler = (id: string, img: string) => {
+      setShowActionSheet(true);
+      setId(id);
+      setImg(img);
+    }
 
-  const priceTypeHandler = (iPrice: number, inMax: number) => {
-    let hargaBox = 0;
+    const setEditData = (id: string) => {
+      barangctx.items.forEach((value)=>{
+        if(value.id == id)
+        {
+          localStorage.setItem("editId", value.id);
+          localStorage.setItem("editItem", JSON.stringify(value));
+        }
+      })
+    }
 
-    hargaBox = inMax * iPrice;
+    const priceTypeHandler = (iPrice: number, inMax: number) =>{
+      let hargaBox = 0;
 
-    return parseFloat(hargaBox.toString()).toLocaleString("en");
-  };
+      hargaBox = (inMax * iPrice);
 
-  // Function Search
-  useEffect(() => {
-    searchFunction();
-  }, [props.onSearchValue]);
+      return parseFloat(((hargaBox)).toString()).toLocaleString('en');
+    }
 
-  const searchFunction = () => {
-    return barangctx.items.filter((barang: barangType) =>
-      barang.title.toLowerCase().includes(props.onSearchValue.toLowerCase())
-    );
-  };
+    // Function Search
+    useEffect(() => {
+      searchFunction();
+    }, [props.onSearchValue]);
 
-  const handlerHandler = () => {
-    if (user !== null) {
-      if (user.isAnonymous) {
-        return (
-          <IonButton
-            fill="clear"
-            expand="block"
-            color="light"
-            routerLink="/TambahBarang"
-          >
+    const searchFunction = () => {
+      return barangctx.items.filter((barang: barangType) => (
+        barang.title.toLowerCase().includes(props.onSearchValue.toLowerCase())
+      ));
+    }
+
+    const handlerHandler = () => {
+      if (user !== null) {
+        if (user.isAnonymous) {
+          return (
+            <IonButton fill="clear" expand="block" color="light" routerLink="/TambahBarang">
             <IonTitle>Tambah barang</IonTitle>
           </IonButton>
-        );
+          );
+        } else {
+          return (
+            <IonButton fill="clear" expand="block" color="light" routerLink="/TambahBarang">
+            <IonTitle>Tambah barang</IonTitle>
+          </IonButton>
+  
+          );
+        }
       } else {
         return (
-          <IonButton
-            fill="clear"
-            expand="block"
-            color="light"
-            routerLink="/TambahBarang"
-          >
-            <IonTitle>Tambah barang</IonTitle>
-          </IonButton>
+          
+          <>
+          <br></br>
+          <IonTitle className="ion-text-center">You need to Sign In / Register first!</IonTitle>
+          <br></br>
+          <IonButton fill="clear" expand="block" color="light" routerLink="/Login">
+            <IonTitle>Login</IonTitle>
+          </IonButton><IonButton fill="clear" expand="block" color="" routerLink="/Login">
+              <IonTitle>Register</IonTitle>
+            </IonButton></>
+  
         );
       }
-    } else {
-      return (
-        <>
-          <br></br>
-          <IonTitle className="ion-text-center">
-            You need to Sign In / Register first!
-          </IonTitle>
-          <br></br>
-          <IonButton
-            fill="clear"
-            expand="block"
-            color="light"
-            routerLink="/Login"
-          >
-            <IonTitle>Login</IonTitle>
-          </IonButton>
-          <IonButton fill="clear" expand="block" color="" routerLink="/Login">
-            <IonTitle>Register</IonTitle>
-          </IonButton>
-        </>
-      );
-    }
-  };
+    };
 
-  return (
-    <IonGrid>
-      {props.onSearchValue == "" &&
-        barangctx.items.length != 0 &&
-        barangctx.items.map((item) => (
+
+    return (
+      <IonGrid>        
+        {props.onSearchValue == '' && barangctx.items.length != 0  && ( barangctx.items.map((item) =>(
           <IonCard id="item-list" className="ion-no-margin" key={item.id}>
             <IonRow>
-              <IonCol size="3" className="ion-no-margin">
-                <img src={item.fotoUrl} className="Item-img" alt={item.title} />
-              </IonCol>
-              <IonCol size="5">
-                <IonCardContent
-                  className="ion-text-left ion-no-padding "
-                  id="content-list"
-                >
-                  <IonText>
-                    <h2>{item.title}</h2>
-                    <h2>1 pcs</h2>{" "}
-                    <p className="hargacolor ion-no-padding">
-                      Rp.{" "}
-                      {parseFloat(item.price.toString()).toLocaleString("en")}
-                    </p>
-                  </IonText>
-                </IonCardContent>
-              </IonCol>
-              <IonCol size="2">
-                <IonButtons className="icon-button">
-                  <IonButton
-                    routerLink={`/EditBarang/${item.id}`}
-                    fill="solid"
-                    className="icon"
-                    onClick={() => setEditData(item.id)}
-                  >
-                    <IonIcon
-                      icon={pencilOutline}
-                      slot="icon-only"
-                      size="large"
-                    />
-                  </IonButton>
-                </IonButtons>
-              </IonCol>
-              <IonCol size="2">
-                <IonButtons className="icon-button">
-                  <IonButton
-                    color="danger"
-                    onClick={() => sheetHandler(item.id, item.foto)}
-                    fill="solid"
-                    className="icon"
-                  >
-                    <IonIcon
-                      icon={trashOutline}
-                      slot="icon-only"
-                      size="large"
-                    />
-                  </IonButton>
-                </IonButtons>
-              </IonCol>
-            </IonRow>
-            <IonAccordionGroup>
-              <IonAccordion value="shapes" toggleIcon={arrowDownCircle}>
-                <IonItem slot="header">
-                  <IonLabel>Items in Stock</IonLabel>
-                </IonItem>
-                <IonList slot="content">
-                  <IonItem>
-                    <IonLabel>Stock Amount : </IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Pcs/Box : </IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonInput placeholder="increase stock /box"></IonInput>
-                    <IonButton>+ Stock</IonButton>
-                  </IonItem>
-                </IonList>
-              </IonAccordion>
-            </IonAccordionGroup>
-          </IonCard>
-        ))}
+          <IonCol size="3" className="ion-no-margin">
+            <img src={(item.fotoUrl)} className="Item-img" alt={item.title}/>
+          </IonCol>
+          <IonCol size="5">
+            <IonCardContent className="ion-text-left ion-no-padding " id="content-list" >
+              <IonText>
+                <h2>{item.title}</h2>
+                <h2>1 pcs</h2> <p className="hargacolor ion-no-padding">Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</p>
+                <h2>1 {item.type} ({item.nMax} pcs)</h2> <p className="hargacolor ion-no-padding">Rp. {priceTypeHandler(item.price, item.nMax)}</p>
+              </IonText>
+            </IonCardContent>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton routerLink={`/EditBarang/${item.id}`} fill ="solid" className="icon" onClick={()=>setEditData(item.id)} >
+                <IonIcon icon={pencilOutline} slot="icon-only" size="large"/>
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton color="danger" onClick={() => sheetHandler (item.id, item.foto)}  fill ="solid" className="icon">
+                <IonIcon icon={trashOutline} slot="icon-only"size="large" />
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          </IonRow>
+        </IonCard>))
+        )}
 
-      {barangctx.items.length == 0 && <IonGrid>{handlerHandler()}</IonGrid>}
+        {barangctx.items.length == 0 && (
+         <IonGrid>{handlerHandler()}</IonGrid>
+        )}
 
-      {props.onSearchValue != "" &&
-        barangctx.items.length != 0 &&
-        searchFunction().map((item) => (
+        {props.onSearchValue != '' && barangctx.items.length != 0  && ( searchFunction().map((item) =>(
           <IonCard id="item-list" className="ion-no-margin" key={item.id}>
             <IonRow>
-              <IonCol size="3" className="ion-no-margin">
-                <img src={item.fotoUrl} className="Item-img" alt={item.title} />
-              </IonCol>
-              <IonCol size="5">
-                <IonCardContent
-                  className="ion-text-left ion-no-padding "
-                  id="content-list"
-                >
-                  <IonText>
-                    <h2>{item.title}</h2>
-                    <h2>1 pcs</h2>{" "}
-                    <p className="hargacolor ion-no-padding">
-                      Rp.{" "}
-                      {parseFloat(item.price.toString()).toLocaleString("en")}
-                    </p>
-                  </IonText>
-                </IonCardContent>
-              </IonCol>
-              <IonCol size="2">
-                <IonButtons className="icon-button">
-                  <IonButton
-                    routerLink={`/EditBarang/${item.id}`}
-                    fill="solid"
-                    className="icon"
-                    onClick={() => setEditData(item.id)}
-                  >
-                    <IonIcon
-                      icon={pencilOutline}
-                      slot="icon-only"
-                      size="large"
-                    />
-                  </IonButton>
-                </IonButtons>
-              </IonCol>
-              <IonCol size="2">
-                <IonButtons className="icon-button">
-                  <IonButton
-                    color="danger"
-                    onClick={() => sheetHandler(item.id, item.foto)}
-                    fill="solid"
-                    className="icon"
-                  >
-                    <IonIcon
-                      icon={trashOutline}
-                      slot="icon-only"
-                      size="large"
-                    />
-                  </IonButton>
-                </IonButtons>
-              </IonCol>
-            </IonRow>
-            <IonAccordionGroup>
-              <IonAccordion value="shapes" toggleIcon={arrowDownCircle}>
-                <IonItem slot="header">
-                  <IonLabel>Items in Stock</IonLabel>
-                </IonItem>
-                <IonList slot="content">
-                  <IonItem>
-                    <IonLabel>Stock Amount : </IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Pcs/Box : </IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonInput placeholder="increase stock /box"></IonInput>
-                    <IonButton>+ Stock</IonButton>
-                  </IonItem>
-                </IonList>
-              </IonAccordion>
-            </IonAccordionGroup>
-          </IonCard>
-        ))}
+          <IonCol size="3" className="ion-no-margin">
+            <img src={(item.fotoUrl)} className="Item-img" alt={item.title}/>
+          </IonCol>
+          <IonCol size="5">
+            <IonCardContent className="ion-text-left ion-no-padding " id="content-list" >
+              <IonText>
+                <h2>{item.title}</h2>
+                <h2>1 pcs</h2> <p className="hargacolor ion-no-padding">Rp. {parseFloat(item.price.toString()).toLocaleString('en')}</p>
+                <h2>1 {item.type} ({item.nMax} pcs)</h2> <p className="hargacolor ion-no-padding">Rp. {priceTypeHandler(item.price, item.nMax)}</p>
+              </IonText>
+            </IonCardContent>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton routerLink={`/EditBarang/${item.id}`} fill ="solid" className="icon" onClick={()=>setEditData(item.id)} >
+                <IonIcon icon={pencilOutline} slot="icon-only" size="large"/>
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          <IonCol size="2" >
+            <IonButtons className="icon-button">
+              <IonButton color="danger" onClick={() => sheetHandler (item.id, item.foto)}  fill ="solid" className="icon">
+                <IonIcon icon={trashOutline} slot="icon-only"size="large" />
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+          </IonRow>
+        </IonCard>))
+        )}
 
-      {ids && (
-        <IonActionSheet
-          cssClass="IASBackground"
-          isOpen={actionSheet}
-          onDidDismiss={() => setShowActionSheet(false)}
-          header="Delete Item?"
-          buttons={[
-            {
-              icon: checkmarkOutline,
-              text: "Yes, Delete",
-              handler: () => deleteBarang(ids, img),
-            },
-            {
-              icon: closeOutline,
-              text: "No",
-            },
-          ]}
-        />
-      )}
-    </IonGrid>
-  );
+        {ids && <IonActionSheet
+            cssClass = 'IASBackground'
+            isOpen={actionSheet}
+            onDidDismiss={() => setShowActionSheet(false)}
+            header="Delete Item?"
+            buttons={[{
+                icon: checkmarkOutline,
+                text: "Yes, Delete",
+                handler: () => deleteBarang(ids, img),
+              },
+              {
+                icon: closeOutline,
+                text: "No",
+              }
+            ]}
+            />
+          }
+      </IonGrid>
+    );
 };
 
 export default ItemListCard;

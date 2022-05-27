@@ -75,13 +75,7 @@ const UpdateBarang: React.FC = () => {
   }, [selectedItem]);
 
   const editBarangHandler = async () => {
-    if (
-      !title ||
-      title.toString().trim().length === 0 ||
-      !price ||
-      !nMax ||
-      !chosenSatuan
-    ) {
+    if (!title || title.toString().trim().length === 0 || !price || !nMax || !chosenSatuan) {
       serStartAlert(true);
       return;
     }

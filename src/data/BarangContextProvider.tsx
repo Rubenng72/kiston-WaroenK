@@ -12,14 +12,16 @@ const BarangContextProvider: React.FC = props => {
   const db = getFirestore();
   const storage = getStorage();
 
-  const addDataItem = async(uId: string, title: string, price: number, type: 'box', nMax: number, image: string, url: string, amount: number=0) =>{
+  const addDataItem = async(uId: string, title: string, price: number, cost: number, type: 'box', nMax: number, stock: number, image: string, url: string, amount: number=0) =>{
     try {
       const docRef = await addDoc(collection(db, "barang"), {
         uId: uId,
         title: title,
         price: price,
+        cost: cost,
         type: type,
         nMax: nMax,
+        stock: stock,
         foto: image,
         fotoUrl: url,
         amount: amount,
@@ -88,8 +90,9 @@ const BarangContextProvider: React.FC = props => {
           fotoUrl:doc.data().fotoUrl,
           title: doc.data().title,
           price: doc.data().price,
+          cost:doc.data().cost,
+          stock:doc.data().stock,
           type: doc.data().type,
-          disc: doc.data().disc,
           nMax: doc.data().nMax,
           amount: doc.data().amount
         }));
@@ -111,6 +114,8 @@ const BarangContextProvider: React.FC = props => {
         title: storedItem.title,
         price: storedItem.price,
         type: storedItem.type,
+        cost: storedItem.cost,
+        stock: storedItem.stock,
         nMax: storedItem.nMax,
         foto: storedItem.foto,
         fotoUrl: storedItem.fotoUrl,
