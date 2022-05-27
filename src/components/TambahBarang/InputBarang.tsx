@@ -67,7 +67,7 @@ const InputBarang: React.FC = () => {
         })
       })
       serStartAlert(false);
-      setToastMessage('Barang berhasil ditambahkan!');
+      setToastMessage('Item added successfully!');
       history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
     }
 
@@ -102,7 +102,7 @@ const InputBarang: React.FC = () => {
           <IonAlert isOpen={startAlert}
                     cssClass="alertCss"
                     header="Warning!!!"
-                    message="Lengkapi data barang yang ingin ditambahkan!"
+                    message="Complete the data of the item"
                     buttons={[
                         {text: 'Ok', role: 'cancel', handler: () => {serStartAlert(false)}}
                     ]}></IonAlert>

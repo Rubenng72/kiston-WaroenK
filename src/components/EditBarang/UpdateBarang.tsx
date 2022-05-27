@@ -56,7 +56,7 @@ const UpdateBarang: React.FC = () => {
   },[selectedItem]);
 
   const editBarangHandler = async () =>{
-    if(!title || title.toString().trim().length === 0 || !price || !chosenSatuan){
+    if(!title || title.toString().trim().length === 0 || !price ||!disc || !nMax || !chosenSatuan){
       serStartAlert(true);
       return;
     }
@@ -77,7 +77,7 @@ const UpdateBarang: React.FC = () => {
       barangctx.updateDataItem(null, id, title, price, chosenSatuan, disc, nMax, fileName);
     }
 
-    setToastMessage('Barang berhasil diubah!');
+    setToastMessage('Data changed successfully');
     history.length > 0 ? history.goBack() : history.replace('/tabs/ItemList');
   }
 
@@ -112,7 +112,7 @@ const UpdateBarang: React.FC = () => {
         <IonAlert isOpen={startAlert}
                   cssClass="alertCss"
                   header="Warning!!!"
-                  message="Lengkapi data barang yang ingin diedit!"
+                  message="Complete the data of the item"
                   buttons={[
                       {text: 'Ok', role: 'cancel', handler: () => {serStartAlert(false)}}
                   ]}></IonAlert>
