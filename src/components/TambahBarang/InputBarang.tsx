@@ -136,7 +136,7 @@ const InputBarang: React.FC = () => {
         isOpen={startAlert}
         cssClass="alertCss"
         header="Warning!!!"
-        message="Complete the data of the item"
+        message={"Complete the data of the item "}
         buttons={[
           {
             text: "Ok",

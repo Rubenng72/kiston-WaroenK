@@ -63,12 +63,14 @@ const Home: React.FC = () => {
   const [totalItem, setTotalItem] = useState<number>(0);
 
   const current = new Date();
-  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-  const inputHandler = async(e:CustomEvent) => {
+  const date = `${current.getDate()}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
+  const inputHandler = async (e: CustomEvent) => {
     const amount = Number(e.detail.value);
     const barangRef = doc(db, "barang", ids);
-    await updateDoc(barangRef, { "amount" : amount})
-  }
+    await updateDoc(barangRef, { amount: amount });
+  };
 
   const priceCalculation = () => {
     let sum = 0;
@@ -83,38 +85,38 @@ const Home: React.FC = () => {
     setTotalItem(0);
   };
 
-  const priceTypeHandler = (iPrice: number, iAmount: number) =>{
-    if(iAmount > 0){
-      return parseFloat((iPrice *  iAmount).toString()).toLocaleString('en');
+  const priceTypeHandler = (iPrice: number, iAmount: number) => {
+    if (iAmount > 0) {
+      return parseFloat((iPrice * iAmount).toString()).toLocaleString("en");
     }
-}
+  };
 
   const clearAllReceipt = () => {
-    barangctx.items.forEach((value)=>{
+    barangctx.items.forEach((value) => {
       const barangRef = doc(db, "barang", value.id);
-      updateDoc(barangRef, { "amount" : 0})
+      updateDoc(barangRef, { amount: 0 });
       setTotalHarga(0);
       setTotalItem(0);
-    })
-  }
+    });
+  };
 
   const clearItemReceipt = () => {
     // console.log(ids);
     const barangRef = doc(db, "barang", ids);
-    updateDoc(barangRef, { "amount" : 0})
+    updateDoc(barangRef, { amount: 0 });
 
     setTotalItem(totalItem - 1);
 
     let hargaItem = 0;
-    if(barangctx.items.length !== 0){
-      for(let i = 0; i < barangctx.items.length; i++){
-        if(barangctx.items[i].amount > 0 && barangctx.items[i].id == ids){
+    if (barangctx.items.length !== 0) {
+      for (let i = 0; i < barangctx.items.length; i++) {
+        if (barangctx.items[i].amount > 0 && barangctx.items[i].id == ids) {
           hargaItem = barangctx.items[i].price * barangctx.items[i].amount;
           setTotalHarga(TotalHarga - hargaItem);
         }
       }
     }
-  }
+  };
 
   async function uLogout() {
     const res = await logout();
@@ -178,92 +180,88 @@ const Home: React.FC = () => {
       if (user.isAnonymous) {
         return (
           <IonGrid>
-                <IonRow className="center">
-                  <IonButtons>
-                    <IonText className="ion-text-center">
-                      <IonImg
-                        src={
-                          "https://www.svgrepo.com/show/157995/empty-white-box.svg"
-                        }
-                      />
-                      <h5>No Item Listed</h5>
-                      <IonButton color="light" routerLink="/TambahBarang">
-                        <h5>Add Item</h5>
-                      </IonButton>
-                    </IonText>
-                  </IonButtons>
-                </IonRow>
-              </IonGrid>
+            <IonRow className="center">
+              <IonButtons>
+                <IonText className="ion-text-center">
+                  <IonImg
+                    src={
+                      "https://www.svgrepo.com/show/157995/empty-white-box.svg"
+                    }
+                  />
+                  <h5>No Item Listed</h5>
+                  <IonButton color="light" routerLink="/TambahBarang">
+                    <h5>Add Item</h5>
+                  </IonButton>
+                </IonText>
+              </IonButtons>
+            </IonRow>
+          </IonGrid>
         );
       } else {
         return (
           <IonGrid>
-                <IonRow className="center">
-                  <IonButtons>
-                    <IonText className="ion-text-center">
-                      <IonImg
-                        src={
-                          "https://www.svgrepo.com/show/157995/empty-white-box.svg"
-                        }
-                      />
-                      <h5>No Item Listed</h5>
-                      <IonButton color="light" routerLink="/TambahBarang">
-                        <h5>Add Item</h5>
-                      </IonButton>
-                    </IonText>
-                  </IonButtons>
-                </IonRow>
-              </IonGrid>
-
+            <IonRow className="center">
+              <IonButtons>
+                <IonText className="ion-text-center">
+                  <IonImg
+                    src={
+                      "https://www.svgrepo.com/show/157995/empty-white-box.svg"
+                    }
+                  />
+                  <h5>No Item Listed</h5>
+                  <IonButton color="light" routerLink="/TambahBarang">
+                    <h5>Add Item</h5>
+                  </IonButton>
+                </IonText>
+              </IonButtons>
+            </IonRow>
+          </IonGrid>
         );
       }
     } else {
       return (
         <IonGrid>
-                <IonRow className="center">
-                  <IonButtons>
-                    <IonText className="ion-text-center">
-                      <IonImg
-                        src={
-                          "https://www.svgrepo.com/show/157995/empty-white-box.svg"
-                        }
-                      />
-                      <IonTitle>You need to Sign In / Register first!</IonTitle>
-                      <IonButton color="" routerLink="/Register">
-                        <h5>Register</h5>
-                      </IonButton>
-                      <IonButton color="light" routerLink="/Login">
-                        <h5>Login</h5>
-                      </IonButton>
-                    </IonText>
-                  </IonButtons>
-                </IonRow>
-              </IonGrid>
-
+          <IonRow className="center">
+            <IonButtons>
+              <IonText className="ion-text-center">
+                <IonImg
+                  src={
+                    "https://www.svgrepo.com/show/157995/empty-white-box.svg"
+                  }
+                />
+                <IonTitle>You need to Sign In / Register first!</IonTitle>
+                <IonButton color="" routerLink="/Register">
+                  <h5>Register</h5>
+                </IonButton>
+                <IonButton color="light" routerLink="/Login">
+                  <h5>Login</h5>
+                </IonButton>
+              </IonText>
+            </IonButtons>
+          </IonRow>
+        </IonGrid>
       );
     }
   };
 
   const totalItemReceipt = () => {
-    setShowModal(true)
+    setShowModal(true);
     let totalItemR = 0;
-    if(barangctx.items.length !== 0){
-      for(let i = 0; i < barangctx.items.length; i++){
-        if(barangctx.items[i].amount > 0){
+    if (barangctx.items.length !== 0) {
+      for (let i = 0; i < barangctx.items.length; i++) {
+        if (barangctx.items[i].amount > 0) {
           totalItemR = totalItemR + 1;
         }
       }
     }
     setTotalItem(totalItemR);
-  }
-
+  };
 
   // Function Search
   // useEffect(() => {
   //   searchFunction();
   //   totalItemReceipt();
   // }, [searchValue]);
-
 
   const searchFunction = () => {
     return barangctx.items.filter((barang: barangType) =>
@@ -377,10 +375,10 @@ const Home: React.FC = () => {
                       {parseFloat(item.price.toString()).toLocaleString("en")}
                     </IonCardSubtitle>
                     <IonCardSubtitle style={{ textAlign: "left" }}>
-                      (1 {item.type}/{item.nMax} pcs)
+                      Items in Stock :
                     </IonCardSubtitle>
                     <IonCardSubtitle style={{ textAlign: "left" }}>
-                      Rp. {boxPrice(item.price, item.nMax)}
+                      Dummy stock
                     </IonCardSubtitle>
                   </IonCol>
                   <IonCol size="2" className="padding-right">
@@ -401,66 +399,76 @@ const Home: React.FC = () => {
             ))}
 
           {barangctx.items.length == 0 && (
-            <SwiperSlide>
-              {handlerHandler}
-            </SwiperSlide>
+            <SwiperSlide>{handlerHandler}</SwiperSlide>
           )}
 
-          {searchValue != "" && barangctx.items.length != 0 && searchFunction().map((item) => (
+          {searchValue != "" &&
+            barangctx.items.length != 0 &&
+            searchFunction().map((item) => (
               <SwiperSlide key={item.id}>
-              <IonRow className="card-slider center">
-                <IonCol size="5">
-                  <IonImg
-                    className="img-slider"
-                    src={item.fotoUrl}
-                    alt={item.title}
-                  />
-                </IonCol>
+                <IonRow className="card-slider center">
+                  <IonCol size="5">
+                    <IonImg
+                      className="img-slider"
+                      src={item.fotoUrl}
+                      alt={item.title}
+                    />
+                  </IonCol>
 
-                <IonCol size="4.5">
-                  <IonCardTitle style={{ textAlign: "left" }}>
-                    {item.title}
-                  </IonCardTitle>
-                  <IonCardSubtitle style={{ textAlign: "left" }}>
-                    (1 pcs)
-                  </IonCardSubtitle>
-                  <IonCardSubtitle style={{ textAlign: "left" }}>
-                    Rp.{" "}
-                    {parseFloat(item.price.toString()).toLocaleString("en")}
-                  </IonCardSubtitle>
-                  <IonCardSubtitle style={{ textAlign: "left" }}>
-                    (1 {item.type}/{item.nMax} pcs)
-                  </IonCardSubtitle>
-                  <IonCardSubtitle style={{ textAlign: "left" }}>
-                    Rp. {boxPrice(item.price, item.nMax)}
-                  </IonCardSubtitle>
-                </IonCol>
-                <IonCol size="2" className="padding-right">
-                  <IonRow className="jumlah-item">
-                    <IonInput
-                      className="inputbox"
-                      maxlength={2}
-                      value={item.amount.toString()}
-                      clearOnEdit
-                      onIonChange={(e) => inputHandler(e)}
-                      onIonInput={() => setIds(item.id)}
-                      onIonBlur={() => priceCalculation()}
-                    ></IonInput>
-                  </IonRow>
-                </IonCol>
-              </IonRow>
-            </SwiperSlide>
+                  <IonCol size="4.5">
+                    <IonCardTitle style={{ textAlign: "left" }}>
+                      {item.title}
+                    </IonCardTitle>
+                    <IonCardSubtitle style={{ textAlign: "left" }}>
+                      (1 pcs)
+                    </IonCardSubtitle>
+                    <IonCardSubtitle style={{ textAlign: "left" }}>
+                      Rp.{" "}
+                      {parseFloat(item.price.toString()).toLocaleString("en")}
+                    </IonCardSubtitle>
+                    <IonCardSubtitle style={{ textAlign: "left" }}>
+                      (Items in Stock)
+                    </IonCardSubtitle>
+                    <IonCardSubtitle style={{ textAlign: "left" }}>
+                      Dummy stock
+                    </IonCardSubtitle>
+                  </IonCol>
+                  <IonCol size="2" className="padding-right">
+                    <IonRow className="jumlah-item">
+                      <IonInput
+                        className="inputbox"
+                        maxlength={2}
+                        value={item.amount.toString()}
+                        clearOnEdit
+                        onIonChange={(e) => inputHandler(e)}
+                        onIonInput={() => setIds(item.id)}
+                        onIonBlur={() => priceCalculation()}
+                      ></IonInput>
+                    </IonRow>
+                  </IonCol>
+                </IonRow>
+              </SwiperSlide>
             ))}
         </Swiper>
         <IonCard className="card-th-dh-lds" color="primary">
           <IonRow className="center">
-            <IonCol size="5.5" className="label-TH">Total Price</IonCol>
+            <IonCol size="5.5" className="label-TH">
+              Total Price
+            </IonCol>
             <IonCol size="5.5" className="label-DH">
-              <IonLabel>Rp. {parseFloat(TotalHarga.toString()).toLocaleString("en")}</IonLabel>,-
+              <IonLabel>
+                Rp. {parseFloat(TotalHarga.toString()).toLocaleString("en")}
+              </IonLabel>
+              ,-
             </IonCol>
           </IonRow>
           <IonRow className="center">
-            <IonCol size="11.5" color="light" className="label-LDS"  onClick={() =>totalItemReceipt()}>
+            <IonCol
+              size="11.5"
+              color="light"
+              className="label-LDS"
+              onClick={() => totalItemReceipt()}
+            >
               View Receipt
             </IonCol>
           </IonRow>
@@ -480,7 +488,9 @@ const Home: React.FC = () => {
           >
             <IonRow>
               <IonCol size="8">
-                <IonTitle className="total-barang text-bold">Total Items: {totalItem}</IonTitle>
+                <IonTitle className="total-barang text-bold">
+                  Total Items: {totalItem}
+                </IonTitle>
               </IonCol>
               <IonCol size="4">
                 <IonButton
@@ -495,23 +505,41 @@ const Home: React.FC = () => {
             </IonRow>
           </IonGrid>
           <IonContent scrollEvents={true} className="modalContent">
-            {barangctx.items.length != 0 ? (barangctx.items.map((item) => {
+            {barangctx.items.length != 0 ? (
+              barangctx.items.map((item) => {
                 if (item.amount > 0) {
                   return (
                     <IonItem lines="none" className="card-modal" key={item.id}>
                       <IonCol size="3">
-                        <img className="img-modal center" src={item.fotoUrl} alt={item.title}/>
+                        <img
+                          className="img-modal center"
+                          src={item.fotoUrl}
+                          alt={item.title}
+                        />
                       </IonCol>
                       <IonCol size="9">
                         <IonRow>
                           <IonCol size="7">
                             <IonText>{item.title}</IonText>
-                            <IonCardSubtitle>Price/Pcs <br /> Rp.{parseFloat(item.price.toString()).toLocaleString("en")}</IonCardSubtitle>
-                            <IonCardSubtitle>Total Price/Item <br />Rp. {priceTypeHandler(item.price, item.amount)}</IonCardSubtitle>
+                            <IonCardSubtitle>
+                              Price/Pcs <br /> Rp.
+                              {parseFloat(item.price.toString()).toLocaleString(
+                                "en"
+                              )}
+                            </IonCardSubtitle>
+                            <IonCardSubtitle>
+                              Total Price/Item <br />
+                              Rp. {priceTypeHandler(item.price, item.amount)}
+                            </IonCardSubtitle>
                           </IonCol>
                           <IonCol size="5">
                             <IonCol>{convert(item.amount, item.nMax)}</IonCol>
-                            <IonButton onIonFocus={()=> (setIds(item.id))} className="trash-can" fill="clear" onClick={() => clearItemReceipt()}>
+                            <IonButton
+                              onIonFocus={() => setIds(item.id)}
+                              className="trash-can"
+                              fill="clear"
+                              onClick={() => clearItemReceipt()}
+                            >
                               <IonIcon color="danger" icon={trashOutline} />
                             </IonButton>
                           </IonCol>
@@ -523,7 +551,10 @@ const Home: React.FC = () => {
               })
             ) : (
               <div style={{ marginTop: "30px" }} className="ion-text-center">
-                <IonImg style={{ width: "20%" }} src={"assets/foto/empty.png"}/>
+                <IonImg
+                  style={{ width: "20%" }}
+                  src={"assets/foto/empty.png"}
+                />
                 <h5 style={{ fontWeight: "bold" }}>Your Cart Is Empty</h5>
               </div>
             )}
@@ -552,6 +583,9 @@ const Home: React.FC = () => {
               >
                 Transaction Date: {date}
               </IonCol>
+            </IonRow>
+            <IonRow className="center">
+              <IonButton>Save to History</IonButton>
             </IonRow>
           </IonCard>
         </IonModal>

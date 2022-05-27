@@ -205,22 +205,6 @@ const UpdateBarang: React.FC = () => {
         </IonRow>
 
         <IonRow className="ion-padding">
-          <IonInput
-            className="inputtext"
-            style={{ marginRight: 30 }}
-            placeholder="Box Amount "
-            type={"number"}
-            // ref={nMaxRef}
-          ></IonInput>
-          <IonInput
-            className="inputtext"
-            placeholder="Pcs Amount in Box"
-            type={"number"}
-            // ref={nMaxRef}
-          ></IonInput>
-        </IonRow>
-
-        <IonRow className="ion-padding">
           {/* <IonLabel>Harga Barang</IonLabel> */}
           <IonInput
             className="inputtext"
