@@ -56,7 +56,7 @@ const UpdateBarang: React.FC = () => {
   },[selectedItem]);
 
   const editBarangHandler = async () =>{
-    if(!title || title.toString().trim().length === 0 || !price ||!disc || !nMax || !chosenSatuan){
+    if(!title || title.toString().trim().length === 0 || !price || !nMax || !chosenSatuan){
       serStartAlert(true);
       return;
     }
@@ -69,12 +69,12 @@ const UpdateBarang: React.FC = () => {
       uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
         // console.log('upload file success');
         getDownloadURL(ref(storage, fileName)).then((url) => {
-          barangctx.updateDataItem(url, id, title, price, chosenSatuan, disc, nMax, fileName);
+          barangctx.updateDataItem(url, id, title, price, chosenSatuan, nMax, fileName);
         })
       })
     }else if(!takenPhoto){
 
-      barangctx.updateDataItem(null, id, title, price, chosenSatuan, disc, nMax, fileName);
+      barangctx.updateDataItem(null, id, title, price, chosenSatuan, nMax, fileName);
     }
 
     setToastMessage('Data changed successfully');
@@ -146,7 +146,6 @@ const UpdateBarang: React.FC = () => {
           </IonRow>
 
           <IonRow className="ion-padding">
-              <IonInput className="inputtext" style={{marginRight: 5}} placeholder="Discount %" type="number" value={disc}  onIonChange={e => setDisc(parseInt(e.detail.value!))}></IonInput>
               <IonInput className="inputtext" placeholder="Max Items/Box" type="number" value={nMax} onIonChange={e => setnMax(parseInt(e.detail.value!))}></IonInput>
               <IonInput className="inputselection ion-padding-start" disabled><IonLabel className="ion-padding-start">Box</IonLabel>
                   {/* <IonSelectOption className="" value="box">box</IonSelectOption> */}
