@@ -83,7 +83,6 @@ const InputBarang: React.FC = () => {
               title,
               price,
               chosenSatuan,
-              disc,
               nMax,
               fileName,
               url
@@ -94,7 +93,6 @@ const InputBarang: React.FC = () => {
               title,
               price,
               chosenSatuan,
-              disc,
               nMax,
               fileName,
               url
