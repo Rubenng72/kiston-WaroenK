@@ -190,13 +190,13 @@ const InputBarang: React.FC = () => {
           <IonInput
             className="inputtext"
             style={{ marginRight: 30 }}
-            placeholder="Jumlah Box"
+            placeholder="Box Amount "
             type={"number"}
             ref={nMaxRef}
           ></IonInput>
           <IonInput
             className="inputtext"
-            placeholder="Jumlah Pcs/Box"
+            placeholder="Pcs Amount in Box"
             type={"number"}
             ref={nMaxRef}
           ></IonInput>
@@ -218,7 +218,7 @@ const InputBarang: React.FC = () => {
           {/* <IonLabel>Harga Barang</IonLabel> */}
           <IonInput
             className="inputtext"
-            placeholder="Selling Price/box"
+            placeholder="Selling Price/pcs"
             type={"number"}
             ref={priceRef}
           >
@@ -227,8 +227,9 @@ const InputBarang: React.FC = () => {
         </IonRow>
 
         <IonRow className="ion-padding">
-          <IonLabel className="ion-padding-start">Calculate Margin</IonLabel>
-          <IonLabel className="ion-padding-start">Box</IonLabel>
+          <IonButton className="">Calculate Margin</IonButton>
+          <IonLabel className="ion-padding">Test Price</IonLabel>
+          <IonLabel className="ion-padding">%</IonLabel>
         </IonRow>
 
         <IonRow className="ion-margin-top">
