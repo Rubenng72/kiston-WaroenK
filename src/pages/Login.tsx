@@ -2,15 +2,12 @@ import React from "react";
 import {IonPage, IonToolbar, IonButtons, IonButton, IonTitle, IonLabel, IonBackButton, IonContent,IonGrid, IonCol, IonRow, IonInput, IonText, IonToast, useIonToast, IonCard, IonItem, IonImg} from "@ionic/react";
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { userLogin, userAsAnonymous } from '../data/auth';
+import { userLogin } from '../data/auth';
 import { getAuth } from "firebase/auth";
 import CryptoJS from 'crypto-js';
 import './Login.css';
 
 const Login: React.FC = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const history = useHistory();
     const [present] = useIonToast();
     const [toastMessage, setToastMessage] = useState('');
     const [email, setEmail] = useState('');
@@ -40,34 +37,6 @@ const Login: React.FC = () => {
         present('Incorrect email or password', 3000)
       }
     }
-
-    async function uSkip()
-    {
-      const res = await userAsAnonymous();
-      if(res){
-        present('Continue As Guest', 3000)
-        history.replace('/tabs/Home');
-        // window.location.assign("/tabs/Home");
-        //continue as guest
-      }
-    }
-
-    // const skipbuttonhandler = () =>
-    // {
-    //   if(user == null)
-    //   {
-    //     return(<IonButton
-    //       routerLink='/Home'
-    //       shape="round"
-    //       class="tombol-skip"
-    //       onClick={uSkip}>
-    //       <IonLabel class="tombol-skip">SKIP continue as guest</IonLabel>
-    //     </IonButton>);
-    //   }
-    //   else{
-    //     return;
-    //   }
-    // }
 
     return (
       <IonPage>

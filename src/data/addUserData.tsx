@@ -9,9 +9,9 @@ export const addData = async(uId: string, email: string|null) =>{
       userId:uId,
       email: email,
     });
-    console.log("Document written with ID: ", docRef.id);
+    // console.log("Document written with ID: ", docRef.id);
   } catch (e) {
-    console.error("Error adding Document: ", e);
+    // console.error("Error adding Document: ", e);
   }
 }
 

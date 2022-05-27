@@ -34,9 +34,9 @@ const HapusSemua: React.FC = () => {
       try{
         await deleteDoc(dataRef);
         await deleteObject(imgRef);
-        console.log('done');
+        // console.log('done');
       }catch(error){
-        console.log(error);
+        // console.log(error);
       }
     }
 
@@ -56,14 +56,14 @@ const HapusSemua: React.FC = () => {
     }
 
     return (
-    
+
     <>
       <IonButtons slot="end" >
         <IonButton style={{marginTop:"10px", marginRight:"5px"}} fill="solid" color="danger" onClick={() => sheetHandler ()}>
           Delete All
         </IonButton>
       </IonButtons>
-      { <IonActionSheet 
+      { <IonActionSheet
             cssClass = 'IASBackground'
             isOpen={actionSheet}
             onDidDismiss={() => setShowActionSheet(false)}

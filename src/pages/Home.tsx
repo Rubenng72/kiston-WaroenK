@@ -81,7 +81,7 @@ const Home: React.FC = () => {
     barangctx.items.forEach((value) => {
       if (value.amount > 0 && value.amount < value.nMax) {
         sum += value.price * value.amount;
-        console.log(value.amount);
+        // console.log(value.amount);
       } else if (value.amount > 0 && value.amount >= value.nMax) {
         hargaBox = value.nMax * value.price - value.nMax * value.price * (value.disc / 100);
 
@@ -127,7 +127,7 @@ const Home: React.FC = () => {
   }
 
   const clearItemReceipt = () => {
-    console.log(ids);
+    // console.log(ids);
     const barangRef = doc(db, "barang", ids);
     updateDoc(barangRef, { "amount" : 0})
 
@@ -154,7 +154,7 @@ const Home: React.FC = () => {
           box = barangctx.items[i].amount - temp;
           box = box / barangctx.items[i].nMax;
           sum += box * hargaBox + temp * barangctx.items[i].price;
-          
+
           setTotalHarga(TotalHarga - sum);
         }
       }
@@ -290,7 +290,6 @@ const Home: React.FC = () => {
   };
 
   const totalItemReceipt = () => {
-    console.log('tes')
     setShowModal(true)
     let totalItemR = 0;
     if(barangctx.items.length !== 0){
@@ -625,7 +624,7 @@ const Home: React.FC = () => {
               icon: close,
               role: "cancel",
               handler: () => {
-                console.log("Cancel clicked");
+                // console.log("Cancel clicked");
               },
             },
           ]}
