@@ -12,14 +12,13 @@ const BarangContextProvider: React.FC = props => {
   const db = getFirestore();
   const storage = getStorage();
 
-  const addDataItem = async(uId: string, title: string, price: number, type: 'box', disc: number, nMax: number, image: string, url: string, amount: number=0) =>{
+  const addDataItem = async(uId: string, title: string, price: number, type: 'box', nMax: number, image: string, url: string, amount: number=0) =>{
     try {
       const docRef = await addDoc(collection(db, "barang"), {
         uId: uId,
         title: title,
         price: price,
         type: type,
-        disc: disc,
         nMax: nMax,
         foto: image,
         fotoUrl: url,
@@ -31,14 +30,14 @@ const BarangContextProvider: React.FC = props => {
     }
   }
 
-  const updateDataItem = async(url: string|null, bId: string|null, title: string, price: number, type: 'box', disc: number, nMax: number, fileName: string) =>{
+
+  const updateDataItem = async(url: string|null, bId: string|null, title: string, price: number, type: 'box', nMax: number, fileName: string) =>{
     try {
       if(bId && url !==null){
         const docRef = await updateDoc(doc(db, "barang", bId), {
           title: title,
           price: price,
           type: type,
-          disc: disc,
           nMax: nMax,
           foto: fileName,
           fotoUrl: url,
@@ -51,7 +50,6 @@ const BarangContextProvider: React.FC = props => {
         title: title,
         price: price,
         type: type,
-        disc: disc,
         nMax: nMax,
       });
       localStorage.removeItem('editId');
@@ -113,7 +111,6 @@ const BarangContextProvider: React.FC = props => {
         title: storedItem.title,
         price: storedItem.price,
         type: storedItem.type,
-        disc: storedItem.disc,
         nMax: storedItem.nMax,
         foto: storedItem.foto,
         fotoUrl: storedItem.fotoUrl,

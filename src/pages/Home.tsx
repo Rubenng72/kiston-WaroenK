@@ -45,7 +45,6 @@ interface barangType {
   title: string;
   price: number;
   type: "box";
-  disc: number;
   nMax: number;
   amount: number;
 }
@@ -73,47 +72,20 @@ const Home: React.FC = () => {
 
   const priceCalculation = () => {
     let sum = 0;
-    let temp = 0;
-    let modulus = 0;
-    let box = 0;
-    let hargaBox = 0;
 
     barangctx.items.forEach((value) => {
-      if (value.amount > 0 && value.amount < value.nMax) {
+      if (value.amount > 0) {
         sum += value.price * value.amount;
         // console.log(value.amount);
-      } else if (value.amount > 0 && value.amount >= value.nMax) {
-        hargaBox = value.nMax * value.price - value.nMax * value.price * (value.disc / 100);
-
-        modulus = value.amount % value.nMax;
-        temp = modulus;
-
-        box = value.amount - temp;
-        box = box / value.nMax;
-        sum += box * hargaBox + temp * value.price;
       }
     });
     setTotalHarga(sum);
     setTotalItem(0);
   };
 
-  const priceTypeHandler = (iPrice: number, iAmount: number, inMax: number, iDisc: number) =>{
-    if(iAmount > 0 && iAmount < inMax){
+  const priceTypeHandler = (iPrice: number, iAmount: number) =>{
+    if(iAmount > 0){
       return parseFloat((iPrice *  iAmount).toString()).toLocaleString('en');
-    } else if (iAmount > 0 && iAmount >= inMax){
-      let temp = 0;
-      let modulus = 0;
-      let box = 0;
-      let hargaBox = 0;
-
-      hargaBox = (inMax * iPrice) - ((inMax * iPrice) * (iDisc/100));
-
-      modulus = iAmount % inMax;
-      temp = modulus;
-
-      box = iAmount - temp;
-      box = box / inMax;
-      return parseFloat(((box * hargaBox) + (temp * iPrice)).toString()).toLocaleString('en');
     }
 }
 
@@ -136,26 +108,9 @@ const Home: React.FC = () => {
     let hargaItem = 0;
     if(barangctx.items.length !== 0){
       for(let i = 0; i < barangctx.items.length; i++){
-        if(barangctx.items[i].amount > 0 && barangctx.items[i].id == ids && barangctx.items[i].amount <  barangctx.items[i].nMax){
+        if(barangctx.items[i].amount > 0 && barangctx.items[i].id == ids){
           hargaItem = barangctx.items[i].price * barangctx.items[i].amount;
           setTotalHarga(TotalHarga - hargaItem);
-        }else if (barangctx.items[i].amount > 0 && barangctx.items[i].id == ids && barangctx.items[i].amount >= barangctx.items[i].nMax){
-          let temp = 0;
-          let modulus = 0;
-          let box = 0;
-          let hargaBox = 0;
-          let sum = 0;
-
-          hargaBox = (barangctx.items[i].nMax * barangctx.items[i].price) - ((barangctx.items[i].nMax * barangctx.items[i].price) * (barangctx.items[i].disc/100));
-
-          modulus = barangctx.items[i].amount % barangctx.items[i].nMax;
-          temp = modulus;
-
-          box = barangctx.items[i].amount - temp;
-          box = box / barangctx.items[i].nMax;
-          sum += box * hargaBox + temp * barangctx.items[i].price;
-
-          setTotalHarga(TotalHarga - sum);
         }
       }
     }
@@ -348,10 +303,10 @@ const Home: React.FC = () => {
     }
   };
 
-  const boxPrice = (iPrice: number, inMax: number, iDisc: number) => {
+  const boxPrice = (iPrice: number, inMax: number) => {
     let hargaBox = 0;
 
-    hargaBox = inMax * iPrice - inMax * iPrice * (iDisc / 100);
+    hargaBox = inMax * iPrice;
 
     return parseFloat(hargaBox.toString()).toLocaleString("en");
   };
@@ -425,7 +380,7 @@ const Home: React.FC = () => {
                       (1 {item.type}/{item.nMax} pcs)
                     </IonCardSubtitle>
                     <IonCardSubtitle style={{ textAlign: "left" }}>
-                      Rp. {boxPrice(item.price, item.nMax, item.disc)}
+                      Rp. {boxPrice(item.price, item.nMax)}
                     </IonCardSubtitle>
                   </IonCol>
                   <IonCol size="2" className="padding-right">
@@ -477,7 +432,7 @@ const Home: React.FC = () => {
                     (1 {item.type}/{item.nMax} pcs)
                   </IonCardSubtitle>
                   <IonCardSubtitle style={{ textAlign: "left" }}>
-                    Rp. {boxPrice(item.price, item.nMax, item.disc)}
+                    Rp. {boxPrice(item.price, item.nMax)}
                   </IonCardSubtitle>
                 </IonCol>
                 <IonCol size="2" className="padding-right">
@@ -552,7 +507,7 @@ const Home: React.FC = () => {
                           <IonCol size="7">
                             <IonText>{item.title}</IonText>
                             <IonCardSubtitle>Price/Pcs <br /> Rp.{parseFloat(item.price.toString()).toLocaleString("en")}</IonCardSubtitle>
-                            <IonCardSubtitle>Total Price/Item <br />Rp. {priceTypeHandler(item.price, item.amount, item.nMax, item.disc)}</IonCardSubtitle>
+                            <IonCardSubtitle>Total Price/Item <br />Rp. {priceTypeHandler(item.price, item.amount)}</IonCardSubtitle>
                           </IonCol>
                           <IonCol size="5">
                             <IonCol>{convert(item.amount, item.nMax)}</IonCol>

@@ -8,7 +8,6 @@ export interface Barang{
   title: string;
   price: number;
   type: 'box';
-  disc: number;
   nMax: number;
   amount: number;
 }
@@ -16,8 +15,8 @@ export interface Barang{
 
 const BarangContext = React.createContext<{
   items: Barang[];
-  addDataItem: (uId:string, title:string, price:number, type: 'box', disc: number, nMax: number, image: string, url:string) => void;
-  updateDataItem: (url: string|null, bId: string|null, title: string, price: number, type: 'box', disc: number, nMax: number, fileName: string) => void;
+  addDataItem: (uId:string, title:string, price:number, type: 'box', nMax: number, image: string, url:string) => void;
+  updateDataItem: (url: string|null, bId: string|null, title: string, price: number, type: 'box', nMax: number, fileName: string) => void;
   deleteSingleItem:(id:string, img:string)=>void;
   initContext: () => void;
 }>({
