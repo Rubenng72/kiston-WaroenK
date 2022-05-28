@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useState, useContext } from "react";
 import {IonGrid, IonRow, IonCol, IonCardContent, IonText, IonIcon, IonButtons, IonButton, IonActionSheet, IonCard, IonTitle, IonLabel, IonAccordion, IonItem, IonList, IonAccordionGroup, IonInput,} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline, arrowDownCircle} from "ionicons/icons";
+import { getFirestore, doc, updateDoc} from "firebase/firestore";
 import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
 import { getAuth } from "firebase/auth";
@@ -24,9 +25,11 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
     const barangctx = useContext(BarangContext);
     const [ids, setId] = useState<string>('');
     const [img, setImg] = useState<string>('');
+    const [add, setAdd] = useState<number>(0);
     const [actionSheet, setShowActionSheet] = useState(false);
     const auth = getAuth();
     const user = auth.currentUser;
+    const db = getFirestore();
 
     async function deleteBarang(id: string, img: string) {
       barangctx.deleteSingleItem(id, img);
@@ -80,12 +83,12 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
             <IonButton fill="clear" expand="block" color="light" routerLink="/TambahBarang">
             <IonTitle>Tambah barang</IonTitle>
           </IonButton>
-  
+
           );
         }
       } else {
         return (
-          
+
           <>
           <br></br>
           <IonTitle className="ion-text-center">You need to Sign In / Register first!</IonTitle>
@@ -95,14 +98,30 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
           </IonButton><IonButton fill="clear" expand="block" color="" routerLink="/Login">
               <IonTitle>Register</IonTitle>
             </IonButton></>
-  
+
         );
       }
     };
 
+    const accordionHandler = (id: string) => {
+     setId(id);
+    };
+
+    const addItemStock = async() => {
+      let stockSum = 0
+      barangctx.items.forEach((value)=>{
+        if(value.id == ids){
+          stockSum = (value.nMax * add) + value.stock
+        }
+      })
+     const barangRef = doc(db, "barang", ids);
+     await updateDoc(barangRef, { stock: stockSum });
+    }
+
+
 
     return (
-      <IonGrid>        
+      <IonGrid>
         {props.onSearchValue == '' && barangctx.items.length != 0  && ( barangctx.items.map((item) =>(
           <IonCard id="item-list" className="ion-no-margin" key={item.id}>
             <IonRow>
@@ -158,20 +177,22 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
               </IonCol>
             </IonRow>
             <IonAccordionGroup>
-              <IonAccordion value="shapes" toggleIcon={arrowDownCircle}>
+            <IonAccordion toggleIcon={arrowDownCircle} onClick={()=>accordionHandler(item.id)}>
                 <IonItem slot="header">
                   <IonLabel>Items in Stock</IonLabel>
                 </IonItem>
                 <IonList slot="content">
                   <IonItem>
-                    <IonLabel>Stock Amount : </IonLabel>
+                    <IonLabel>Stock Amount : {item.stock}</IonLabel>
                   </IonItem>
                   <IonItem>
-                    <IonLabel>Pcs/Box : </IonLabel>
+                    <IonLabel>Pcs/Box : {item.nMax}</IonLabel>
                   </IonItem>
                   <IonItem>
-                    <IonInput placeholder="increase stock /box"></IonInput>
-                    <IonButton>+ Stock</IonButton>
+                    <IonCard color="light">
+                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
+                    </IonCard>
+                    <IonButton onClick={()=>addItemStock()}>+ Stock</IonButton>
                   </IonItem>
                 </IonList>
               </IonAccordion>
@@ -185,76 +206,78 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
           <IonCard id="item-list" className="ion-no-margin" key={item.id}>
             <IonRow>
             <IonCol size="3" className="ion-no-margin">
-            <img src={item.fotoUrl} className="Item-img" alt={item.title} />
-          </IonCol>
-          <IonCol size="5">
-            <IonCardContent
-              className="ion-text-left ion-no-padding "
-              id="content-list"
-            >
-              <IonText>
-                <h2>{item.title}</h2>
-                <h2>1 pcs</h2>{" "}
-                <p className="hargacolor ion-no-padding">
-                  Rp.{" "}
-                  {parseFloat(item.price.toString()).toLocaleString("en")}
-                </p>
-              </IonText>
-            </IonCardContent>
-          </IonCol>
-          <IonCol size="2">
-            <IonButtons className="icon-button">
-              <IonButton
-                routerLink={`/EditBarang/${item.id}`}
-                fill="solid"
-                className="icon"
-                onClick={() => setEditData(item.id)}
-              >
-                <IonIcon
-                  icon={pencilOutline}
-                  slot="icon-only"
-                  size="large"
-                />
-              </IonButton>
-            </IonButtons>
-          </IonCol>
-          <IonCol size="2">
-            <IonButtons className="icon-button">
-              <IonButton
-                color="danger"
-                onClick={() => sheetHandler(item.id, item.foto)}
-                fill="solid"
-                className="icon"
-              >
-                <IonIcon
-                  icon={trashOutline}
-                  slot="icon-only"
-                  size="large"
-                />
-              </IonButton>
-            </IonButtons>
-          </IonCol>
-        </IonRow>
-        <IonAccordionGroup>
-          <IonAccordion value="shapes" toggleIcon={arrowDownCircle}>
-            <IonItem slot="header">
-              <IonLabel>Items in Stock</IonLabel>
-            </IonItem>
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel>Stock Amount : </IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel>Pcs/Box : </IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonInput placeholder="increase stock /box"></IonInput>
-                <IonButton>+ Stock</IonButton>
-              </IonItem>
-            </IonList>
-          </IonAccordion>
-        </IonAccordionGroup>
-      </IonCard>
+                <img src={item.fotoUrl} className="Item-img" alt={item.title} />
+              </IonCol>
+              <IonCol size="5">
+                <IonCardContent
+                  className="ion-text-left ion-no-padding "
+                  id="content-list"
+                >
+                  <IonText>
+                    <h2>{item.title}</h2>
+                    <h2>1 pcs</h2>{" "}
+                    <p className="hargacolor ion-no-padding">
+                      Rp.{" "}
+                      {parseFloat(item.price.toString()).toLocaleString("en")}
+                    </p>
+                  </IonText>
+                </IonCardContent>
+              </IonCol>
+              <IonCol size="2">
+                <IonButtons className="icon-button">
+                  <IonButton
+                    routerLink={`/EditBarang/${item.id}`}
+                    fill="solid"
+                    className="icon"
+                    onClick={() => setEditData(item.id)}
+                  >
+                    <IonIcon
+                      icon={pencilOutline}
+                      slot="icon-only"
+                      size="large"
+                    />
+                  </IonButton>
+                </IonButtons>
+              </IonCol>
+              <IonCol size="2">
+                <IonButtons className="icon-button">
+                  <IonButton
+                    color="danger"
+                    onClick={() => sheetHandler(item.id, item.foto)}
+                    fill="solid"
+                    className="icon"
+                  >
+                    <IonIcon
+                      icon={trashOutline}
+                      slot="icon-only"
+                      size="large"
+                    />
+                  </IonButton>
+                </IonButtons>
+              </IonCol>
+            </IonRow>
+            <IonAccordionGroup>
+            <IonAccordion toggleIcon={arrowDownCircle} onClick={()=>accordionHandler(item.id)}>
+                <IonItem slot="header">
+                  <IonLabel>Items in Stock</IonLabel>
+                </IonItem>
+                <IonList slot="content">
+                  <IonItem>
+                    <IonLabel>Stock Amount : {item.stock}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Pcs/Box : {item.nMax}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonCard color="light">
+                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
+                    </IonCard>
+                    <IonButton onClick={()=>addItemStock()}>+ Stock</IonButton>
+                  </IonItem>
+                </IonList>
+              </IonAccordion>
+            </IonAccordionGroup>
+          </IonCard>
     )))}
 
     {ids && (
