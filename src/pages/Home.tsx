@@ -44,7 +44,7 @@ interface barangType {
   fotoUrl: string;
   title: string;
   price: number;
-  type: 'box';
+  type: "box";
   nMax: number;
   amount: number;
   cost: number;
@@ -580,14 +580,14 @@ const Home: React.FC = () => {
               <IonCol
                 size="11.5"
                 color="light"
-                className="label-LDS"
+                className="TransactionD"
                 onClick={() => setShowModal(true)}
               >
                 Transaction Date: {date}
               </IonCol>
             </IonRow>
             <IonRow className="center">
-              <IonButton>Save to History</IonButton>
+              <IonButton className="HistoryButton">Save to History</IonButton>
             </IonRow>
           </IonCard>
         </IonModal>

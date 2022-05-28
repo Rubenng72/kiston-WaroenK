@@ -165,3 +165,17 @@ body {
   --padding-start : 0;
   --padding-end : 0;
 }
+
+.HistoryButton{
+  width: 95%;
+  margin-bottom: 3%;
+}
+
+.TransactionD{
+  margin: 0 auto 5px;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  text-align: center;
+}
