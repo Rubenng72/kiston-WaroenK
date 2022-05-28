@@ -315,35 +315,48 @@ const Home: React.FC = () => {
     return parseFloat(hargaBox.toString()).toLocaleString("en");
   };
 
-  const addToHistory = async()=>{
-    try {
-      const docRef = await addDoc(collection(db, "history"), {
-        uId: userId,
-        totalharga: TotalHarga,
-        date: date,
-        time: time,
+  const addToHistory = async(totalPrice: number, date: string, time: string)=>{
+
+    if(user !== null) {
+      barangctx.items.forEach((value) => {
+        if(value.amount > 0){
+          barangctx.saveToHistory(
+            user.uid,
+            totalPrice,
+            date,
+            time
+          );
+        }
       });
-      if(docRef){
-        barangctx.items.forEach((value)=>{
-          if(value.amount > 0){
-            try{
-              addDoc(collection(db, "historyReceipt"), {
-                uId: userId,
-                receiptId: docRef.id,
-                name:value.title,
-                quantity: value.amount,
-                totalprice: value.price*value.amount,
-              });
-            } catch (e) {
-              // console.error("Error adding Document: ", e);
-            }
-          }
-        })
-      }
-      // console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      // console.error("Error adding Document: ", e);
     }
+    // try {
+    //   const docRef = await addDoc(collection(db, "history"), {
+    //     uId: userId,
+    //     totalharga: TotalHarga,
+    //     date: date,
+    //     time: time,
+    //   });
+    //   if(docRef){
+    //     barangctx.items.forEach((value)=>{
+    //       if(value.amount > 0){
+    //         try{
+    //           addDoc(collection(db, "historyReceipt"), {
+    //             uId: userId,
+    //             receiptId: docRef.id,
+    //             name:value.title,
+    //             quantity: value.amount,
+    //             totalprice: value.price*value.amount,
+    //           });
+    //         } catch (e) {
+    //           // console.error("Error adding Document: ", e);
+    //         }
+    //       }
+    //     })
+    //   }
+    //   // console.log("Document written with ID: ", docRef.id);
+    // } catch (e) {
+    //   // console.error("Error adding Document: ", e);
+    // }
   }
 
   return (
@@ -622,7 +635,7 @@ const Home: React.FC = () => {
               </IonCol>
             </IonRow>
             <IonRow className="center">
-              <IonButton className="HistoryButton" onClick={()=>addToHistory()}>Save to History</IonButton>
+              <IonButton className="HistoryButton" onClick={()=>addToHistory(TotalHarga, date, time)}>Save to History</IonButton>
             </IonRow>
           </IonCard>
         </IonModal>

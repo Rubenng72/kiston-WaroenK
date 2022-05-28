@@ -26,13 +26,10 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
     const [ids, setId] = useState<string>('');
     const [img, setImg] = useState<string>('');
     const [add, setAdd] = useState<number>(0);
-    const [history, setHistory] = useState<Array<any>>([]);
-    const [historyRec, setHistoryRec] = useState<Array<any>>([]);
 
     const [actionSheet, setShowActionSheet] = useState(false);
     const auth = getAuth();
     const user = auth.currentUser;
-    const userId = user ? user.uid : '';
     const db = getFirestore();
 
     async function deleteBarang(id: string, img: string) {
@@ -62,22 +59,10 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
 
       return parseFloat(((hargaBox)).toString()).toLocaleString('en');
     }
-    const qhistory = query(collection(db, "history"), where("uId", "==", userId));
-    const qreceipt = query(collection(db, "historyReceipt"), where("uId", "==", userId));
+    
     // Function Search
     useEffect(() => {
       searchFunction();
-      onSnapshot(qhistory, (querySnapshot)=>{
-        setHistory(
-        querySnapshot.docs.map((doc)=>({...doc.data(), id:doc.id}))
-      );
-      })
-      onSnapshot( qreceipt, (querySnapshot)=>{
-        setHistoryRec(
-        querySnapshot.docs.map((doc)=>({...doc.data(), id:doc.id}))
-      );
-      })
-
     }, [props.onSearchValue]);
 
     const searchFunction = () => {
@@ -305,7 +290,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
             </IonAccordionGroup>
           </IonCard>
     )))}
-    {history.length != 0 && (history.map((item)=>(
+    {/* {props.onSearchValue == '' && barangctx.history.length != 0 && (barangctx.history.map((item)=>(
       <IonCard id="item-list" className="ion-no-margin" key={item.id}>
         <IonRow>
         <IonCol size="3" className="ion-no-margin">
@@ -320,7 +305,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
               <h2>{item.id}</h2>
                 <h2>{item.date}</h2>
                 <h2>{item.time}</h2>
-                <h2>{item.totalharga}</h2>
+                <h2>{item.totalPrice}</h2>
               </IonText>
             </IonCardContent>
           </IonCol>
@@ -346,13 +331,13 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
               <IonLabel>Items in Stock</IonLabel>
             </IonItem>
             <IonList slot="content">
-              {historyRec.map((value)=>{
+              {barangctx.historyReceipt.map((value)=>{
                 if(value.receiptId == item.id){
                   return(
                     <IonItem>
                       <IonLabel>{value.name} pcs</IonLabel>
                       <IonLabel>{value.quantity} pcs</IonLabel>
-                      <IonLabel>{value.totalprice} pcs</IonLabel>
+                      <IonLabel>{value.totalPrice} pcs</IonLabel>
                     </IonItem>
                   )
                 }
@@ -362,7 +347,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
         </IonAccordionGroup>
 
       </IonCard>
-    )))}
+    )))} */}
     {ids && (
         <IonActionSheet
           cssClass="IASBackground"
