@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState, useContext } from "react";
 import {IonGrid, IonRow, IonCol, IonCardContent, IonText, IonIcon, IonButtons, IonButton, IonActionSheet, IonCard, IonTitle, IonLabel, IonAccordion, IonItem, IonList, IonAccordionGroup, IonInput,} from '@ionic/react';
 import { pencilOutline, trashOutline, checkmarkOutline, closeOutline, arrowDownCircle} from "ionicons/icons";
-import { getFirestore, doc, updateDoc} from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, updateDoc} from "firebase/firestore";
 import BarangContext from '../../data/barang-context';
 import './ItemListCard.css'
 import { getAuth } from "firebase/auth";
@@ -26,9 +26,13 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
     const [ids, setId] = useState<string>('');
     const [img, setImg] = useState<string>('');
     const [add, setAdd] = useState<number>(0);
+    const [history, setHistory] = useState<Array<any>>([]);
+    const [historyRec, setHistoryRec] = useState<Array<any>>([]);
+
     const [actionSheet, setShowActionSheet] = useState(false);
     const auth = getAuth();
     const user = auth.currentUser;
+    const userId = user ? user.uid : '';
     const db = getFirestore();
 
     async function deleteBarang(id: string, img: string) {
@@ -58,10 +62,22 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
 
       return parseFloat(((hargaBox)).toString()).toLocaleString('en');
     }
-
+    const qhistory = query(collection(db, "history"), where("uId", "==", userId));
+    const qreceipt = query(collection(db, "historyReceipt"), where("uId", "==", userId));
     // Function Search
     useEffect(() => {
       searchFunction();
+      onSnapshot(qhistory, (querySnapshot)=>{
+        setHistory(
+        querySnapshot.docs.map((doc)=>({...doc.data(), id:doc.id}))
+      );
+      })
+      onSnapshot( qreceipt, (querySnapshot)=>{
+        setHistoryRec(
+        querySnapshot.docs.map((doc)=>({...doc.data(), id:doc.id}))
+      );
+      })
+
     }, [props.onSearchValue]);
 
     const searchFunction = () => {
@@ -118,7 +134,17 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
      await updateDoc(barangRef, { stock: stockSum });
     }
 
-
+    // const showHistoryReceipt = (id: string) =>{
+    //   historyRec.forEach((value)=>{
+    //     if(value.receiptId == id){
+    //       return(
+    //           <IonItem>
+    //             <IonLabel>{value.quantity} pcs</IonLabel>
+    //           </IonItem>
+    //       )
+    //     }
+    //   })
+    // }
 
     return (
       <IonGrid>
@@ -279,7 +305,64 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
             </IonAccordionGroup>
           </IonCard>
     )))}
+    {history.length != 0 && (history.map((item)=>(
+      <IonCard id="item-list" className="ion-no-margin" key={item.id}>
+        <IonRow>
+        <IonCol size="3" className="ion-no-margin">
 
+          </IonCol>
+          <IonCol size="5">
+            <IonCardContent
+              className="ion-text-left ion-no-padding "
+              id="content-list"
+            >
+              <IonText>
+              <h2>{item.id}</h2>
+                <h2>{item.date}</h2>
+                <h2>{item.time}</h2>
+                <h2>{item.totalharga}</h2>
+              </IonText>
+            </IonCardContent>
+          </IonCol>
+          <IonCol size="2">
+            <IonButtons className="icon-button">
+              <IonButton
+                color="danger"
+                fill="solid"
+                className="icon"
+              >
+                <IonIcon
+                  icon={trashOutline}
+                  slot="icon-only"
+                  size="large"
+                />
+              </IonButton>
+            </IonButtons>
+          </IonCol>
+        </IonRow>
+        <IonAccordionGroup>
+        <IonAccordion toggleIcon={arrowDownCircle}>
+            <IonItem slot="header">
+              <IonLabel>Items in Stock</IonLabel>
+            </IonItem>
+            <IonList slot="content">
+              {historyRec.map((value)=>{
+                if(value.receiptId == item.id){
+                  return(
+                    <IonItem>
+                      <IonLabel>{value.name} pcs</IonLabel>
+                      <IonLabel>{value.quantity} pcs</IonLabel>
+                      <IonLabel>{value.totalprice} pcs</IonLabel>
+                    </IonItem>
+                  )
+                }
+              })}
+            </IonList>
+          </IonAccordion>
+        </IonAccordionGroup>
+
+      </IonCard>
+    )))}
     {ids && (
         <IonActionSheet
           cssClass="IASBackground"

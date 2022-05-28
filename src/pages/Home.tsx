@@ -328,6 +328,7 @@ const Home: React.FC = () => {
           if(value.amount > 0){
             try{
               addDoc(collection(db, "historyReceipt"), {
+                uId: userId,
                 receiptId: docRef.id,
                 name:value.title,
                 quantity: value.amount,
