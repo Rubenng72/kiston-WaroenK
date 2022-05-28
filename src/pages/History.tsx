@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonContent, IonBackButton, IonCard, IonRow, IonCol, IonCardContent, IonText, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList } from "@ionic/react";
-import { arrowDownCircle, trashOutline } from "ionicons/icons";
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonContent, IonBackButton, IonCard, IonRow, IonCol, IonCardContent, IonText, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList, IonActionSheet } from "@ionic/react";
+import { arrowDownCircle, checkmarkOutline, closeOutline, trashOutline } from "ionicons/icons";
 import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, updateDoc} from "firebase/firestore";
 import BarangContext from '../data/barang-context';
 import './History.css'
@@ -9,6 +9,10 @@ import './History.css'
 const History: React.FC = () => {
     const barangctx = useContext(BarangContext);
     const db = getFirestore();
+
+    const [actionSheetDeleteSingleHistory, setActionSheetDeleteSingleHistory] = useState(false);
+    const [actionSheetDeleteAllHistory, setActionSheetDeleteAllHistory] = useState(false);
+    const [idH, setIdH] = useState<string>('');
 
     async function deleteSingleHistory(id: string) {
         const dataHistory = doc(db, "history", id);
@@ -31,18 +35,56 @@ const History: React.FC = () => {
         }
     }
 
+    const deleteAllHistory = () => {
+        if(barangctx.history.length != 0){
+            if(barangctx.historyReceipt.length != 0){
+                for(let i = 0; i < barangctx.history.length; i++){
+                    deleteSingleHistory(barangctx.history[i].id);
+                }
+            }
+        }else{
+          window.location.assign("/tabs/History");
+        }
+    }
+
+    const sheetDeleteSinleHistoryHandler = (id: string) => {
+        setActionSheetDeleteSingleHistory(true);
+        setIdH(id);
+    }
+    const sheetDeleteAllHistoryHandler = () => {
+        setActionSheetDeleteAllHistory(true);
+    }
+
+
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>History</IonTitle>
                     <IonButtons slot="end" >
-                        <IonButton id="clear-btn" fill="solid" color="danger">
+                        <IonButton id="clear-btn" fill="solid" color="danger" onClick={() => sheetDeleteAllHistoryHandler ()}>
                             Clear History
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>
             </IonHeader>
+            { <IonActionSheet
+            cssClass = 'IASBackground'
+            isOpen={actionSheetDeleteAllHistory}
+            onDidDismiss={() => setActionSheetDeleteAllHistory(false)}
+            header="Delete All Histories?"
+            buttons={[{
+                icon: checkmarkOutline,
+                text: "Yes, Delete",
+                handler: () => deleteAllHistory(),
+              },
+              {
+                icon: closeOutline,
+                text: "No",
+              }
+            ]}
+            />
+          }
 
             <IonContent fullscreen>
             {barangctx.history.length != 0 && (barangctx.history.map((item)=>(
@@ -69,7 +111,7 @@ const History: React.FC = () => {
 
                         <IonCol size="2">
                             <IonButtons className="icon-button">
-                                <IonButton color="danger" fill="solid" className="icon" onClick={() => deleteSingleHistory(item.id)}>
+                                <IonButton color="danger" fill="solid" className="icon" onClick={() => sheetDeleteSinleHistoryHandler(item.id)}>
                                     <IonIcon icon={trashOutline} slot="icon-only" size="large" />
                                 </IonButton>
                             </IonButtons>
@@ -120,6 +162,25 @@ const History: React.FC = () => {
 
                 </IonCard>
             )))}
+            {idH && (
+                <IonActionSheet
+                cssClass="IASBackground"
+                isOpen={actionSheetDeleteSingleHistory}
+                onDidDismiss={() => setActionSheetDeleteSingleHistory(false)}
+                header="Delete History?"
+                buttons={[
+                    {
+                    icon: checkmarkOutline,
+                    text: "Yes, Delete",
+                    handler: () => deleteSingleHistory(idH),
+                    },
+                    {
+                    icon: closeOutline,
+                    text: "No",
+                    },
+                ]}
+                />
+            )}
 
             </IonContent>
 

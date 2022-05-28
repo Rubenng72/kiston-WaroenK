@@ -290,64 +290,6 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
             </IonAccordionGroup>
           </IonCard>
     )))}
-    {/* {props.onSearchValue == '' && barangctx.history.length != 0 && (barangctx.history.map((item)=>(
-      <IonCard id="item-list" className="ion-no-margin" key={item.id}>
-        <IonRow>
-        <IonCol size="3" className="ion-no-margin">
-
-          </IonCol>
-          <IonCol size="5">
-            <IonCardContent
-              className="ion-text-left ion-no-padding "
-              id="content-list"
-            >
-              <IonText>
-              <h2>{item.id}</h2>
-                <h2>{item.date}</h2>
-                <h2>{item.time}</h2>
-                <h2>{item.totalPrice}</h2>
-              </IonText>
-            </IonCardContent>
-          </IonCol>
-          <IonCol size="2">
-            <IonButtons className="icon-button">
-              <IonButton
-                color="danger"
-                fill="solid"
-                className="icon"
-              >
-                <IonIcon
-                  icon={trashOutline}
-                  slot="icon-only"
-                  size="large"
-                />
-              </IonButton>
-            </IonButtons>
-          </IonCol>
-        </IonRow>
-        <IonAccordionGroup>
-        <IonAccordion toggleIcon={arrowDownCircle}>
-            <IonItem slot="header">
-              <IonLabel>Items in Stock</IonLabel>
-            </IonItem>
-            <IonList slot="content">
-              {barangctx.historyReceipt.map((value)=>{
-                if(value.receiptId == item.id){
-                  return(
-                    <IonItem>
-                      <IonLabel>{value.name} pcs</IonLabel>
-                      <IonLabel>{value.quantity} pcs</IonLabel>
-                      <IonLabel>{value.totalPrice} pcs</IonLabel>
-                    </IonItem>
-                  )
-                }
-              })}
-            </IonList>
-          </IonAccordion>
-        </IonAccordionGroup>
-
-      </IonCard>
-    )))} */}
     {ids && (
         <IonActionSheet
           cssClass="IASBackground"

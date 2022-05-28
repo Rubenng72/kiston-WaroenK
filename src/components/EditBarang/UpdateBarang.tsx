@@ -45,7 +45,7 @@ const UpdateBarang: React.FC = () => {
   const [fileName, setFileName] = useState("");
   const barangctx = useContext(BarangContext);
   const history = useHistory();
-  const [startAlert, serStartAlert] = useState(false);
+  const [startAlert, setStartAlert] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
   const db = getFirestore();
@@ -92,7 +92,7 @@ const UpdateBarang: React.FC = () => {
 
   const editBarangHandler = async () => {
     if (!title || title.toString().trim().length === 0 || !price || !nMax || !cost || !chosenSatuan) {
-      serStartAlert(true);
+      setStartAlert(true);
       return;
     }
 
@@ -169,7 +169,7 @@ const UpdateBarang: React.FC = () => {
             text: "Ok",
             role: "cancel",
             handler: () => {
-              serStartAlert(false);
+              setStartAlert(false);
             },
           },
         ]}

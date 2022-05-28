@@ -22,6 +22,7 @@ import {
   IonCardTitle,
   IonImg,
   IonActionSheet,
+  IonAlert,
 } from "@ionic/react";
 import "./Home.css";
 import "./HomeModal.css";
@@ -31,7 +32,7 @@ import "swiper/css/pagination";
 import { Pagination, Grid, EffectCoverflow } from "swiper";
 import "swiper/css/grid";
 import { useState, useContext, useEffect, useRef } from "react";
-import { trashOutline, close, checkmark } from "ionicons/icons";
+import { trashOutline, close, checkmark, closeOutline, checkmarkOutline } from "ionicons/icons";
 import BarangContext from "../data/barang-context";
 import { logout } from "../data/auth";
 import { getFirestore, collection, doc, updateDoc, addDoc} from "firebase/firestore";
@@ -53,6 +54,8 @@ interface barangType {
 
 const Home: React.FC = () => {
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [showActionSheetSaveHistory, setShowActionSheetSaveHistory] = useState(false);
+  const [startAlertSaveHistory, setStartAlertSaveHistory] = useState(false);
   const auth = getAuth();
   const user = auth.currentUser;
   const userId = user ? user.uid : '';
@@ -133,6 +136,10 @@ const Home: React.FC = () => {
 
   const actionSheetHandler = () => {
     setShowActionSheet(true);
+  };
+
+  const actionSheetSaveHistoryHandler = () => {
+    setShowActionSheetSaveHistory(true);
   };
 
   const signinhandler = () => {
@@ -317,6 +324,20 @@ const Home: React.FC = () => {
 
   const addToHistory = async(totalPrice: number, date: string, time: string)=>{
 
+    barangctx.items.forEach(async (item) => {
+      if(item.amount > 0 && item.amount <= item.stock){
+          if(item.stock > 0){
+            let stockTemp = 0;
+            stockTemp = item.stock - item.amount;
+          
+            const barangRef = doc(db, "barang", item.id);
+            await updateDoc(barangRef, {stock: stockTemp});
+          }else {
+            setStartAlertSaveHistory(true);
+          }
+      }
+    })
+
     if(user !== null) {
       barangctx.items.forEach((value) => {
         if(value.amount > 0){
@@ -329,34 +350,8 @@ const Home: React.FC = () => {
         }
       });
     }
-    // try {
-    //   const docRef = await addDoc(collection(db, "history"), {
-    //     uId: userId,
-    //     totalharga: TotalHarga,
-    //     date: date,
-    //     time: time,
-    //   });
-    //   if(docRef){
-    //     barangctx.items.forEach((value)=>{
-    //       if(value.amount > 0){
-    //         try{
-    //           addDoc(collection(db, "historyReceipt"), {
-    //             uId: userId,
-    //             receiptId: docRef.id,
-    //             name:value.title,
-    //             quantity: value.amount,
-    //             totalprice: value.price*value.amount,
-    //           });
-    //         } catch (e) {
-    //           // console.error("Error adding Document: ", e);
-    //         }
-    //       }
-    //     })
-    //   }
-    //   // console.log("Document written with ID: ", docRef.id);
-    // } catch (e) {
-    //   // console.error("Error adding Document: ", e);
-    // }
+
+    clearAllReceipt();
   }
 
   return (
@@ -530,6 +525,20 @@ const Home: React.FC = () => {
           onDidDismiss={() => setShowModal(false)}
           className="modal-box"
         >
+           <IonAlert
+              isOpen={startAlertSaveHistory}
+              cssClass="alertCss"
+              header="Warning!!!"
+              message="There are out of stock items"
+              buttons={[
+                {
+                  text: "Ok",
+                  handler: () => {
+                    setStartAlertSaveHistory(false);
+                  },
+                },
+              ]}
+            ></IonAlert>
           <IonItem lines="none"></IonItem>
           <h3 className="center text-bold">Receipt</h3>
           <IonGrid
@@ -635,7 +644,7 @@ const Home: React.FC = () => {
               </IonCol>
             </IonRow>
             <IonRow className="center">
-              <IonButton className="HistoryButton" onClick={()=>addToHistory(TotalHarga, date, time)}>Save to History</IonButton>
+              <IonButton className="HistoryButton" onClick={()=>actionSheetSaveHistoryHandler()}>Save to History</IonButton>
             </IonRow>
           </IonCard>
         </IonModal>
@@ -668,6 +677,24 @@ const Home: React.FC = () => {
             },
           ]}
         ></IonActionSheet>
+
+          { <IonActionSheet
+            cssClass = 'IASBackground'
+            isOpen={showActionSheetSaveHistory}
+            onDidDismiss={() => setShowActionSheetSaveHistory(false)}
+            header="Are you sure you want to add this receipt to history?"
+            buttons={[{
+                icon: checkmarkOutline,
+                text: "Yes, I want",
+                handler: () => addToHistory(TotalHarga, date, time),
+              },
+              {
+                icon: closeOutline,
+                text: "No",
+              }
+            ]}
+            />
+          }
       </IonContent>
     </IonPage>
   );
