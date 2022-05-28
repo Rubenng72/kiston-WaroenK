@@ -1,89 +1,93 @@
-import React, { useContext } from "react";
-import { useEffect, useState } from "react";
-import {IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonFab, IonFabButton,IonSearchbar, IonGrid, IonImg, IonRow, IonText, IonTitle} from "@ionic/react";
-import { isPlatform} from '@ionic/react';
-import {addOutline} from "ionicons/icons";
-import ItemListCard from '../components/ItemList/ItemListCard';
-import HapusSemuabtn from '../components/ItemList/HapusSemua';
-import { getAuth } from "firebase/auth";
+import React from "react";
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonIcon, IonContent, IonBackButton, IonCard, IonRow, IonCol, IonCardContent, IonText, IonAccordionGroup, IonAccordion, IonItem, IonLabel, IonList } from "@ionic/react";
+import { arrowDownCircle, trashOutline } from "ionicons/icons";
+import './History.css'
 
-const ItemList: React.FC = () => {
-    const [searchValue, setSearchValue] = useState<string>('');
-    const auth = getAuth();
-  const user = auth.currentUser;
-
-     //new func
-  const handlerHandler = () => {
-    if (user !== null) {
-      if (user.isAnonymous) {
-        return (
-          <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                <IonFabButton routerLink="/TambahBarang">
-                    <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-                </IonFabButton>
-              </IonFab>
-        );
-      } else {
-        return (
-          <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton routerLink="/TambahBarang">
-              <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-          </IonFabButton>
-        </IonFab>
-        );
-      }
-    } else {
-      return (
-        <IonFab vertical="bottom" horizontal="end" slot="fixed">
-                <IonFabButton routerLink="/Login">
-                    <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-                </IonFabButton>
-              </IonFab>
-
-      );
-    }
-  };
-
+const History: React.FC = () => {
     return (
         <IonPage>
-          <IonHeader class="ion-no-border">
-            <IonToolbar color="none">
-              <IonButtons slot="start" >
-              <IonSearchbar id="caribarang" placeholder="Search" onIonChange={e => setSearchValue(e.detail.value!)} style={{marginTop:"10px", marginRight:"10px"}} />
-              </IonButtons>
-              <HapusSemuabtn/>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent fullscreen>
-            <IonHeader collapse="condense">
-              <IonToolbar>
-                <IonButtons slot="start" >
-                  <IonButton routerLink="#">
-                    <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-                  </IonButton>
-                </IonButtons>
-                <IonButtons slot="end" >
-                  <IonButton routerLink="#">
-                    <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-                  </IonButton>
-                </IonButtons>
-                <IonButtons slot="end" >
-                  <IonButton routerLink="#">
-                    <IonIcon size="large"  md={addOutline} ios={addOutline}/>
-                  </IonButton>
-                </IonButtons>
-              </IonToolbar>
+            <IonHeader>
+                <IonToolbar>
+                    <IonTitle>History</IonTitle>
+                    <IonButtons slot="end" >
+                        <IonButton id="clear-btn" fill="solid" color="danger">
+                            Clear History
+                        </IonButton>
+                    </IonButtons>
+                </IonToolbar>
             </IonHeader>
 
-            
-            {handlerHandler()}
-            
+            <IonContent fullscreen>
 
-            <ItemListCard onSearchValue={searchValue}/>    
-          
-          </IonContent>
+                <IonCard>
+                    <IonRow id="il-fs">
+
+                        <IonCol size="5">
+                            <IonCardContent className="ion-text-left">
+
+                                <IonLabel>28/05/2022</IonLabel><br></br>
+                                <IonLabel>Total Harga :</IonLabel>
+
+                            </IonCardContent>
+                        </IonCol>
+
+                        <IonCol size="5">
+                            <IonCardContent className="center">
+
+                                <IonLabel>21:50:59</IonLabel><br></br>
+                                <IonLabel>Rp. 120.000</IonLabel>
+
+                            </IonCardContent>
+                        </IonCol>
+
+                        <IonCol size="2">
+                            <IonButtons className="icon-button">
+                                <IonButton color="danger" fill="solid" className="icon">
+                                    <IonIcon icon={trashOutline} slot="icon-only" size="large" />
+                                </IonButton>
+                            </IonButtons>
+                        </IonCol>
+
+                    </IonRow>
+
+                    <IonAccordionGroup>
+                        <IonAccordion id="drop-down" toggleIcon={arrowDownCircle}>
+
+                            <IonItem className="ion-no-padding" slot="header">
+                                <IonTitle>Receipt Details</IonTitle>
+                            </IonItem>
+                            <IonList slot="content">
+
+                                <IonItem >
+                                    <IonCol size="6">
+                                        <IonLabel>Nama Barang 1</IonLabel>
+                                    </IonCol>
+
+                                    <IonCol size="6">
+                                        <IonLabel>Jumlah Barang</IonLabel>
+                                    </IonCol>
+                                </IonItem>
+
+                                <IonItem>
+                                    <IonCol size="6">
+                                        <IonLabel>Price/Pcs</IonLabel>
+                                    </IonCol>
+
+                                    <IonCol size="6">
+                                        <IonLabel>Rp 12.000</IonLabel>
+                                    </IonCol>
+                                </IonItem>
+
+                            </IonList>
+                        </IonAccordion>
+                    </IonAccordionGroup>
+
+                </IonCard>
+
+            </IonContent>
+
         </IonPage>
     );
 };
 
-export default ItemList;
+export default History;
