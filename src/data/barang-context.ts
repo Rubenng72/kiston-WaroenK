@@ -23,6 +23,7 @@ export interface History{
 }
 
 export interface HistoryReceipt{
+  id: string;
   uId: string;
   name: string;
   quantity: number;

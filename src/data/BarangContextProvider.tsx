@@ -97,7 +97,7 @@ const BarangContextProvider: React.FC = props => {
                 name:value.title,
                 quantity: value.amount,
                 receiptId: docRef.id,
-                totalprice: value.price*value.amount,
+                totalPrice: value.price*value.amount,
               });
             } catch (e) {
               // console.error("Error adding Document: ", e);
@@ -159,6 +159,7 @@ const BarangContextProvider: React.FC = props => {
     if(historyReceipt.length == 0 && !isEmpty){
       onSnapshot(qreceipt, (querySnapshot) => {
         const storableHistoryReceipt = querySnapshot.docs.map((doc) => ({
+          id:doc.id,
           uId:doc.data().uId,
           name:doc.data().name,
           quantity:doc.data().quantity,
@@ -217,6 +218,7 @@ const BarangContextProvider: React.FC = props => {
     const loadedHistoryReceipt: HistoryReceipt[] = [];
     for (const storedHistoryReceipt of storedHistoryReceipts) {
       loadedHistoryReceipt.push({
+        id: storedHistoryReceipt.id,
         uId: storedHistoryReceipt.uId,
         name: storedHistoryReceipt.name,
         quantity: storedHistoryReceipt.quantity,
