@@ -12,24 +12,22 @@ const History: React.FC = () => {
 
     async function deleteSingleHistory(id: string) {
         const dataHistory = doc(db, "history", id);
-        const dataHistoryReceipt = query(collection(db, "historyReceipt"), where("receiptId", "==", id));
+        barangctx.historyReceipt.forEach((value)=>{
+          if(value.receiptId == id){
+            try{
+              deleteDoc(doc(db,"historyReceipt", value.id));
+              console.log('deleted', value.id)
+            }catch(e){
+              // console.log(error);
+            }
+          }
+        })
         try{
           await deleteDoc(dataHistory);
 
-          });
           // console.log('done');
         }catch(error){
           // console.log(error);
-        }
-    }
-
-    const deleteAllHistory = () => {
-        if(barang.length != 0){
-          for(let i = 0; i < barang.length; i++){
-            deleteBarang(barang[i].id, barang[i].foto);
-          }
-        }else{
-          window.location.assign("/tabs/History");
         }
     }
 
@@ -100,10 +98,10 @@ const History: React.FC = () => {
                                                 <IonLabel>{value.quantity} pcs</IonLabel>
                                             </IonCol>
                                         </IonItem>
-                                        
+
                                         <IonItem>
                                                 <IonCol size="6">
-                                                    
+
                                                 </IonCol>
 
                                                 <IonCol size="6">
@@ -116,7 +114,7 @@ const History: React.FC = () => {
                             })}
                             </IonList>
 
-                            
+
                         </IonAccordion>
                     </IonAccordionGroup>
 
