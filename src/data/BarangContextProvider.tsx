@@ -33,12 +33,13 @@ const BarangContextProvider: React.FC = props => {
   }
 
 
-  const updateDataItem = async(url: string|null, bId: string|null, title: string, price: number, type: 'box', nMax: number, fileName: string) =>{
+  const updateDataItem = async(url: string|null, bId: string|null, title: string, price: number, cost: number, type: 'box', nMax: number, fileName: string) =>{
     try {
       if(bId && url !==null){
         const docRef = await updateDoc(doc(db, "barang", bId), {
           title: title,
           price: price,
+          cost: cost,
           type: type,
           nMax: nMax,
           foto: fileName,
@@ -51,6 +52,7 @@ const BarangContextProvider: React.FC = props => {
       const docRef = await updateDoc(doc(db, "barang", bId), {
         title: title,
         price: price,
+        cost: cost,
         type: type,
         nMax: nMax,
       });

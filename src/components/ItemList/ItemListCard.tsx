@@ -103,9 +103,9 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
       }
     };
 
-    const accordionHandler = (id: string) => {
-     setId(id);
-    };
+    // const accordionHandler = (id: string) => {
+    //  setId(id);
+    // };
 
     const addItemStock = async() => {
       let stockSum = 0
@@ -177,20 +177,20 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
               </IonCol>
             </IonRow>
             <IonAccordionGroup>
-            <IonAccordion toggleIcon={arrowDownCircle} onClick={()=>accordionHandler(item.id)}>
+            <IonAccordion toggleIcon={arrowDownCircle}>
                 <IonItem slot="header">
                   <IonLabel>Items in Stock</IonLabel>
                 </IonItem>
                 <IonList slot="content">
                   <IonItem>
-                    <IonLabel>Stock Amount : {item.stock}</IonLabel>
+                    <IonLabel>Stock Amount : {item.stock} pcs</IonLabel>
                   </IonItem>
                   <IonItem>
                     <IonLabel>Pcs/Box : {item.nMax}</IonLabel>
                   </IonItem>
                   <IonItem>
                     <IonCard color="light">
-                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
+                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))} onIonInput={() => setId(item.id)}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
                     </IonCard>
                     <IonButton onClick={()=>addItemStock()}>+ Stock</IonButton>
                   </IonItem>
@@ -257,20 +257,20 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
               </IonCol>
             </IonRow>
             <IonAccordionGroup>
-            <IonAccordion toggleIcon={arrowDownCircle} onClick={()=>accordionHandler(item.id)}>
+            <IonAccordion toggleIcon={arrowDownCircle}>
                 <IonItem slot="header">
                   <IonLabel>Items in Stock</IonLabel>
                 </IonItem>
                 <IonList slot="content">
                   <IonItem>
-                    <IonLabel>Stock Amount : {item.stock}</IonLabel>
+                    <IonLabel>Stock Amount : {item.stock} pcs</IonLabel>
                   </IonItem>
                   <IonItem>
                     <IonLabel>Pcs/Box : {item.nMax}</IonLabel>
                   </IonItem>
                   <IonItem>
                     <IonCard color="light">
-                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
+                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))} onIonInput={() => setId(item.id)}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
                     </IonCard>
                     <IonButton onClick={()=>addItemStock()}>+ Stock</IonButton>
                   </IonItem>

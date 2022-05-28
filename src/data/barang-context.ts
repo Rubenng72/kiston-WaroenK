@@ -18,7 +18,7 @@ export interface Barang{
 const BarangContext = React.createContext<{
   items: Barang[];
   addDataItem: (uId:string, title:string, price:number, cost: number, type: 'box', nMax: number, stock:number, image: string, url:string) => void;
-  updateDataItem: (url: string|null, bId: string|null, title: string, price: number, type: 'box', nMax: number, fileName: string) => void;
+  updateDataItem: (url: string|null, bId: string|null, title: string, price: number,  cost: number, type: 'box', nMax: number, fileName: string) => void;
   deleteSingleItem:(id:string, img:string)=>void;
   initContext: () => void;
 }>({

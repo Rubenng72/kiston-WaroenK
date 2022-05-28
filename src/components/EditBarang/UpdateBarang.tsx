@@ -37,8 +37,10 @@ const UpdateBarang: React.FC = () => {
   const [chosenSatuan, setChosenSatuan] = useState<"box">("box");
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
-  const [disc, setDisc] = useState<number>(0);
   const [nMax, setnMax] = useState<number>(0);
+  const [cost, setCost] = useState<number>(0);
+  const [marginPrice, setMarginPrice] = useState<number>(0);
+  const [marginPersen, setMarginPersen] = useState<number>(0);
   const [selectedFile, setSelectedFile] = useState<File>();
   const [fileName, setFileName] = useState("");
   const barangctx = useContext(BarangContext);
@@ -70,12 +72,26 @@ const UpdateBarang: React.FC = () => {
     setTitle(selectedItem?.title!);
     setPrice(selectedItem?.price!);
     setChosenSatuan(selectedItem?.type!);
-    setDisc(selectedItem?.disc!);
     setnMax(selectedItem?.nMax);
+    setCost(selectedItem?.cost!);
   }, [selectedItem]);
 
+  const calculateMargin = (jumlahPcsPerBox: number, modalPricePerBox: number, sellingPricePerPcs: number) => {
+
+    let hargaPerPiece = 0;
+    let hargaProfit = 0;
+    let marginProfit = 0;
+
+    hargaPerPiece = modalPricePerBox / jumlahPcsPerBox;
+    hargaProfit = sellingPricePerPcs - hargaPerPiece;
+    marginProfit = 100 * (sellingPricePerPcs - hargaPerPiece) / sellingPricePerPcs;
+
+    setMarginPrice(hargaProfit);
+    setMarginPersen(marginProfit);
+  }
+
   const editBarangHandler = async () => {
-    if (!title || title.toString().trim().length === 0 || !price || !nMax || !chosenSatuan) {
+    if (!title || title.toString().trim().length === 0 || !price || !nMax || !cost || !chosenSatuan) {
       serStartAlert(true);
       return;
     }
@@ -93,6 +109,7 @@ const UpdateBarang: React.FC = () => {
             id,
             title,
             price,
+            cost,
             chosenSatuan,
             nMax,
             fileName
@@ -105,6 +122,7 @@ const UpdateBarang: React.FC = () => {
         id,
         title,
         price,
+        cost,
         chosenSatuan,
         nMax,
         fileName
@@ -204,8 +222,8 @@ const UpdateBarang: React.FC = () => {
             className="inputtext"
             placeholder="Modal Price/Box"
             type="number"
-            value={price}
-            onIonChange={(e) => setPrice(parseInt(e.detail.value!))}
+            value={cost}
+            onIonChange={(e) => setCost(parseInt(e.detail.value!))}
           >
             <IonLabel className="ion-text-left ion-margin-start">Rp. </IonLabel>
           </IonInput>
@@ -225,9 +243,9 @@ const UpdateBarang: React.FC = () => {
         </IonRow>
 
         <IonRow className="ion-padding">
-          <IonButton className="">Calculate Margin</IonButton>
-          <IonLabel className="ion-padding">Test Price</IonLabel>
-          <IonLabel className="ion-padding">%</IonLabel>
+          <IonButton className="" onClick={() => calculateMargin(nMax, cost, price)}>Calculate Margin</IonButton>
+          <IonLabel className="ion-padding">Rp. {marginPrice}</IonLabel>
+          <IonLabel className="ion-padding">{parseFloat(marginPersen.toString()).toLocaleString("en")}%</IonLabel>
         </IonRow>
 
         <IonRow className="ion-margin-top">
