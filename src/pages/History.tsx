@@ -19,7 +19,7 @@ const History: React.FC = () => {
 
             <IonContent fullscreen>
 
-                <IonCard>
+                <IonCard id="history-card">
                     <IonRow id="il-fs">
 
                         <IonCol size="5">
@@ -56,9 +56,10 @@ const History: React.FC = () => {
                             <IonItem className="ion-no-padding" slot="header">
                                 <IonTitle>Receipt Details</IonTitle>
                             </IonItem>
+                            
                             <IonList slot="content">
 
-                                <IonItem >
+                                <IonItem lines="none">
                                     <IonCol size="6">
                                         <IonLabel>Nama Barang 1</IonLabel>
                                     </IonCol>
@@ -79,6 +80,32 @@ const History: React.FC = () => {
                                 </IonItem>
 
                             </IonList>
+
+                            <IonList slot="content">
+
+                                <IonItem lines="none">
+                                    <IonCol size="6">
+                                        <IonLabel>Nama Barang 1</IonLabel>
+                                    </IonCol>
+
+                                    <IonCol size="6">
+                                        <IonLabel>Jumlah Barang</IonLabel>
+                                    </IonCol>
+                                </IonItem>
+
+                                <IonItem>
+                                    <IonCol size="6">
+                                        <IonLabel>Price/Pcs</IonLabel>
+                                    </IonCol>
+
+                                    <IonCol size="6">
+                                        <IonLabel>Rp 12.000</IonLabel>
+                                    </IonCol>
+                                </IonItem>
+
+                            </IonList>
+
+                            
                         </IonAccordion>
                     </IonAccordionGroup>
 
