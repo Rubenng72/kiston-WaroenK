@@ -34,7 +34,7 @@ import { useState, useContext, useEffect, useRef } from "react";
 import { trashOutline, close, checkmark } from "ionicons/icons";
 import BarangContext from "../data/barang-context";
 import { logout } from "../data/auth";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, updateDoc, addDoc} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 interface barangType {
@@ -55,6 +55,7 @@ const Home: React.FC = () => {
   const [showActionSheet, setShowActionSheet] = useState(false);
   const auth = getAuth();
   const user = auth.currentUser;
+  const userId = user ? user.uid : '';
   const db = getFirestore();
   const barangctx = useContext(BarangContext);
   const [ids, setIds] = useState<string>("");
@@ -68,6 +69,9 @@ const Home: React.FC = () => {
   const date = `${current.getDate()}/${
     current.getMonth() + 1
   }/${current.getFullYear()}`;
+
+  const time = `${current.getHours()}:${current.getMinutes() + 1}:${current.getSeconds()}`;
+
   const inputHandler = async (e: CustomEvent) => {
     const amount = Number(e.detail.value);
     const barangRef = doc(db, "barang", ids);
@@ -311,6 +315,36 @@ const Home: React.FC = () => {
     return parseFloat(hargaBox.toString()).toLocaleString("en");
   };
 
+  const addToHistory = async()=>{
+    try {
+      const docRef = await addDoc(collection(db, "history"), {
+        uId: userId,
+        totalharga: TotalHarga,
+        date: date,
+        time: time,
+      });
+      if(docRef){
+        barangctx.items.forEach((value)=>{
+          if(value.amount > 0){
+            try{
+              addDoc(collection(db, "historyReceipt"), {
+                receiptId: docRef.id,
+                name:value.title,
+                quantity: value.amount,
+                totalprice: value.price*value.amount,
+              });
+            } catch (e) {
+              // console.error("Error adding Document: ", e);
+            }
+          }
+        })
+      }
+      // console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      // console.error("Error adding Document: ", e);
+    }
+  }
+
   return (
     <IonPage>
       <IonHeader class="ion-no-border">
@@ -380,7 +414,7 @@ const Home: React.FC = () => {
                       Items in Stock :
                     </IonCardSubtitle>
                     <IonCardSubtitle style={{ textAlign: "left" }}>
-                      Dummy stock
+                      {item.stock}
                     </IonCardSubtitle>
                   </IonCol>
                   <IonCol size="2" className="padding-right">
@@ -432,7 +466,7 @@ const Home: React.FC = () => {
                       (Items in Stock)
                     </IonCardSubtitle>
                     <IonCardSubtitle style={{ textAlign: "left" }}>
-                      Dummy stock
+                      {item.stock}
                     </IonCardSubtitle>
                   </IonCol>
                   <IonCol size="2" className="padding-right">
@@ -587,7 +621,7 @@ const Home: React.FC = () => {
               </IonCol>
             </IonRow>
             <IonRow className="center">
-              <IonButton className="HistoryButton">Save to History</IonButton>
+              <IonButton className="HistoryButton" onClick={()=>addToHistory()}>Save to History</IonButton>
             </IonRow>
           </IonCard>
         </IonModal>
