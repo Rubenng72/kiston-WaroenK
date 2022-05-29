@@ -36,3 +36,13 @@
       width: 100%;
       color: dark;
   }
+
+  .centering{
+    text-align: center;
+    justify-content: center;
+    margin: 1% auto;
+  }
+
+  .Marginlabel{
+    color: #6C8BA1;
+  }
