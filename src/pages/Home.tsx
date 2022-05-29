@@ -334,7 +334,7 @@ const Home: React.FC = () => {
           }
         }
       })
-      if(flag > 0 && flagTwo){
+      if(flag >= 0 && flagTwo){
         barangctx.saveToHistory(
           userId,
           totalPrice,
@@ -346,7 +346,7 @@ const Home: React.FC = () => {
         setStartAlertSaveHistory(true);
       }
   }
-  
+
   return (
     <IonPage>
       <IonHeader class="ion-no-border">
