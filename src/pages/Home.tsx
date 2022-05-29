@@ -423,7 +423,7 @@ const Home: React.FC = () => {
                     <IonRow className="jumlah-item">
                       <IonInput
                         className="inputbox"
-                        maxlength={2}
+                        maxlength={3}
                         value={item.amount.toString()}
                         clearOnEdit
                         onIonChange={(e) => inputHandler(e)}
@@ -475,7 +475,7 @@ const Home: React.FC = () => {
                     <IonRow className="jumlah-item">
                       <IonInput
                         className="inputbox"
-                        maxlength={2}
+                        maxlength={3}
                         value={item.amount.toString()}
                         clearOnEdit
                         onIonChange={(e) => inputHandler(e)}

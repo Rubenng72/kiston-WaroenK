@@ -201,7 +201,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
                   </IonItem>
                   <IonItem>
                     <IonCard color="light">
-                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))} onIonInput={() => setId(item.id)}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
+                      <IonInput placeholder="increase box stock " value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))} onIonInput={() => setId(item.id)}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
                     </IonCard>
                     <IonButton onClick={()=>addItemStock()}>+ Stock</IonButton>
                   </IonItem>
@@ -281,7 +281,7 @@ const ItemListCard: React.FC<{ onSearchValue: string} > = props => {
                   </IonItem>
                   <IonItem>
                     <IonCard color="light">
-                      <IonInput placeholder="increase stock /box" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))} onIonInput={() => setId(item.id)}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
+                      <IonInput placeholder="increase box stock" value={add} type={"number"} clearOnEdit onIonChange={(e) => setAdd(Number(e.detail.value))} onIonInput={() => setId(item.id)}><IonLabel className="ion-text-left ion-margin-start">Box</IonLabel></IonInput>
                     </IonCard>
                     <IonButton onClick={()=>addItemStock()}>+ Stock</IonButton>
                   </IonItem>
