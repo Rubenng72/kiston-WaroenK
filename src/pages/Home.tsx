@@ -323,35 +323,30 @@ const Home: React.FC = () => {
   };
 
   const addToHistory = async(totalPrice: number, date: string, time: string)=>{
-
-    barangctx.items.forEach(async (item) => {
-      if(item.amount > 0 && item.amount <= item.stock && item.stock > 0){
-        let stockTemp = 0;
-        stockTemp = item.stock - item.amount;
-      
-        const barangRef = doc(db, "barang", item.id);
-        await updateDoc(barangRef, {stock: stockTemp});
+      let flag = 0;
+      let flagTwo = true;
+      barangctx.items.forEach(async (item) => {
+        if(item.amount > 0 ) {
+          flag = 0;
+          flag = item.stock - item.amount;
+          if(flag < 0){
+            flagTwo = false;
+          }
+        }
+      })
+      if(flag > 0 && flagTwo){
+        barangctx.saveToHistory(
+          userId,
+          totalPrice,
+          date,
+          time
+        );
         clearAllReceipt();
-      }else {
+      }else{
         setStartAlertSaveHistory(true);
       }
-    })
-
-    if(user !== null) {
-      barangctx.items.forEach((value) => {
-        if(value.amount > 0){
-          barangctx.saveToHistory(
-            user.uid,
-            totalPrice,
-            date,
-            time
-          );
-         
-        }
-      });
-    }
   }
-
+  
   return (
     <IonPage>
       <IonHeader class="ion-no-border">

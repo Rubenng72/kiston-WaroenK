@@ -89,9 +89,14 @@ const BarangContextProvider: React.FC = props => {
         time: time,
       });
       if(docRef){
-        items.forEach((value)=>{
-          if(value.amount > 0){
+        items.forEach(async(value)=>{
+          if(value.amount > 0 && value.amount <= value.stock && value.stock > 0){
+            let stockTemp = 0;
+            stockTemp = value.stock - value.amount;
+            const barangRef = doc(db, "barang", value.id);
+
             try{
+              await updateDoc(barangRef, {stock: stockTemp});
               addDoc(collection(db, "historyReceipt"), {
                 uId: userId,
                 name:value.title,
@@ -155,7 +160,7 @@ const BarangContextProvider: React.FC = props => {
         Storage.set({ key: "history", value: JSON.stringify(storableHistory)});
       })
     }
-    
+
     if(historyReceipt.length == 0 && !isEmpty){
       onSnapshot(qreceipt, (querySnapshot) => {
         const storableHistoryReceipt = querySnapshot.docs.map((doc) => ({

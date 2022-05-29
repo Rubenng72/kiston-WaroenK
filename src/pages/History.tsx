@@ -126,40 +126,32 @@ const History: React.FC = () => {
                                 <IonTitle>Receipt Details</IonTitle>
                             </IonItem>
 
-                            <IonList slot="content">
                             {barangctx.historyReceipt.map((value)=>{
                                 if(value.receiptId == item.id){
                                     return(
-                                        <>
-                                        <IonItem lines="none">
-                                            <IonCol size="6">
-                                                <IonLabel>{value.name}</IonLabel>
-                                            </IonCol>
+                                      <IonList slot="content" key={value.id}>
+                                          <IonItem lines="none">
+                                              <IonCol size="6">
+                                                  <IonLabel>{value.name}</IonLabel>
+                                              </IonCol>
+                                              <IonCol size="6">
+                                                  <IonLabel>{value.quantity} pcs</IonLabel>
+                                              </IonCol>
+                                          </IonItem>
+                                          <IonItem>
+                                                  <IonCol size="6">
 
-                                            <IonCol size="6">
-                                                <IonLabel>{value.quantity} pcs</IonLabel>
-                                            </IonCol>
-                                        </IonItem>
-
-                                        <IonItem>
-                                                <IonCol size="6">
-
-                                                </IonCol>
-
-                                                <IonCol size="6">
-                                                    <IonLabel>Rp. {value.totalPrice}</IonLabel>
-                                                </IonCol>
-                                        </IonItem>
-                                        </>
+                                                  </IonCol>
+                                                  <IonCol size="6">
+                                                      <IonLabel>Rp. {value.totalPrice}</IonLabel>
+                                                  </IonCol>
+                                          </IonItem>
+                                      </IonList>
                                     )
                                 }
                             })}
-                            </IonList>
-
-
                         </IonAccordion>
                     </IonAccordionGroup>
-
                 </IonCard>
             )))}
             {idH && (
