@@ -334,7 +334,7 @@ const Home: React.FC = () => {
           }
         }
       })
-      if(flag >= 0 && flagTwo){
+      if(flag >= 0 && flagTwo && totalPrice !== 0){
         barangctx.saveToHistory(
           userId,
           totalPrice,
