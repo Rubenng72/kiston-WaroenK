@@ -54,8 +54,11 @@ const InputBarang: React.FC = () => {
     setChosenSatuan(selectedSatuan);
   };
 
-  
-  const calculateMargin = (nMaxRef: React.RefObject<HTMLIonInputElement>, costRef: React.RefObject<HTMLIonInputElement>, priceRef: React.RefObject<HTMLIonInputElement>) => {
+  const calculateMargin = (
+    nMaxRef: React.RefObject<HTMLIonInputElement>,
+    costRef: React.RefObject<HTMLIonInputElement>,
+    priceRef: React.RefObject<HTMLIonInputElement>
+  ) => {
     const jumlahPcsPerBox = nMaxRef.current?.value as number;
     const modalPricePerBox = costRef.current?.value as number;
     const sellingPricePerPcs = priceRef.current?.value as number;
@@ -66,11 +69,12 @@ const InputBarang: React.FC = () => {
 
     hargaPerPiece = modalPricePerBox / jumlahPcsPerBox;
     hargaProfit = sellingPricePerPcs - hargaPerPiece;
-    marginProfit = 100 * (sellingPricePerPcs - hargaPerPiece) / sellingPricePerPcs;
+    marginProfit =
+      (100 * (sellingPricePerPcs - hargaPerPiece)) / sellingPricePerPcs;
 
     setMarginPrice(hargaProfit);
     setMarginPersen(marginProfit);
-  }
+  };
 
   const addBarangHandler = async () => {
     const enteredTitle = titleRef.current?.value;
@@ -78,7 +82,16 @@ const InputBarang: React.FC = () => {
     const enteredCost = costRef.current?.value;
     const enteredbAmount = bAmountRef.current?.value;
     const enterednMax = nMaxRef.current?.value;
-    if (!enteredTitle || enteredTitle.toString().trim().length === 0 || !enteredPrice || !enteredCost || !enterednMax || !enteredbAmount || !takenPhoto || !chosenSatuan) {
+    if (
+      !enteredTitle ||
+      enteredTitle.toString().trim().length === 0 ||
+      !enteredPrice ||
+      !enteredCost ||
+      !enterednMax ||
+      !enteredbAmount ||
+      !takenPhoto ||
+      !chosenSatuan
+    ) {
       serStartAlert(true);
       return;
     }
@@ -92,21 +105,21 @@ const InputBarang: React.FC = () => {
 
     let totalStock = 0;
     totalStock = boxAmount * nMax;
-    
+
     uploadBytes(storageRef, selectedFile as Blob).then((snapshot) => {
       getDownloadURL(ref(storage, fileName)).then((url) => {
         if (user !== null) {
-            barangctx.addDataItem(
-              user.uid,
-              title,
-              price,
-              cost,
-              chosenSatuan,
-              nMax,
-              totalStock,
-              fileName,
-              url
-            );
+          barangctx.addDataItem(
+            user.uid,
+            title,
+            price,
+            cost,
+            chosenSatuan,
+            nMax,
+            totalStock,
+            fileName,
+            url
+          );
         }
       });
     });
@@ -235,10 +248,24 @@ const InputBarang: React.FC = () => {
           </IonInput>
         </IonRow>
 
-        <IonRow className="ion-padding">
-          <IonButton className="" onClick={() => calculateMargin(nMaxRef, costRef, priceRef)}>Calculate Margin</IonButton>
-          <IonLabel className="ion-padding">Rp. {parseFloat(marginPrice.toString()).toLocaleString("en")}</IonLabel>
-          <IonLabel className="ion-padding"> {parseFloat(marginPersen.toString()).toLocaleString("en")}%</IonLabel>
+        <IonRow className="ion-padding centering">
+          <IonButton
+            className=""
+            onClick={() => calculateMargin(nMaxRef, costRef, priceRef)}
+          >
+            Calculate Margin
+          </IonButton>
+        </IonRow>
+        <IonRow>
+          <IonLabel className="ion-no-padding Marginlabel centering">
+            Margin Jual dalam Rupiah = Rp.{" "}
+            {parseFloat(marginPrice.toString()).toLocaleString("en")}
+          </IonLabel>
+          <br />
+          <IonLabel className="ion-no-padding Marginlabel centering">
+            Margin Jual dalam persen ={" "}
+            {parseFloat(marginPersen.toString()).toLocaleString("en")}%
+          </IonLabel>
         </IonRow>
 
         <IonRow className="ion-margin-top">

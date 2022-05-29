@@ -76,22 +76,33 @@ const UpdateBarang: React.FC = () => {
     setCost(selectedItem?.cost!);
   }, [selectedItem]);
 
-  const calculateMargin = (jumlahPcsPerBox: number, modalPricePerBox: number, sellingPricePerPcs: number) => {
-
+  const calculateMargin = (
+    jumlahPcsPerBox: number,
+    modalPricePerBox: number,
+    sellingPricePerPcs: number
+  ) => {
     let hargaPerPiece = 0;
     let hargaProfit = 0;
     let marginProfit = 0;
 
     hargaPerPiece = modalPricePerBox / jumlahPcsPerBox;
     hargaProfit = sellingPricePerPcs - hargaPerPiece;
-    marginProfit = 100 * (sellingPricePerPcs - hargaPerPiece) / sellingPricePerPcs;
+    marginProfit =
+      (100 * (sellingPricePerPcs - hargaPerPiece)) / sellingPricePerPcs;
 
     setMarginPrice(hargaProfit);
     setMarginPersen(marginProfit);
-  }
+  };
 
   const editBarangHandler = async () => {
-    if (!title || title.toString().trim().length === 0 || !price || !nMax || !cost || !chosenSatuan) {
+    if (
+      !title ||
+      title.toString().trim().length === 0 ||
+      !price ||
+      !nMax ||
+      !cost ||
+      !chosenSatuan
+    ) {
       setStartAlert(true);
       return;
     }
@@ -242,10 +253,22 @@ const UpdateBarang: React.FC = () => {
           </IonInput>
         </IonRow>
 
-        <IonRow className="ion-padding">
-          <IonButton className="" onClick={() => calculateMargin(nMax, cost, price)}>Calculate Margin</IonButton>
-          <IonLabel className="ion-padding">Rp. {marginPrice}</IonLabel>
-          <IonLabel className="ion-padding">{parseFloat(marginPersen.toString()).toLocaleString("en")}%</IonLabel>
+        <IonRow className="ion-padding centering">
+          <IonButton
+            className=""
+            onClick={() => calculateMargin(nMax, cost, price)}
+          >
+            Calculate Margin
+          </IonButton>
+        </IonRow>
+        <IonRow>
+          <IonLabel className="ion-no-padding centering Marginlabel">
+            Margin Jual dalam Rupiah = Rp. {marginPrice}
+          </IonLabel>
+          <IonLabel className="ion-no-padding centering Marginlabel">
+            Margin Jual dalam persen ={" "}
+            {parseFloat(marginPersen.toString()).toLocaleString("en")}%
+          </IonLabel>
         </IonRow>
 
         <IonRow className="ion-margin-top">
